@@ -50,6 +50,11 @@ copy(path.join(__dirname, 'index.html'), path.join(dist, 'index.html'));
 // Copie admin/
 copyDir(path.join(__dirname, 'admin'), path.join(dist, 'admin'));
 
+// Copie images/ (logo, assets statiques)
+if (fs.existsSync(path.join(__dirname, 'images'))) {
+  copyDir(path.join(__dirname, 'images'), path.join(dist, 'images'));
+}
+
 // Copie js/ (sans supabase-config.js qui sera généré)
 mkdir(path.join(dist, 'js'));
 

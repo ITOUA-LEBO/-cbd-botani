@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=Black+Han+Sans&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -295,6 +295,90 @@
       .reveal { opacity: 1; transform: none; }
       .product-card { animation: none; }
     }
+
+    /* ── Style graffiti (inspiré du prompt React) ── */
+    .graffiti-title {
+      font-family: 'Black Han Sans', Impact, 'Arial Black', sans-serif;
+      letter-spacing: -0.03em;
+    }
+
+    /* Effet sticker : ombre noire décalée */
+    .sticker-card {
+      border: 3px solid #000;
+      box-shadow: 6px 6px 0px rgba(0,0,0,0.95);
+      transition: box-shadow 0.25s cubic-bezier(.34,1.56,.64,1), transform 0.25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .sticker-card:hover {
+      box-shadow: 10px 10px 0px rgba(0,0,0,0.95);
+      transform: translateY(-4px);
+    }
+
+    /* Drip animation sur les cartes produit au hover */
+    .drip-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 10px;
+      background: #c8f000;
+      clip-path: polygon(0 0,5% 100%,10% 0,15% 100%,20% 0,25% 100%,30% 0,35% 100%,40% 0,45% 100%,50% 0,55% 100%,60% 0,65% 100%,70% 0,75% 100%,80% 0,85% 100%,90% 0,95% 100%,100% 0);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+    .product-card:hover .drip-bar {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Rotation légère des cartes produit */
+    .product-card:nth-child(2n)   { transform: rotate(-1.5deg); }
+    .product-card:nth-child(3n)   { transform: rotate(1.2deg); }
+    .product-card:nth-child(4n)   { transform: rotate(-0.8deg); }
+    .product-card:hover            { transform: rotate(0deg) translateY(-6px) scale(1.02) !important; }
+
+    /* Badge graffiti (tag) */
+    .graffiti-tag {
+      font-family: Impact, 'Arial Black', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      padding: 2px 8px;
+      border: 2px solid #000;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.9);
+      transform: rotate(8deg);
+      position: absolute;
+      top: -8px; right: -6px;
+      z-index: 10;
+      line-height: 1.4;
+    }
+
+    /* Bouton graffiti style */
+    .btn-graffiti {
+      background: #c8f000;
+      border: 3px solid #000;
+      box-shadow: 4px 4px 0px rgba(0,0,0,0.95);
+      color: #000;
+      font-family: Impact, 'Arial Black', sans-serif;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      transition: all 0.2s cubic-bezier(.34,1.56,.64,1);
+    }
+    .btn-graffiti:hover {
+      box-shadow: 6px 6px 0px rgba(0,0,0,0.95);
+      transform: translateY(-2px) scale(1.03);
+      background: #d9f500;
+    }
+    .btn-graffiti:active {
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.95);
+      transform: translateY(1px);
+    }
+
+    /* Paint splat décoratif */
+    .paint-splat {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
   </style>
 </head>
 <body class="text-gray-100">
@@ -304,14 +388,8 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
-        <a href="#hero" class="flex items-center gap-3 group cursor-pointer">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.35)">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
-              <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
+        <a href="#hero" class="flex items-center gap-2 group cursor-pointer">
+          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's" class="w-10 h-10 rounded-xl object-cover" style="border:1px solid rgba(200,240,0,0.35)"/>
           <div>
             <div class="text-sm font-bold text-white leading-tight tracking-wide">CBD BOTANI</div>
             <div class="text-xs text-green-400 leading-tight font-medium tracking-widest">X BROTHER'S</div>
@@ -361,12 +439,29 @@
     <!-- Particles container -->
     <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
+    <!-- Paint splats décoratifs -->
+    <div class="paint-splat" style="width:400px;height:400px;background:rgba(200,240,0,0.12);top:-100px;left:-80px"></div>
+    <div class="paint-splat" style="width:300px;height:300px;background:rgba(139,196,0,0.08);bottom:60px;right:-60px"></div>
+
     <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-16">
+
+      <!-- Vrai logo centré -->
+      <div class="reveal flex justify-center mb-6">
+        <div class="relative inline-block">
+          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's Logo"
+            class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover"
+            style="border:3px solid #c8f000;box-shadow:0 0 40px rgba(200,240,0,0.35),6px 6px 0px rgba(0,0,0,0.8)"/>
+          <!-- Drip décoratif sous le logo -->
+          <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-24 h-4"
+            style="background:#c8f000;clip-path:polygon(0 0,8% 100%,16% 0,24% 100%,32% 0,40% 100%,48% 0,56% 100%,64% 0,72% 100%,80% 0,88% 100%,96% 0,100% 50%);opacity:0.8"></div>
+        </div>
+      </div>
+
       <div class="reveal">
         <span class="badge">Ivry-sur-Seine · CBD Premium</span>
       </div>
 
-      <h1 class="reveal reveal-delay-1 font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] mt-6 mb-6">
+      <h1 class="reveal reveal-delay-1 graffiti-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.05] mt-6 mb-6" style="-webkit-text-stroke:1px rgba(0,0,0,0.5)">
         <span class="text-white">Le CBD premium</span><br/>
         <span class="text-glow" style="background:linear-gradient(135deg,#c8f000 0%,#8bc400 50%,#5a8000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">accessible.</span>
       </h1>
@@ -377,7 +472,7 @@
       </p>
 
       <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="#produits" class="btn-primary px-8 py-3.5 rounded-2xl text-base font-semibold cursor-pointer">
+        <a href="#produits" class="btn-graffiti px-8 py-3.5 rounded-xl text-base cursor-pointer inline-block">
           Explorer nos produits
         </a>
         <a href="#apropos" class="btn-outline px-8 py-3.5 rounded-2xl text-base cursor-pointer">
@@ -521,13 +616,7 @@
             <!-- Main card -->
             <div class="glass-card rounded-3xl p-8 relative z-10">
               <div class="flex items-center gap-4 mb-6">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.3)">
-                  <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
-                    <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
-                    <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
-                </div>
+                <img src="images/cbd-logo.jpeg" alt="Logo CBD Botani" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0" style="border:2px solid rgba(200,240,0,0.35)"/>
                 <div>
                   <div class="text-white font-bold">CBD Botani X Brother's</div>
                   <div class="text-green-400 text-sm">Ivry-sur-Seine</div>
@@ -795,12 +884,7 @@
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.3)">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
-              <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
+          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's" class="w-9 h-9 rounded-lg object-cover" style="border:1px solid rgba(200,240,0,0.3)"/>
           <div>
             <div class="text-sm font-bold text-white">CBD Botani X Brother's</div>
             <div class="text-xs text-gray-600">Ivry-sur-Seine · CBD Premium</div>
@@ -962,25 +1046,36 @@
       return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
+    const GRAFFITI_TAGS = ['HOT','NEW','FIRE','TOP','DANK','FRESH'];
+    let tagIdx = 0;
+
     function buildCard(p, delay) {
       const img = p.image_url
         ? `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" class="w-full h-full object-cover" loading="lazy"/>`
         : (CAT_SVG[p.category] || CAT_SVG['Bien-être']);
 
+      const tag = GRAFFITI_TAGS[tagIdx++ % GRAFFITI_TAGS.length];
+      const tagColors = {HOT:'#ef4444',NEW:'#c8f000',FIRE:'#fb923c',TOP:'#fbbf24',DANK:'#c8f000',FRESH:'#8bc400'};
+      const tagBg = tagColors[tag] || '#c8f000';
+
       return `
-        <div class="product-card glass-card rounded-3xl overflow-hidden flex-shrink-0 cursor-default group"
+        <div class="product-card glass-card sticker-card rounded-2xl overflow-hidden flex-shrink-0 cursor-default group relative"
           style="width:280px;animation-delay:${delay}ms" data-cat="${escHtmlPublic(p.category)}">
+          <!-- Tag graffiti -->
+          <div class="graffiti-tag text-black font-black" style="background:${tagBg}">${tag}</div>
           <div class="product-img h-48 flex items-center justify-center overflow-hidden">
             ${img}
           </div>
           <div class="p-5">
             <span class="badge text-xs">${escHtmlPublic(p.category)}</span>
-            <h3 class="text-base font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors duration-200">${escHtmlPublic(p.name)}</h3>
+            <h3 class="graffiti-title text-base font-black text-white mt-2 mb-1 group-hover:text-green-400 transition-colors duration-200">${escHtmlPublic(p.name)}</h3>
             <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">${escHtmlPublic(p.description || '')}</p>
-            <div class="mt-4">
-              <span class="text-green-400 text-sm font-semibold">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-green-400 font-black" style="font-family:Impact,'Arial Black',sans-serif;font-size:1.1rem;text-shadow:1px 1px 0 rgba(0,0,0,0.5)">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
             </div>
           </div>
+          <!-- Drip effet hover -->
+          <div class="drip-bar"></div>
         </div>`;
     }
 
