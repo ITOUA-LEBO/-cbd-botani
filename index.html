@@ -61,12 +61,12 @@
       overflow-x: hidden;
     }
 
-    /* Animated gradient background */
+    /* Animated gradient background — bannière en fond */
     .hero-bg {
-      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,196,0,0.3) 0%, transparent 70%),
-                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(26,42,0,0.2) 0%, transparent 60%),
-                  radial-gradient(ellipse 40% 60% at 10% 60%, rgba(10,15,0,0.3) 0%, transparent 60%),
-                  #0a0a0a;
+      background:
+        linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.72) 60%, rgba(10,10,10,0.92) 100%),
+        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,196,0,0.12) 0%, transparent 70%),
+        url('images/cbd-banniere.jpeg') center center / cover no-repeat;
     }
 
     /* Orbs */
@@ -431,17 +431,13 @@
   </nav>
 
   <!-- HERO -->
-  <section id="hero" class="relative min-h-screen flex items-center justify-center hero-bg overflow-hidden leaf-pattern">
+  <section id="hero" class="relative min-h-screen flex items-center justify-center hero-bg overflow-hidden">
     <!-- Orbs -->
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
     <!-- Particles container -->
     <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-
-    <!-- Paint splats décoratifs -->
-    <div class="paint-splat" style="width:400px;height:400px;background:rgba(200,240,0,0.12);top:-100px;left:-80px"></div>
-    <div class="paint-splat" style="width:300px;height:300px;background:rgba(139,196,0,0.08);bottom:60px;right:-60px"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-16">
 
@@ -461,12 +457,12 @@
         <span class="badge">Ivry-sur-Seine · CBD Premium</span>
       </div>
 
-      <h1 class="reveal reveal-delay-1 graffiti-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.05] mt-6 mb-6" style="-webkit-text-stroke:1px rgba(0,0,0,0.5)">
-        <span class="text-white">Le CBD premium</span><br/>
-        <span class="text-glow" style="background:linear-gradient(135deg,#c8f000 0%,#8bc400 50%,#5a8000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">accessible.</span>
+      <h1 class="reveal reveal-delay-1 graffiti-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.05] mt-6 mb-6">
+        <span class="text-white" style="text-shadow:0 2px 20px rgba(0,0,0,0.9),0 0 40px rgba(0,0,0,0.7)">Le CBD premium</span><br/>
+        <span class="text-glow" style="background:linear-gradient(135deg,#c8f000 0%,#8bc400 50%,#5a8000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.9))">accessible.</span>
       </h1>
 
-      <p class="reveal reveal-delay-2 text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+      <p class="reveal reveal-delay-2 text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10" style="text-shadow:0 1px 8px rgba(0,0,0,0.8)">
         Fleurs, huiles, résines, e-liquides & bien-être sélectionnés avec soin.<br class="hidden sm:block"/>
         Une expérience CBD <span class="text-green-400 font-medium">premium</span> à Ivry-sur-Seine.
       </p>
