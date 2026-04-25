@@ -253,6 +253,16 @@
     /* Smooth anchor offset */
     section { scroll-margin-top: 80px; }
 
+    /* ── Carousel ── */
+    #products-carousel::-webkit-scrollbar { display: none; }
+
+    /* Boutons flèches hover */
+    #carousel-prev:hover, #carousel-next:hover {
+      background: rgba(45,90,61,0.4) !important;
+      border-color: rgba(77,154,103,0.5) !important;
+      transform: scale(1.05);
+    }
+
     /* ── Filtres catégorie ── */
     .cat-filter-btn {
       background: rgba(26,58,42,0.15);
@@ -405,65 +415,100 @@
   <div class="divider"></div>
 
   <!-- PRODUCTS -->
-  <section id="produits" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-    <div class="text-center mb-12">
+  <section id="produits" class="py-24 overflow-hidden">
+    <div class="text-center mb-12 px-4 sm:px-6">
       <div class="reveal"><span class="badge">Notre sélection</span></div>
       <h2 class="reveal reveal-delay-1 font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-4">Gammes & produits</h2>
       <p class="reveal reveal-delay-2 text-gray-400 max-w-xl mx-auto">Chaque produit est rigoureusement sélectionné pour sa qualité, son terpène et son effet.</p>
     </div>
 
-    <!-- Filtres catégorie -->
-    <div class="reveal reveal-delay-2 flex flex-wrap justify-center gap-2 mb-10" id="cat-filters">
-      <button onclick="filterCat('tous')" data-cat="tous" class="cat-filter-btn active px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Tous</button>
-      <button onclick="filterCat('Fleurs')" data-cat="Fleurs" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Fleurs</button>
-      <button onclick="filterCat('Huiles')" data-cat="Huiles" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Huiles</button>
-      <button onclick="filterCat('Vape')" data-cat="Vape" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Vape</button>
-      <button onclick="filterCat('Bien-être')" data-cat="Bien-être" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Bien-être</button>
+    <!-- Filtres + flèches -->
+    <div class="reveal reveal-delay-2 flex items-center justify-between gap-4 px-4 sm:px-6 max-w-7xl mx-auto mb-8">
+      <!-- Filtres catégorie -->
+      <div class="flex flex-wrap gap-2" id="cat-filters">
+        <button onclick="filterCat('tous')" data-cat="tous" class="cat-filter-btn active px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Tous</button>
+        <button onclick="filterCat('Fleurs')" data-cat="Fleurs" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Fleurs</button>
+        <button onclick="filterCat('Huiles')" data-cat="Huiles" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Huiles</button>
+        <button onclick="filterCat('Vape')" data-cat="Vape" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Vape</button>
+        <button onclick="filterCat('Bien-être')" data-cat="Bien-être" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Bien-être</button>
+      </div>
+      <!-- Flèches navigation -->
+      <div class="flex gap-2 flex-shrink-0">
+        <button id="carousel-prev" onclick="carouselScroll(-1)"
+          class="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
+          style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"
+          aria-label="Précédent">
+          <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button id="carousel-next" onclick="carouselScroll(1)"
+          class="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
+          style="background:rgba(45,90,61,0.3);border:1px solid rgba(77,154,103,0.35)"
+          aria-label="Suivant">
+          <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <!-- Grille dynamique -->
-    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <!-- Skeletons de chargement -->
-      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
-        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
-        <div class="p-5 space-y-3">
-          <div class="h-4 rounded-full w-24" style="background:rgba(45,90,61,0.3)"></div>
-          <div class="h-5 rounded-full w-3/4" style="background:rgba(45,90,61,0.2)"></div>
-          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-          <div class="h-3 rounded-full w-2/3" style="background:rgba(45,90,61,0.15)"></div>
+    <!-- Carousel horizontal -->
+    <div class="relative">
+      <!-- Dégradé fondu gauche -->
+      <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-10"
+        style="background:linear-gradient(90deg,#0a0a0a,transparent)"></div>
+      <!-- Dégradé fondu droite -->
+      <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-10"
+        style="background:linear-gradient(270deg,#0a0a0a,transparent)"></div>
+
+      <!-- Piste scrollable -->
+      <div id="products-carousel"
+        class="flex gap-5 overflow-x-auto pb-4"
+        style="scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-left:max(24px, calc((100vw - 1280px)/2 + 24px));padding-right:max(24px, calc((100vw - 1280px)/2 + 24px))">
+
+        <!-- Skeletons de chargement -->
+        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
+          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="p-5 space-y-3">
+            <div class="h-4 rounded-full w-24" style="background:rgba(45,90,61,0.3)"></div>
+            <div class="h-5 rounded-full w-3/4" style="background:rgba(45,90,61,0.2)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-3 rounded-full w-2/3" style="background:rgba(45,90,61,0.15)"></div>
+          </div>
         </div>
-      </div>
-      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
-        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
-        <div class="p-5 space-y-3">
-          <div class="h-4 rounded-full w-20" style="background:rgba(45,90,61,0.3)"></div>
-          <div class="h-5 rounded-full w-4/5" style="background:rgba(45,90,61,0.2)"></div>
-          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-          <div class="h-3 rounded-full w-1/2" style="background:rgba(45,90,61,0.15)"></div>
+        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
+          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="p-5 space-y-3">
+            <div class="h-4 rounded-full w-20" style="background:rgba(45,90,61,0.3)"></div>
+            <div class="h-5 rounded-full w-4/5" style="background:rgba(45,90,61,0.2)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-3 rounded-full w-1/2" style="background:rgba(45,90,61,0.15)"></div>
+          </div>
         </div>
-      </div>
-      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
-        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
-        <div class="p-5 space-y-3">
-          <div class="h-4 rounded-full w-28" style="background:rgba(45,90,61,0.3)"></div>
-          <div class="h-5 rounded-full w-3/5" style="background:rgba(45,90,61,0.2)"></div>
-          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-          <div class="h-3 rounded-full w-3/4" style="background:rgba(45,90,61,0.15)"></div>
+        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
+          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="p-5 space-y-3">
+            <div class="h-4 rounded-full w-28" style="background:rgba(45,90,61,0.3)"></div>
+            <div class="h-5 rounded-full w-3/5" style="background:rgba(45,90,61,0.2)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-3 rounded-full w-3/4" style="background:rgba(45,90,61,0.15)"></div>
+          </div>
         </div>
-      </div>
-      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
-        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
-        <div class="p-5 space-y-3">
-          <div class="h-4 rounded-full w-16" style="background:rgba(45,90,61,0.3)"></div>
-          <div class="h-5 rounded-full w-2/3" style="background:rgba(45,90,61,0.2)"></div>
-          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-          <div class="h-3 rounded-full w-4/5" style="background:rgba(45,90,61,0.15)"></div>
+        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
+          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="p-5 space-y-3">
+            <div class="h-4 rounded-full w-16" style="background:rgba(45,90,61,0.3)"></div>
+            <div class="h-5 rounded-full w-2/3" style="background:rgba(45,90,61,0.2)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-3 rounded-full w-4/5" style="background:rgba(45,90,61,0.15)"></div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Message vide -->
-    <div id="products-empty" class="hidden text-center py-16 text-gray-500 text-sm">Aucun produit dans cette catégorie.</div>
+    <div id="products-empty" class="hidden text-center py-16 text-gray-500 text-sm px-4">Aucun produit dans cette catégorie.</div>
   </section>
 
   <div class="divider"></div>
@@ -930,7 +975,8 @@
         : (CAT_SVG[p.category] || CAT_SVG['Bien-être']);
 
       return `
-        <div class="product-card glass-card rounded-3xl overflow-hidden cursor-default group" style="animation-delay:${delay}ms" data-cat="${escHtmlPublic(p.category)}">
+        <div class="product-card glass-card rounded-3xl overflow-hidden flex-shrink-0 cursor-default group"
+          style="width:280px;animation-delay:${delay}ms" data-cat="${escHtmlPublic(p.category)}">
           <div class="product-img h-48 flex items-center justify-center overflow-hidden">
             ${img}
           </div>
@@ -938,7 +984,7 @@
             <span class="badge text-xs">${escHtmlPublic(p.category)}</span>
             <h3 class="text-base font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors duration-200">${escHtmlPublic(p.name)}</h3>
             <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">${escHtmlPublic(p.description || '')}</p>
-            <div class="mt-4 flex items-center justify-between">
+            <div class="mt-4">
               <span class="text-green-400 text-sm font-semibold">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
             </div>
           </div>
@@ -946,40 +992,53 @@
     }
 
     function renderPublicProducts(list) {
-      const grid  = document.getElementById('products-grid');
-      const empty = document.getElementById('products-empty');
+      const carousel = document.getElementById('products-carousel');
+      const empty    = document.getElementById('products-empty');
 
       // Retire les skeletons
-      grid.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+      carousel.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+      // Retire les cartes précédentes
+      carousel.querySelectorAll('.product-card').forEach(el => el.remove());
 
       if (!list.length) {
-        grid.innerHTML = '';
         empty.classList.remove('hidden');
         return;
       }
 
       empty.classList.add('hidden');
-      grid.innerHTML = list.map((p, i) => buildCard(p, i * 60)).join('');
-
-      // Scroll reveal sur les nouvelles cartes
-      grid.querySelectorAll('.product-card').forEach(el => observer.observe(el));
+      carousel.insertAdjacentHTML('beforeend', list.map((p, i) => buildCard(p, i * 50)).join(''));
+      // Repart au début
+      carousel.scrollLeft = 0;
     }
 
     function filterCat(cat) {
-      // Mise à jour bouton actif
       document.querySelectorAll('.cat-filter-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.cat === cat);
       });
-
       const filtered = cat === 'tous'
         ? allPublicProducts
         : allPublicProducts.filter(p => p.category === cat);
-
       renderPublicProducts(filtered);
     }
 
+    // Flèches : fait défiler d'une carte (280px + gap 20px = 300px)
+    function carouselScroll(dir) {
+      const c = document.getElementById('products-carousel');
+      c.scrollBy({ left: dir * 300, behavior: 'smooth' });
+    }
+
+    // Drag-to-scroll souris
+    function initCarouselDrag() {
+      const c = document.getElementById('products-carousel');
+      let isDown = false, startX, scrollLeft;
+      c.addEventListener('mousedown',  e => { isDown = true; c.style.cursor = 'grabbing'; startX = e.pageX - c.offsetLeft; scrollLeft = c.scrollLeft; });
+      c.addEventListener('mouseleave', () => { isDown = false; c.style.cursor = 'grab'; });
+      c.addEventListener('mouseup',    () => { isDown = false; c.style.cursor = 'grab'; });
+      c.addEventListener('mousemove',  e => { if (!isDown) return; e.preventDefault(); const x = e.pageX - c.offsetLeft; c.scrollLeft = scrollLeft - (x - startX) * 1.2; });
+      c.style.cursor = 'grab';
+    }
+
     async function loadPublicProducts() {
-      // Attend que supabase-config.js soit prêt
       if (typeof db === 'undefined') return;
 
       const { data, error } = await db
@@ -994,9 +1053,8 @@
       renderPublicProducts(data);
     }
 
-    // Charge dès que le DOM est prêt (supabase-config.js est juste avant ce script)
     document.addEventListener('DOMContentLoaded', () => {
-      // Petit délai pour laisser supabase-config.js s'initialiser
+      initCarouselDrag();
       setTimeout(loadPublicProducts, 100);
     });
   </script>
