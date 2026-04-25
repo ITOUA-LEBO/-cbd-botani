@@ -14,13 +14,13 @@
         extend: {
           colors: {
             green: {
-              950: '#0a1a10',
-              900: '#0f2318',
-              800: '#1a3a2a',
-              700: '#2d5a3d',
-              600: '#3d7a52',
-              500: '#4e9a67',
-              400: '#6dbc86',
+              950: '#0a0a00',
+              900: '#121500',
+              800: '#1a2000',
+              700: '#3a5500',
+              600: '#6a8c00',
+              500: '#8bc400',
+              400: '#c8f000',
             },
             dark: {
               950: '#050505',
@@ -46,11 +46,11 @@
     * { box-sizing: border-box; }
 
     :root {
-      --green-primary: #2d5a3d;
-      --green-dark: #1a3a2a;
-      --green-glow: rgba(45, 90, 61, 0.4);
-      --glass-bg: rgba(26, 58, 42, 0.15);
-      --glass-border: rgba(77, 154, 103, 0.2);
+      --green-primary: #8bc400;
+      --green-dark: #1a2000;
+      --green-glow: rgba(200, 240, 0, 0.4);
+      --glass-bg: rgba(20, 30, 0, 0.15);
+      --glass-border: rgba(200, 240, 0, 0.2);
     }
 
     html { color-scheme: dark; }
@@ -63,9 +63,9 @@
 
     /* Animated gradient background */
     .hero-bg {
-      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(45,90,61,0.5) 0%, transparent 70%),
-                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(26,58,42,0.3) 0%, transparent 60%),
-                  radial-gradient(ellipse 40% 60% at 10% 60%, rgba(13,35,22,0.4) 0%, transparent 60%),
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,196,0,0.3) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(26,42,0,0.2) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 60% at 10% 60%, rgba(10,15,0,0.3) 0%, transparent 60%),
                   #0a0a0a;
     }
 
@@ -79,19 +79,19 @@
     }
     .orb-1 {
       width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(45,90,61,0.35) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(139,196,0,0.22) 0%, transparent 70%);
       top: -150px; left: -100px;
       animation-delay: 0s;
     }
     .orb-2 {
       width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(77,154,103,0.2) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(200,240,0,0.14) 0%, transparent 70%);
       top: 200px; right: -80px;
       animation-delay: -3s;
     }
     .orb-3 {
       width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(26,58,42,0.4) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(26,42,0,0.35) 0%, transparent 70%);
       bottom: 100px; left: 30%;
       animation-delay: -5s;
     }
@@ -104,17 +104,17 @@
 
     /* Glass cards */
     .glass-card {
-      background: rgba(26, 58, 42, 0.12);
+      background: rgba(20, 30, 0, 0.12);
       backdrop-filter: blur(16px) saturate(1.4);
       -webkit-backdrop-filter: blur(16px) saturate(1.4);
-      border: 1px solid rgba(77, 154, 103, 0.18);
+      border: 1px solid rgba(200, 240, 0, 0.18);
       transition: all 0.35s cubic-bezier(.4,0,.2,1);
     }
     .glass-card:hover {
-      background: rgba(26, 58, 42, 0.22);
-      border-color: rgba(77, 154, 103, 0.38);
+      background: rgba(20, 30, 0, 0.22);
+      border-color: rgba(200, 240, 0, 0.35);
       transform: translateY(-6px);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(77,154,103,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,240,0,0.12), inset 0 1px 0 rgba(255,255,255,0.04);
     }
 
     /* Nav glass */
@@ -122,14 +122,14 @@
       background: rgba(10, 10, 10, 0.7);
       backdrop-filter: blur(20px) saturate(1.8);
       -webkit-backdrop-filter: blur(20px) saturate(1.8);
-      border-bottom: 1px solid rgba(45, 90, 61, 0.2);
+      border-bottom: 1px solid rgba(200, 240, 0, 0.15);
     }
 
     /* Pill badge */
     .badge {
-      background: rgba(45, 90, 61, 0.25);
-      border: 1px solid rgba(77, 154, 103, 0.35);
-      color: #6dbc86;
+      background: rgba(139, 196, 0, 0.18);
+      border: 1px solid rgba(200, 240, 0, 0.35);
+      color: #c8f000;
       font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.12em;
@@ -140,10 +140,10 @@
 
     /* CTA button */
     .btn-primary {
-      background: linear-gradient(135deg, #2d5a3d 0%, #1a3a2a 100%);
-      border: 1px solid rgba(77,154,103,0.4);
-      color: #e8f5ec;
-      font-weight: 600;
+      background: linear-gradient(135deg, #8bc400 0%, #5a8000 100%);
+      border: 1px solid rgba(200,240,0,0.5);
+      color: #0a0a0a;
+      font-weight: 700;
       letter-spacing: 0.03em;
       transition: all 0.25s ease;
       position: relative;
@@ -153,27 +153,27 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
       opacity: 0;
       transition: opacity 0.25s ease;
     }
     .btn-primary:hover::before { opacity: 1; }
     .btn-primary:hover {
-      box-shadow: 0 0 30px rgba(45,90,61,0.45), 0 8px 24px rgba(0,0,0,0.4);
-      border-color: rgba(109,188,134,0.5);
+      box-shadow: 0 0 30px rgba(200,240,0,0.45), 0 8px 24px rgba(0,0,0,0.4);
+      border-color: rgba(200,240,0,0.8);
       transform: translateY(-2px);
     }
     .btn-primary:active { transform: translateY(0); }
 
     .btn-outline {
-      border: 1px solid rgba(77,154,103,0.4);
-      color: #6dbc86;
+      border: 1px solid rgba(200,240,0,0.4);
+      color: #c8f000;
       font-weight: 500;
       transition: all 0.25s ease;
     }
     .btn-outline:hover {
-      background: rgba(45,90,61,0.15);
-      border-color: rgba(109,188,134,0.6);
+      background: rgba(139,196,0,0.15);
+      border-color: rgba(200,240,0,0.65);
     }
 
     /* Section reveal animation */
@@ -193,7 +193,7 @@
 
     /* Product card image placeholder */
     .product-img {
-      background: linear-gradient(135deg, rgba(26,58,42,0.6) 0%, rgba(13,35,22,0.8) 100%);
+      background: linear-gradient(135deg, rgba(20,30,0,0.6) 0%, rgba(10,15,0,0.85) 100%);
       position: relative;
       overflow: hidden;
     }
@@ -201,36 +201,36 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(10,26,16,0.8) 100%);
+      background: linear-gradient(180deg, transparent 40%, rgba(5,10,0,0.8) 100%);
     }
 
     /* Leaf SVG pattern */
     .leaf-pattern {
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 C15 5 5 15 5 30 C5 45 20 55 30 55 C30 55 30 35 30 5Z' fill='none' stroke='rgba(45,90,61,0.08)' stroke-width='1'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 C15 5 5 15 5 30 C5 45 20 55 30 55 C30 55 30 35 30 5Z' fill='none' stroke='rgba(200,240,0,0.05)' stroke-width='1'/%3E%3C/svg%3E");
       background-size: 60px 60px;
     }
 
     /* Divider line */
     .divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(45,90,61,0.4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(200,240,0,0.3), transparent);
     }
 
     /* Text glow */
     .text-glow {
-      text-shadow: 0 0 40px rgba(77,154,103,0.4);
+      text-shadow: 0 0 40px rgba(200,240,0,0.45);
     }
 
     /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0a0a0a; }
-    ::-webkit-scrollbar-thumb { background: #2d5a3d; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: #8bc400; border-radius: 3px; }
 
     /* Floating particles */
     .particle {
       position: absolute;
       width: 3px; height: 3px;
-      background: rgba(77,154,103,0.6);
+      background: rgba(200,240,0,0.55);
       border-radius: 50%;
       animation: particleFloat linear infinite;
       pointer-events: none;
@@ -258,27 +258,27 @@
 
     /* Boutons flèches hover */
     #carousel-prev:hover, #carousel-next:hover {
-      background: rgba(45,90,61,0.4) !important;
-      border-color: rgba(77,154,103,0.5) !important;
+      background: rgba(139,196,0,0.35) !important;
+      border-color: rgba(200,240,0,0.5) !important;
       transform: scale(1.05);
     }
 
     /* ── Filtres catégorie ── */
     .cat-filter-btn {
-      background: rgba(26,58,42,0.15);
-      border: 1px solid rgba(77,154,103,0.18);
+      background: rgba(20,30,0,0.15);
+      border: 1px solid rgba(200,240,0,0.15);
       color: #6b7280;
     }
     .cat-filter-btn:hover {
-      background: rgba(26,58,42,0.25);
-      border-color: rgba(77,154,103,0.35);
-      color: #d1fae5;
+      background: rgba(20,30,0,0.28);
+      border-color: rgba(200,240,0,0.32);
+      color: #d9f59b;
     }
     .cat-filter-btn.active {
-      background: rgba(45,90,61,0.35);
-      border-color: rgba(77,154,103,0.5);
-      color: #6dbc86;
-      box-shadow: 0 0 16px rgba(45,90,61,0.3);
+      background: rgba(139,196,0,0.28);
+      border-color: rgba(200,240,0,0.55);
+      color: #c8f000;
+      box-shadow: 0 0 16px rgba(200,240,0,0.22);
     }
 
     /* ── Carte produit dynamique ── */
@@ -305,11 +305,11 @@
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <a href="#hero" class="flex items-center gap-3 group cursor-pointer">
-          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.35)">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.35)">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
-              <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
+              <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
@@ -348,7 +348,7 @@
       <a href="#apropos" class="block px-4 py-3 text-sm text-gray-300 hover:text-green-400 transition-colors cursor-pointer" onclick="closeMobileMenu()">À propos</a>
       <a href="#valeurs" class="block px-4 py-3 text-sm text-gray-300 hover:text-green-400 transition-colors cursor-pointer" onclick="closeMobileMenu()">Nos valeurs</a>
       <a href="#contact" class="block px-4 py-3 text-sm text-gray-300 hover:text-green-400 transition-colors cursor-pointer" onclick="closeMobileMenu()">Contact</a>
-<a href="#produits" class="btn-primary mt-2 px-5 py-2.5 text-sm rounded-xl text-center block cursor-pointer" onclick="closeMobileMenu()">Découvrir</a>
+      <a href="#produits" class="btn-primary mt-2 px-5 py-2.5 text-sm rounded-xl text-center block cursor-pointer" onclick="closeMobileMenu()">Découvrir</a>
     </div>
   </nav>
 
@@ -368,7 +368,7 @@
 
       <h1 class="reveal reveal-delay-1 font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] mt-6 mb-6">
         <span class="text-white">Le CBD premium</span><br/>
-        <span class="text-glow" style="background:linear-gradient(135deg,#6dbc86 0%,#4e9a67 50%,#3d7a52 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">accessible.</span>
+        <span class="text-glow" style="background:linear-gradient(135deg,#c8f000 0%,#8bc400 50%,#5a8000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">accessible.</span>
       </h1>
 
       <p class="reveal reveal-delay-2 text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
@@ -434,7 +434,7 @@
       <div class="flex gap-2 flex-shrink-0">
         <button id="carousel-prev" onclick="carouselScroll(-1)"
           class="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
-          style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"
+          style="background:rgba(20,30,0,0.2);border:1px solid rgba(200,240,0,0.18)"
           aria-label="Précédent">
           <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
@@ -442,7 +442,7 @@
         </button>
         <button id="carousel-next" onclick="carouselScroll(1)"
           class="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
-          style="background:rgba(45,90,61,0.3);border:1px solid rgba(77,154,103,0.35)"
+          style="background:rgba(139,196,0,0.25);border:1px solid rgba(200,240,0,0.35)"
           aria-label="Suivant">
           <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
@@ -467,39 +467,39 @@
 
         <!-- Skeletons de chargement -->
         <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-24" style="background:rgba(45,90,61,0.3)"></div>
-            <div class="h-5 rounded-full w-3/4" style="background:rgba(45,90,61,0.2)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-            <div class="h-3 rounded-full w-2/3" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-4 rounded-full w-24" style="background:rgba(139,196,0,0.2)"></div>
+            <div class="h-5 rounded-full w-3/4" style="background:rgba(139,196,0,0.15)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-3 rounded-full w-2/3" style="background:rgba(139,196,0,0.1)"></div>
           </div>
         </div>
         <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-20" style="background:rgba(45,90,61,0.3)"></div>
-            <div class="h-5 rounded-full w-4/5" style="background:rgba(45,90,61,0.2)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-            <div class="h-3 rounded-full w-1/2" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-4 rounded-full w-20" style="background:rgba(139,196,0,0.2)"></div>
+            <div class="h-5 rounded-full w-4/5" style="background:rgba(139,196,0,0.15)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-3 rounded-full w-1/2" style="background:rgba(139,196,0,0.1)"></div>
           </div>
         </div>
         <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-28" style="background:rgba(45,90,61,0.3)"></div>
-            <div class="h-5 rounded-full w-3/5" style="background:rgba(45,90,61,0.2)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-            <div class="h-3 rounded-full w-3/4" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-4 rounded-full w-28" style="background:rgba(139,196,0,0.2)"></div>
+            <div class="h-5 rounded-full w-3/5" style="background:rgba(139,196,0,0.15)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-3 rounded-full w-3/4" style="background:rgba(139,196,0,0.1)"></div>
           </div>
         </div>
         <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-16" style="background:rgba(45,90,61,0.3)"></div>
-            <div class="h-5 rounded-full w-2/3" style="background:rgba(45,90,61,0.2)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
-            <div class="h-3 rounded-full w-4/5" style="background:rgba(45,90,61,0.15)"></div>
+            <div class="h-4 rounded-full w-16" style="background:rgba(139,196,0,0.2)"></div>
+            <div class="h-5 rounded-full w-2/3" style="background:rgba(139,196,0,0.15)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-3 rounded-full w-4/5" style="background:rgba(139,196,0,0.1)"></div>
           </div>
         </div>
       </div>
@@ -512,7 +512,7 @@
   <div class="divider"></div>
 
   <!-- ABOUT -->
-  <section id="apropos" class="py-24 px-4 sm:px-6" style="background:radial-gradient(ellipse 70% 50% at 20% 50%, rgba(26,58,42,0.15) 0%, transparent 70%)">
+  <section id="apropos" class="py-24 px-4 sm:px-6" style="background:radial-gradient(ellipse 70% 50% at 20% 50%, rgba(20,30,0,0.2) 0%, transparent 70%)">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <!-- Left visual -->
@@ -521,11 +521,11 @@
             <!-- Main card -->
             <div class="glass-card rounded-3xl p-8 relative z-10">
               <div class="flex items-center gap-4 mb-6">
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.3)">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.3)">
                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
-                    <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
-                    <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
+                    <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
+                    <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
                   </svg>
                 </div>
                 <div>
@@ -558,14 +558,14 @@
               <div class="text-xs text-gray-400">Naturel</div>
             </div>
             <!-- Bg blur -->
-            <div class="absolute inset-0 rounded-3xl blur-2xl opacity-20 -z-10" style="background:radial-gradient(circle, #2d5a3d, transparent)"></div>
+            <div class="absolute inset-0 rounded-3xl blur-2xl opacity-20 -z-10" style="background:radial-gradient(circle, #8bc400, transparent)"></div>
           </div>
         </div>
 
         <!-- Right text -->
         <div class="reveal reveal-delay-2 order-1 lg:order-2">
           <span class="badge">Notre histoire</span>
-          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-6">Nés à Ivry,<br/><span style="color:#6dbc86">passionnés</span> du CBD.</h2>
+          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-6">Nés à Ivry,<br/><span style="color:#c8f000">passionnés</span> du CBD.</h2>
           <p class="text-gray-400 text-lg leading-relaxed mb-6">
             CBD Botani X Brother's est né d'une passion commune : démocratiser l'accès à des produits CBD de haute qualité, dans un cadre de confiance et de transparence totale.
           </p>
@@ -596,7 +596,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
         <!-- Value 1 -->
         <div class="reveal glass-card rounded-3xl p-7 cursor-default">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
             <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
@@ -607,7 +607,7 @@
 
         <!-- Value 2 -->
         <div class="reveal reveal-delay-1 glass-card rounded-3xl p-7 cursor-default">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
             <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
@@ -618,7 +618,7 @@
 
         <!-- Value 3 -->
         <div class="reveal reveal-delay-2 glass-card rounded-3xl p-7 cursor-default">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
             <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
             </svg>
@@ -633,20 +633,20 @@
   <div class="divider"></div>
 
   <!-- CONTACT -->
-  <section id="contact" class="py-24 px-4 sm:px-6" style="background:radial-gradient(ellipse 60% 50% at 80% 50%, rgba(26,58,42,0.15) 0%, transparent 70%)">
+  <section id="contact" class="py-24 px-4 sm:px-6" style="background:radial-gradient(ellipse 60% 50% at 80% 50%, rgba(20,30,0,0.2) 0%, transparent 70%)">
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
         <!-- Info -->
         <div class="reveal">
           <span class="badge">Nous trouver</span>
-          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-6">Venez nous<br/><span style="color:#6dbc86">rendre visite</span></h2>
+          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-6">Venez nous<br/><span style="color:#c8f000">rendre visite</span></h2>
           <p class="text-gray-400 text-lg leading-relaxed mb-10">Notre boutique à Ivry-sur-Seine vous accueille dans un espace moderne et discret.</p>
 
           <div class="space-y-4">
             <!-- Adresse -->
             <a href="https://maps.google.com/?q=50+Bd+Paul+Vaillant+Couturier,+94200+Ivry-sur-Seine" target="_blank" rel="noopener"
-              class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:border-green-400/30 transition-all">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+              class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:border-green-400/40 transition-all">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
                 <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -661,7 +661,7 @@
 
             <!-- Horaires -->
             <div class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-default">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
                 <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
@@ -675,8 +675,8 @@
             </div>
 
             <!-- Téléphone -->
-            <a href="tel:+33672258148" class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:border-green-400/30 transition-all">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+            <a href="tel:+33672258148" class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:border-green-400/40 transition-all">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
                 <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
@@ -689,7 +689,7 @@
 
             <!-- Email / Réseaux -->
             <div class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-default">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
                 <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
@@ -713,27 +713,27 @@
                   <div>
                     <label for="prenom" class="block text-xs font-medium text-gray-400 mb-2">Prénom</label>
                     <input id="prenom" type="text" placeholder="Jean" required
-                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-600 transition-all"
-                      style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"/>
+                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
+                      style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
                   </div>
                   <div>
                     <label for="nom" class="block text-xs font-medium text-gray-400 mb-2">Nom</label>
                     <input id="nom" type="text" placeholder="Dupont" required
-                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-600 transition-all"
-                      style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"/>
+                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
+                      style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
                   </div>
                 </div>
                 <div>
                   <label for="email" class="block text-xs font-medium text-gray-400 mb-2">Email</label>
                   <input id="email" type="email" placeholder="jean@exemple.fr" required
-                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-600 transition-all"
-                    style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"/>
+                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
+                    style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
                 </div>
                 <div>
                   <label for="sujet" class="block text-xs font-medium text-gray-400 mb-2">Sujet</label>
                   <select id="sujet"
-                    class="w-full px-4 py-3 rounded-xl text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-green-600 transition-all cursor-pointer"
-                    style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)">
+                    class="w-full px-4 py-3 rounded-xl text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all cursor-pointer"
+                    style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)">
                     <option value="" class="bg-gray-900">Sélectionner...</option>
                     <option value="info" class="bg-gray-900">Informations produit</option>
                     <option value="commande" class="bg-gray-900">Commande / disponibilité</option>
@@ -744,8 +744,8 @@
                 <div>
                   <label for="message" class="block text-xs font-medium text-gray-400 mb-2">Message</label>
                   <textarea id="message" rows="4" placeholder="Votre message..." required
-                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-600 transition-all resize-none"
-                    style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"></textarea>
+                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all resize-none"
+                    style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"></textarea>
                 </div>
                 <button type="submit" id="submit-btn" class="btn-primary w-full py-3.5 rounded-2xl text-sm font-semibold cursor-pointer flex items-center justify-center gap-2">
                   <span id="btn-text">Envoyer le message</span>
@@ -763,7 +763,7 @@
           <!-- Newsletter -->
           <div class="reveal reveal-delay-3 glass-card rounded-3xl p-6">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(45,90,61,0.25);border:1px solid rgba(77,154,103,0.25)">
+              <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
                 <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
@@ -775,8 +775,8 @@
             </div>
             <form onsubmit="handleNewsletter(event)" class="flex gap-2">
               <input id="newsletter-email" type="email" placeholder="votre@email.fr" required
-                class="flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-600 transition-all"
-                style="background:rgba(26,58,42,0.2);border:1px solid rgba(77,154,103,0.2)"/>
+                class="flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
+                style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
               <button type="submit" id="nl-btn" class="btn-primary px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer whitespace-nowrap">
                 S'abonner
               </button>
@@ -791,14 +791,14 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="border-t py-10 px-4 sm:px-6" style="border-color:rgba(45,90,61,0.2);background:rgba(5,5,5,0.8)">
+  <footer class="border-t py-10 px-4 sm:px-6" style="border-color:rgba(200,240,0,0.15);background:rgba(5,5,5,0.8)">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.3)">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.3)">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
-              <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
+              <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
           </div>
           <div>
@@ -811,7 +811,7 @@
           <a href="#produits" class="hover:text-green-400 transition-colors cursor-pointer">Produits</a>
           <a href="#apropos" class="hover:text-green-400 transition-colors cursor-pointer">À propos</a>
           <a href="#contact" class="hover:text-green-400 transition-colors cursor-pointer">Contact</a>
-<a href="tel:+33672258148" class="hover:text-green-400 transition-colors cursor-pointer">06 72 25 81 48</a>
+          <a href="tel:+33672258148" class="hover:text-green-400 transition-colors cursor-pointer">06 72 25 81 48</a>
         </div>
 
         <div class="text-xs text-gray-600 text-center">
@@ -821,8 +821,8 @@
       </div>
 
       <!-- Lien admin discret -->
-      <div class="border-t pt-4 text-center" style="border-color:rgba(45,90,61,0.1)">
-        <a href="admin/login.html" class="text-gray-700 hover:text-green-600 text-xs transition-colors duration-200 cursor-pointer select-none">
+      <div class="border-t pt-4 text-center" style="border-color:rgba(200,240,0,0.08)">
+        <a href="admin/login.html" class="text-gray-700 hover:text-green-500 text-xs transition-colors duration-200 cursor-pointer select-none">
           Espace pro
         </a>
       </div>
@@ -873,9 +873,6 @@
     hamburger.addEventListener('click', () => {
       const isOpen = mobileMenu.classList.contains('open');
       mobileMenu.classList.toggle('open');
-      hamOpen.classList.toggle('hidden', !isOpen ? false : true);
-      hamClose.classList.toggle('hidden', !isOpen ? true : false);
-      // Re-check
       if (!isOpen) {
         hamOpen.classList.add('hidden');
         hamClose.classList.remove('hidden');
@@ -941,9 +938,9 @@
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 60) {
-        nav.style.borderBottomColor = 'rgba(45,90,61,0.35)';
+        nav.style.borderBottomColor = 'rgba(200,240,0,0.28)';
       } else {
-        nav.style.borderBottomColor = 'rgba(45,90,61,0.2)';
+        nav.style.borderBottomColor = 'rgba(200,240,0,0.15)';
       }
     }, { passive: true });
   </script>
@@ -955,10 +952,10 @@
 
     // SVG fallback par catégorie quand pas d'image uploadée
     const CAT_SVG = {
-      'Fleurs': `<svg class="w-20 h-20 opacity-60" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="55" rx="12" ry="22" fill="#2d5a3d" opacity="0.8"/><ellipse cx="26" cy="45" rx="10" ry="18" fill="#1a3a2a" opacity="0.9" transform="rotate(-20 26 45)"/><ellipse cx="54" cy="45" rx="10" ry="18" fill="#1a3a2a" opacity="0.9" transform="rotate(20 54 45)"/><line x1="40" y1="77" x2="40" y2="33" stroke="#4e9a67" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="28" r="7" fill="#3d7a52" opacity="0.9"/><circle cx="40" cy="28" r="3" fill="#6dbc86"/></svg>`,
-      'Huiles': `<svg class="w-14 h-20 opacity-60" viewBox="0 0 64 80" fill="none"><rect x="26" y="0" width="12" height="8" rx="3" fill="#2d5a3d"/><rect x="22" y="7" width="20" height="4" rx="2" fill="#1a3a2a"/><rect x="18" y="11" width="28" height="45" rx="10" fill="#1a3a2a" opacity="0.9"/><rect x="22" y="30" width="20" height="20" rx="7" fill="#3d7a52" opacity="0.6"/><circle cx="32" cy="40" r="5" fill="#6dbc86" opacity="0.5"/></svg>`,
-      'Vape':   `<svg class="w-12 h-20 opacity-60" viewBox="0 0 56 80" fill="none"><rect x="16" y="0" width="24" height="10" rx="4" fill="#2d5a3d"/><rect x="20" y="9" width="16" height="6" rx="2" fill="#1a3a2a"/><rect x="8" y="14" width="40" height="55" rx="12" fill="#1a3a2a" opacity="0.9"/><rect x="12" y="42" width="32" height="23" rx="8" fill="#3d7a52" opacity="0.55"/><path d="M20 35 Q28 28 36 35" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>`,
-      'Bien-être': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#1a3a2a"/><circle cx="32" cy="32" r="18" fill="#2d5a3d" opacity="0.7"/><circle cx="32" cy="32" r="8" fill="#4e9a67" opacity="0.8"/><circle cx="32" cy="32" r="3" fill="#6dbc86"/></svg>`,
+      'Fleurs': `<svg class="w-20 h-20 opacity-60" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="55" rx="12" ry="22" fill="#3a5500" opacity="0.8"/><ellipse cx="26" cy="45" rx="10" ry="18" fill="#1a2000" opacity="0.9" transform="rotate(-20 26 45)"/><ellipse cx="54" cy="45" rx="10" ry="18" fill="#1a2000" opacity="0.9" transform="rotate(20 54 45)"/><line x1="40" y1="77" x2="40" y2="33" stroke="#8bc400" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="28" r="7" fill="#6a8c00" opacity="0.9"/><circle cx="40" cy="28" r="3" fill="#c8f000"/></svg>`,
+      'Huiles': `<svg class="w-14 h-20 opacity-60" viewBox="0 0 64 80" fill="none"><rect x="26" y="0" width="12" height="8" rx="3" fill="#3a5500"/><rect x="22" y="7" width="20" height="4" rx="2" fill="#1a2000"/><rect x="18" y="11" width="28" height="45" rx="10" fill="#1a2000" opacity="0.9"/><rect x="22" y="30" width="20" height="20" rx="7" fill="#6a8c00" opacity="0.6"/><circle cx="32" cy="40" r="5" fill="#c8f000" opacity="0.5"/></svg>`,
+      'Vape':   `<svg class="w-12 h-20 opacity-60" viewBox="0 0 56 80" fill="none"><rect x="16" y="0" width="24" height="10" rx="4" fill="#3a5500"/><rect x="20" y="9" width="16" height="6" rx="2" fill="#1a2000"/><rect x="8" y="14" width="40" height="55" rx="12" fill="#1a2000" opacity="0.9"/><rect x="12" y="42" width="32" height="23" rx="8" fill="#6a8c00" opacity="0.55"/><path d="M20 35 Q28 28 36 35" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>`,
+      'Bien-être': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#1a2000"/><circle cx="32" cy="32" r="18" fill="#3a5500" opacity="0.7"/><circle cx="32" cy="32" r="8" fill="#8bc400" opacity="0.8"/><circle cx="32" cy="32" r="3" fill="#c8f000"/></svg>`,
     };
 
     function escHtmlPublic(str) {
@@ -991,9 +988,7 @@
       const carousel = document.getElementById('products-carousel');
       const empty    = document.getElementById('products-empty');
 
-      // Retire les skeletons
       carousel.querySelectorAll('.skeleton-card').forEach(el => el.remove());
-      // Retire les cartes précédentes
       carousel.querySelectorAll('.product-card').forEach(el => el.remove());
 
       if (!list.length) {
@@ -1003,7 +998,6 @@
 
       empty.classList.add('hidden');
       carousel.insertAdjacentHTML('beforeend', list.map((p, i) => buildCard(p, i * 50)).join(''));
-      // Repart au début
       carousel.scrollLeft = 0;
     }
 
@@ -1017,13 +1011,11 @@
       renderPublicProducts(filtered);
     }
 
-    // Flèches : fait défiler d'une carte (280px + gap 20px = 300px)
     function carouselScroll(dir) {
       const c = document.getElementById('products-carousel');
       c.scrollBy({ left: dir * 300, behavior: 'smooth' });
     }
 
-    // Drag-to-scroll souris
     function initCarouselDrag() {
       const c = document.getElementById('products-carousel');
       let isDown = false, startX, scrollLeft;

@@ -12,43 +12,43 @@
 
     .hero-bg {
       background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(45,90,61,0.45) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(26,58,42,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139,196,0,0.28) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(20,30,0,0.2) 0%, transparent 60%),
         #0a0a0a;
     }
 
     .glass-card {
-      background: rgba(26,58,42,0.12);
+      background: rgba(20,30,0,0.12);
       backdrop-filter: blur(20px) saturate(1.4);
       -webkit-backdrop-filter: blur(20px) saturate(1.4);
-      border: 1px solid rgba(77,154,103,0.2);
+      border: 1px solid rgba(200,240,0,0.2);
     }
 
     .input-field {
-      background: rgba(26,58,42,0.2);
-      border: 1px solid rgba(77,154,103,0.2);
+      background: rgba(20,30,0,0.22);
+      border: 1px solid rgba(200,240,0,0.18);
       color: #f3f4f6;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     .input-field:focus {
       outline: none;
-      border-color: rgba(77,154,103,0.5);
-      box-shadow: 0 0 0 3px rgba(45,90,61,0.2);
+      border-color: rgba(200,240,0,0.5);
+      box-shadow: 0 0 0 3px rgba(139,196,0,0.15);
     }
     .input-field::placeholder { color: #4b5563; }
 
     .btn-primary {
-      background: linear-gradient(135deg, #2d5a3d 0%, #1a3a2a 100%);
-      border: 1px solid rgba(77,154,103,0.4);
-      color: #e8f5ec;
-      font-weight: 600;
+      background: linear-gradient(135deg, #8bc400 0%, #5a8000 100%);
+      border: 1px solid rgba(200,240,0,0.5);
+      color: #0a0a0a;
+      font-weight: 700;
       transition: all 0.25s ease;
       position: relative;
       overflow: hidden;
     }
     .btn-primary:hover:not(:disabled) {
-      box-shadow: 0 0 24px rgba(45,90,61,0.4), 0 6px 20px rgba(0,0,0,0.4);
-      border-color: rgba(109,188,134,0.5);
+      box-shadow: 0 0 24px rgba(200,240,0,0.4), 0 6px 20px rgba(0,0,0,0.4);
+      border-color: rgba(200,240,0,0.8);
       transform: translateY(-1px);
     }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -83,24 +83,24 @@
 <body class="hero-bg min-h-screen flex items-center justify-center p-4">
 
   <!-- Orbs décoratifs -->
-  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(45,90,61,0.3),transparent 70%);top:-100px;left:-100px;"></div>
-  <div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(26,58,42,0.25),transparent 70%);bottom:-80px;right:-80px;animation-delay:-5s;"></div>
+  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(139,196,0,0.2),transparent 70%);top:-100px;left:-100px;"></div>
+  <div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(20,30,0,0.3),transparent 70%);bottom:-80px;right:-80px;animation-delay:-5s;"></div>
 
   <div class="relative z-10 w-full max-w-sm">
 
     <!-- Logo -->
     <div class="text-center mb-8">
       <a href="../index.html" class="inline-flex items-center gap-3 cursor-pointer group">
-        <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.35)">
+        <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#6a8c00,#1a2000);border:1px solid rgba(200,240,0,0.35)">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
-            <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#8bc400" opacity="0.85"/>
+            <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="12" y1="21" x2="12" y2="13" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="text-left">
           <div class="text-sm font-bold text-white leading-tight">CBD BOTANI</div>
-          <div class="text-xs font-medium leading-tight" style="color:#6dbc86">X BROTHER'S</div>
+          <div class="text-xs font-medium leading-tight" style="color:#c8f000">X BROTHER'S</div>
         </div>
       </a>
       <p class="mt-4 text-gray-500 text-sm">Espace administration</p>
@@ -164,7 +164,7 @@
 
     <!-- Lien retour -->
     <p class="text-center mt-6 text-gray-600 text-xs">
-      <a href="../index.html" class="hover:text-green-400 transition-colors cursor-pointer">← Retour au site</a>
+      <a href="../index.html" class="hover:text-green-500 transition-colors cursor-pointer" style="color:#6b7280">← Retour au site</a>
     </p>
   </div>
 
