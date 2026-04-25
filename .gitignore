@@ -25,3 +25,6 @@ js/supabase-config.js
 
 # Supabase local dev
 .supabase/
+
+# Dossier de build Vercel (généré, ne jamais commiter)
+dist/
