@@ -69,6 +69,16 @@
         url('images/cbd-banniere.jpeg') center center / cover no-repeat;
     }
 
+    /* Sur mobile : bannière en format natif, centrée verticalement sur le personnage */
+    @media (max-width: 640px) {
+      .hero-bg {
+        background:
+          linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.75) 55%, rgba(10,10,10,0.95) 100%),
+          url('images/cbd-banniere.jpeg') center 40% / contain no-repeat,
+          #0a0a0a;
+      }
+    }
+
     /* Orbs */
     .orb {
       position: absolute;
