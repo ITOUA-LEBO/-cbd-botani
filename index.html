@@ -253,9 +253,37 @@
     /* Smooth anchor offset */
     section { scroll-margin-top: 80px; }
 
+    /* ── Filtres catégorie ── */
+    .cat-filter-btn {
+      background: rgba(26,58,42,0.15);
+      border: 1px solid rgba(77,154,103,0.18);
+      color: #6b7280;
+    }
+    .cat-filter-btn:hover {
+      background: rgba(26,58,42,0.25);
+      border-color: rgba(77,154,103,0.35);
+      color: #d1fae5;
+    }
+    .cat-filter-btn.active {
+      background: rgba(45,90,61,0.35);
+      border-color: rgba(77,154,103,0.5);
+      color: #6dbc86;
+      box-shadow: 0 0 16px rgba(45,90,61,0.3);
+    }
+
+    /* ── Carte produit dynamique ── */
+    .product-card {
+      animation: cardIn 0.45s ease both;
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, .orb, .particle, .reveal { animation: none !important; transition: none !important; }
       .reveal { opacity: 1; transform: none; }
+      .product-card { animation: none; }
     }
   </style>
 </head>
@@ -378,130 +406,64 @@
 
   <!-- PRODUCTS -->
   <section id="produits" class="py-24 px-4 sm:px-6 max-w-7xl mx-auto">
-    <div class="text-center mb-16">
+    <div class="text-center mb-12">
       <div class="reveal"><span class="badge">Notre sélection</span></div>
       <h2 class="reveal reveal-delay-1 font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-4">Gammes & produits</h2>
       <p class="reveal reveal-delay-2 text-gray-400 max-w-xl mx-auto">Chaque produit est rigoureusement sélectionné pour sa qualité, son terpène et son effet.</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
-      <!-- Fleurs -->
-      <div class="reveal glass-card rounded-3xl overflow-hidden cursor-pointer group">
-        <div class="product-img h-48 flex items-center justify-center">
-          <svg class="w-20 h-20 opacity-70 group-hover:opacity-90 transition-opacity duration-300" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="40" cy="55" rx="12" ry="22" fill="#2d5a3d" opacity="0.8"/>
-            <ellipse cx="26" cy="45" rx="10" ry="18" fill="#1a3a2a" opacity="0.9" transform="rotate(-20 26 45)"/>
-            <ellipse cx="54" cy="45" rx="10" ry="18" fill="#1a3a2a" opacity="0.9" transform="rotate(20 54 45)"/>
-            <ellipse cx="18" cy="38" rx="8" ry="14" fill="#0f2318" opacity="0.8" transform="rotate(-35 18 38)"/>
-            <ellipse cx="62" cy="38" rx="8" ry="14" fill="#0f2318" opacity="0.8" transform="rotate(35 62 38)"/>
-            <line x1="40" y1="77" x2="40" y2="33" stroke="#4e9a67" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="40" cy="28" r="7" fill="#3d7a52" opacity="0.9"/>
-            <circle cx="40" cy="28" r="3" fill="#6dbc86"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <span class="badge text-xs">Fleurs CBD</span>
-          <h3 class="text-lg font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors">Fleurs Premium</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Indoor, greenhouse & outdoor. Sélection de variétés aromatiques riches en cannabinoïdes.</p>
-          <div class="mt-4 flex items-center justify-between">
-            <span class="text-green-400 text-sm font-semibold">À partir de 5€/g</span>
-            <div class="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer" style="background:rgba(45,90,61,0.3);border:1px solid rgba(77,154,103,0.3)">
-              <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Huiles -->
-      <div class="reveal reveal-delay-1 glass-card rounded-3xl overflow-hidden cursor-pointer group">
-        <div class="product-img h-48 flex items-center justify-center">
-          <svg class="w-16 h-20 opacity-70 group-hover:opacity-90 transition-opacity duration-300" viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="26" y="0" width="12" height="8" rx="3" fill="#2d5a3d"/>
-            <rect x="22" y="7" width="20" height="4" rx="2" fill="#1a3a2a"/>
-            <rect x="18" y="11" width="28" height="45" rx="10" fill="#1a3a2a" opacity="0.9"/>
-            <rect x="20" y="13" width="24" height="41" rx="9" fill="#2d5a3d" opacity="0.5"/>
-            <rect x="22" y="30" width="20" height="20" rx="7" fill="#3d7a52" opacity="0.6"/>
-            <circle cx="32" cy="40" r="5" fill="#6dbc86" opacity="0.5"/>
-            <ellipse cx="32" cy="22" rx="6" ry="4" fill="#4e9a67" opacity="0.4"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <span class="badge text-xs">Huiles CBD</span>
-          <h3 class="text-lg font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors">Huiles & Teintures</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Spectre complet, broad-spectrum & isolat. Concentrations 5% à 30% adaptées à chaque besoin.</p>
-          <div class="mt-4 flex items-center justify-between">
-            <span class="text-green-400 text-sm font-semibold">À partir de 12€</span>
-            <div class="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer" style="background:rgba(45,90,61,0.3);border:1px solid rgba(77,154,103,0.3)">
-              <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Résines -->
-      <div class="reveal reveal-delay-2 glass-card rounded-3xl overflow-hidden cursor-pointer group">
-        <div class="product-img h-48 flex items-center justify-center">
-          <svg class="w-20 h-16 opacity-70 group-hover:opacity-90 transition-opacity duration-300" viewBox="0 0 80 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="10" y="20" width="60" height="30" rx="8" fill="#1a3a2a"/>
-            <rect x="14" y="24" width="52" height="22" rx="6" fill="#2d5a3d" opacity="0.7"/>
-            <rect x="18" y="28" width="20" height="10" rx="3" fill="#3d7a52" opacity="0.8"/>
-            <rect x="42" y="28" width="20" height="10" rx="3" fill="#3d7a52" opacity="0.8"/>
-            <circle cx="28" cy="16" r="6" fill="#2d5a3d"/>
-            <circle cx="52" cy="16" r="6" fill="#2d5a3d"/>
-            <circle cx="40" cy="12" r="5" fill="#1a3a2a"/>
-            <circle cx="28" cy="16" r="2" fill="#6dbc86" opacity="0.6"/>
-            <circle cx="52" cy="16" r="2" fill="#6dbc86" opacity="0.6"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <span class="badge text-xs">Résines CBD</span>
-          <h3 class="text-lg font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors">Résines & Hash</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Hash traditionnel, pollen & extraits. Concentrés naturels à haute teneur en CBD.</p>
-          <div class="mt-4 flex items-center justify-between">
-            <span class="text-green-400 text-sm font-semibold">À partir de 6€/g</span>
-            <div class="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer" style="background:rgba(45,90,61,0.3);border:1px solid rgba(77,154,103,0.3)">
-              <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- E-liquides -->
-      <div class="reveal reveal-delay-3 glass-card rounded-3xl overflow-hidden cursor-pointer group">
-        <div class="product-img h-48 flex items-center justify-center">
-          <svg class="w-14 h-20 opacity-70 group-hover:opacity-90 transition-opacity duration-300" viewBox="0 0 56 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="16" y="0" width="24" height="10" rx="4" fill="#2d5a3d"/>
-            <rect x="20" y="9" width="16" height="6" rx="2" fill="#1a3a2a"/>
-            <rect x="8" y="14" width="40" height="55" rx="12" fill="#1a3a2a" opacity="0.9"/>
-            <rect x="12" y="18" width="32" height="47" rx="10" fill="#2d5a3d" opacity="0.4"/>
-            <rect x="12" y="42" width="32" height="23" rx="8" fill="#3d7a52" opacity="0.55"/>
-            <path d="M20 35 Q28 28 36 35" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
-            <path d="M16 30 Q28 18 40 30" stroke="#4e9a67" stroke-width="1" stroke-linecap="round" opacity="0.4"/>
-          </svg>
-        </div>
-        <div class="p-5">
-          <span class="badge text-xs">E-liquides</span>
-          <h3 class="text-lg font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors">E-liquides CBD</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Formules PG/VG premium, arômes naturels. Compatible avec tous les kits vapotage.</p>
-          <div class="mt-4 flex items-center justify-between">
-            <span class="text-green-400 text-sm font-semibold">À partir de 9€</span>
-            <div class="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer" style="background:rgba(45,90,61,0.3);border:1px solid rgba(77,154,103,0.3)">
-              <svg class="w-3.5 h-3.5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <!-- Filtres catégorie -->
+    <div class="reveal reveal-delay-2 flex flex-wrap justify-center gap-2 mb-10" id="cat-filters">
+      <button onclick="filterCat('tous')" data-cat="tous" class="cat-filter-btn active px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Tous</button>
+      <button onclick="filterCat('Fleurs')" data-cat="Fleurs" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Fleurs</button>
+      <button onclick="filterCat('Huiles')" data-cat="Huiles" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Huiles</button>
+      <button onclick="filterCat('Vape')" data-cat="Vape" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Vape</button>
+      <button onclick="filterCat('Bien-être')" data-cat="Bien-être" class="cat-filter-btn px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Bien-être</button>
     </div>
+
+    <!-- Grille dynamique -->
+    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- Skeletons de chargement -->
+      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
+        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+        <div class="p-5 space-y-3">
+          <div class="h-4 rounded-full w-24" style="background:rgba(45,90,61,0.3)"></div>
+          <div class="h-5 rounded-full w-3/4" style="background:rgba(45,90,61,0.2)"></div>
+          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+          <div class="h-3 rounded-full w-2/3" style="background:rgba(45,90,61,0.15)"></div>
+        </div>
+      </div>
+      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
+        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+        <div class="p-5 space-y-3">
+          <div class="h-4 rounded-full w-20" style="background:rgba(45,90,61,0.3)"></div>
+          <div class="h-5 rounded-full w-4/5" style="background:rgba(45,90,61,0.2)"></div>
+          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+          <div class="h-3 rounded-full w-1/2" style="background:rgba(45,90,61,0.15)"></div>
+        </div>
+      </div>
+      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
+        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+        <div class="p-5 space-y-3">
+          <div class="h-4 rounded-full w-28" style="background:rgba(45,90,61,0.3)"></div>
+          <div class="h-5 rounded-full w-3/5" style="background:rgba(45,90,61,0.2)"></div>
+          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+          <div class="h-3 rounded-full w-3/4" style="background:rgba(45,90,61,0.15)"></div>
+        </div>
+      </div>
+      <div class="skeleton-card glass-card rounded-3xl overflow-hidden animate-pulse">
+        <div class="h-48" style="background:rgba(26,58,42,0.3)"></div>
+        <div class="p-5 space-y-3">
+          <div class="h-4 rounded-full w-16" style="background:rgba(45,90,61,0.3)"></div>
+          <div class="h-5 rounded-full w-2/3" style="background:rgba(45,90,61,0.2)"></div>
+          <div class="h-3 rounded-full w-full" style="background:rgba(45,90,61,0.15)"></div>
+          <div class="h-3 rounded-full w-4/5" style="background:rgba(45,90,61,0.15)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message vide -->
+    <div id="products-empty" class="hidden text-center py-16 text-gray-500 text-sm">Aucun produit dans cette catégorie.</div>
   </section>
 
   <div class="divider"></div>
@@ -946,5 +908,97 @@
   </script>
   <!-- Supabase config (contact + newsletter) — chargé après le script principal -->
   <script src="js/supabase-config.js"></script>
+  <script>
+    // ── Chargement des produits depuis Supabase ───────────────────────
+    let allPublicProducts = [];
+
+    // SVG fallback par catégorie quand pas d'image uploadée
+    const CAT_SVG = {
+      'Fleurs': `<svg class="w-20 h-20 opacity-60" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="55" rx="12" ry="22" fill="#2d5a3d" opacity="0.8"/><ellipse cx="26" cy="45" rx="10" ry="18" fill="#1a3a2a" opacity="0.9" transform="rotate(-20 26 45)"/><ellipse cx="54" cy="45" rx="10" ry="18" fill="#1a3a2a" opacity="0.9" transform="rotate(20 54 45)"/><line x1="40" y1="77" x2="40" y2="33" stroke="#4e9a67" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="28" r="7" fill="#3d7a52" opacity="0.9"/><circle cx="40" cy="28" r="3" fill="#6dbc86"/></svg>`,
+      'Huiles': `<svg class="w-14 h-20 opacity-60" viewBox="0 0 64 80" fill="none"><rect x="26" y="0" width="12" height="8" rx="3" fill="#2d5a3d"/><rect x="22" y="7" width="20" height="4" rx="2" fill="#1a3a2a"/><rect x="18" y="11" width="28" height="45" rx="10" fill="#1a3a2a" opacity="0.9"/><rect x="22" y="30" width="20" height="20" rx="7" fill="#3d7a52" opacity="0.6"/><circle cx="32" cy="40" r="5" fill="#6dbc86" opacity="0.5"/></svg>`,
+      'Vape':   `<svg class="w-12 h-20 opacity-60" viewBox="0 0 56 80" fill="none"><rect x="16" y="0" width="24" height="10" rx="4" fill="#2d5a3d"/><rect x="20" y="9" width="16" height="6" rx="2" fill="#1a3a2a"/><rect x="8" y="14" width="40" height="55" rx="12" fill="#1a3a2a" opacity="0.9"/><rect x="12" y="42" width="32" height="23" rx="8" fill="#3d7a52" opacity="0.55"/><path d="M20 35 Q28 28 36 35" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>`,
+      'Bien-être': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#1a3a2a"/><circle cx="32" cy="32" r="18" fill="#2d5a3d" opacity="0.7"/><circle cx="32" cy="32" r="8" fill="#4e9a67" opacity="0.8"/><circle cx="32" cy="32" r="3" fill="#6dbc86"/></svg>`,
+    };
+
+    function escHtmlPublic(str) {
+      return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function buildCard(p, delay) {
+      const img = p.image_url
+        ? `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" class="w-full h-full object-cover" loading="lazy"/>`
+        : (CAT_SVG[p.category] || CAT_SVG['Bien-être']);
+
+      return `
+        <div class="product-card glass-card rounded-3xl overflow-hidden cursor-default group" style="animation-delay:${delay}ms" data-cat="${escHtmlPublic(p.category)}">
+          <div class="product-img h-48 flex items-center justify-center overflow-hidden">
+            ${img}
+          </div>
+          <div class="p-5">
+            <span class="badge text-xs">${escHtmlPublic(p.category)}</span>
+            <h3 class="text-base font-bold text-white mt-2 mb-1 group-hover:text-green-400 transition-colors duration-200">${escHtmlPublic(p.name)}</h3>
+            <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">${escHtmlPublic(p.description || '')}</p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-green-400 text-sm font-semibold">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderPublicProducts(list) {
+      const grid  = document.getElementById('products-grid');
+      const empty = document.getElementById('products-empty');
+
+      // Retire les skeletons
+      grid.querySelectorAll('.skeleton-card').forEach(el => el.remove());
+
+      if (!list.length) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.innerHTML = list.map((p, i) => buildCard(p, i * 60)).join('');
+
+      // Scroll reveal sur les nouvelles cartes
+      grid.querySelectorAll('.product-card').forEach(el => observer.observe(el));
+    }
+
+    function filterCat(cat) {
+      // Mise à jour bouton actif
+      document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.cat === cat);
+      });
+
+      const filtered = cat === 'tous'
+        ? allPublicProducts
+        : allPublicProducts.filter(p => p.category === cat);
+
+      renderPublicProducts(filtered);
+    }
+
+    async function loadPublicProducts() {
+      // Attend que supabase-config.js soit prêt
+      if (typeof db === 'undefined') return;
+
+      const { data, error } = await db
+        .from('products')
+        .select('id, name, category, description, price, price_unit, image_url')
+        .eq('is_active', true)
+        .order('category')
+        .order('name');
+
+      if (error || !data) return;
+      allPublicProducts = data;
+      renderPublicProducts(data);
+    }
+
+    // Charge dès que le DOM est prêt (supabase-config.js est juste avant ce script)
+    document.addEventListener('DOMContentLoaded', () => {
+      // Petit délai pour laisser supabase-config.js s'initialiser
+      setTimeout(loadPublicProducts, 100);
+    });
+  </script>
 </body>
 </html>

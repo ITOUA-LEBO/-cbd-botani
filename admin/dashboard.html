@@ -21,6 +21,47 @@
       background: rgba(10,26,16,0.95);
       border-right: 1px solid rgba(45,90,61,0.3);
       backdrop-filter: blur(20px);
+      width: 256px;
+      transition: width 0.3s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    .sidebar.collapsed {
+      width: 64px;
+    }
+
+    /* Éléments cachés quand réduit */
+    .sidebar.collapsed .sidebar-label,
+    .sidebar.collapsed .sidebar-section-title,
+    .sidebar.collapsed .sidebar-user-info,
+    .sidebar.collapsed #unread-badge {
+      opacity: 0;
+      pointer-events: none;
+      width: 0;
+      overflow: hidden;
+    }
+    .sidebar.collapsed .nav-item {
+      justify-content: center;
+      padding: 10px;
+    }
+    .sidebar.collapsed .sidebar-logo-text { display: none; }
+    .sidebar.collapsed .sidebar-footer { padding: 12px 8px; }
+
+    /* Tooltip au survol quand réduit */
+    .sidebar.collapsed .nav-item { position: relative; }
+    .sidebar.collapsed .nav-item:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: calc(100% + 10px);
+      top: 50%; transform: translateY(-50%);
+      background: #1a3a2a;
+      border: 1px solid rgba(77,154,103,0.35);
+      color: #d1fae5;
+      font-size: 0.75rem;
+      padding: 5px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      z-index: 100;
+      pointer-events: none;
     }
 
     .nav-item {
@@ -29,9 +70,18 @@
       font-size: 0.875rem; font-weight: 500;
       color: #9ca3af; cursor: pointer;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
     .nav-item:hover { background: rgba(45,90,61,0.2); color: #d1fae5; }
     .nav-item.active { background: rgba(45,90,61,0.3); color: #6dbc86; border: 1px solid rgba(77,154,103,0.25); }
+
+    /* Bouton toggle sidebar */
+    #sidebar-toggle {
+      transition: transform 0.3s ease;
+    }
+    .sidebar.collapsed #sidebar-toggle {
+      transform: rotate(180deg);
+    }
 
     /* ── Glass cards ── */
     .glass-card {
@@ -180,70 +230,78 @@
 <body class="flex h-screen overflow-hidden">
 
   <!-- ── SIDEBAR ─────────────────────────────────────────────────────── -->
-  <aside id="sidebar" class="sidebar w-64 flex-shrink-0 flex flex-col h-full">
-    <!-- Logo -->
-    <div class="p-5 border-b" style="border-color:rgba(45,90,61,0.2)">
-      <a href="../index.html" class="flex items-center gap-3 cursor-pointer">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.35)">
+  <aside id="sidebar" class="sidebar flex-shrink-0 flex flex-col h-full">
+    <!-- Logo + toggle -->
+    <div class="p-4 border-b flex items-center justify-between" style="border-color:rgba(45,90,61,0.2);min-height:64px">
+      <a href="../index.html" class="flex items-center gap-3 cursor-pointer min-w-0">
+        <div class="w-9 h-9 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.35)">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
             <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
             <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
             <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
-        <div>
-          <div class="text-xs font-bold text-white">CBD BOTANI</div>
-          <div class="text-xs font-medium" style="color:#6dbc86">Admin</div>
+        <div class="sidebar-logo-text min-w-0 overflow-hidden">
+          <div class="text-xs font-bold text-white whitespace-nowrap">CBD BOTANI</div>
+          <div class="text-xs font-medium whitespace-nowrap" style="color:#6dbc86">Admin</div>
         </div>
       </a>
+      <!-- Bouton réduire / agrandir -->
+      <button id="sidebar-toggle" onclick="toggleSidebar()"
+        class="flex-shrink-0 p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer ml-1"
+        aria-label="Réduire la barre latérale">
+        <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+        </svg>
+      </button>
     </div>
 
     <!-- Navigation -->
-    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-      <div class="text-xs font-semibold text-gray-600 uppercase tracking-wider px-2 mb-3">Général</div>
-      <button class="nav-item active w-full text-left" onclick="showTab('dashboard')" data-tab="dashboard">
+    <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+      <div class="sidebar-section-title text-xs font-semibold text-gray-600 uppercase tracking-wider px-2 mb-3 whitespace-nowrap overflow-hidden transition-all duration-300">Général</div>
+      <button class="nav-item active w-full text-left" onclick="showTab('dashboard')" data-tab="dashboard" data-tooltip="Vue d'ensemble">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
         </svg>
-        Vue d'ensemble
+        <span class="sidebar-label">Vue d'ensemble</span>
       </button>
 
-      <div class="text-xs font-semibold text-gray-600 uppercase tracking-wider px-2 mt-5 mb-3">Catalogue</div>
-      <button class="nav-item w-full text-left" onclick="showTab('produits')" data-tab="produits">
+      <div class="sidebar-section-title text-xs font-semibold text-gray-600 uppercase tracking-wider px-2 mt-5 mb-3 whitespace-nowrap overflow-hidden transition-all duration-300">Catalogue</div>
+      <button class="nav-item w-full text-left" onclick="showTab('produits')" data-tab="produits" data-tooltip="Produits">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
         </svg>
-        Produits
+        <span class="sidebar-label">Produits</span>
       </button>
-      <button class="nav-item w-full text-left" onclick="showTab('messages')" data-tab="messages">
+      <button class="nav-item w-full text-left" onclick="showTab('messages')" data-tab="messages" data-tooltip="Messages">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
         </svg>
-        Messages
+        <span class="sidebar-label">Messages</span>
         <span id="unread-badge" class="hidden ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full" style="background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.3)">0</span>
       </button>
-      <button class="nav-item w-full text-left" onclick="showTab('newsletter')" data-tab="newsletter">
+      <button class="nav-item w-full text-left" onclick="showTab('newsletter')" data-tab="newsletter" data-tooltip="Newsletter">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
         </svg>
-        Newsletter
+        <span class="sidebar-label">Newsletter</span>
       </button>
     </nav>
 
     <!-- Pied sidebar : user + déconnexion -->
-    <div class="p-4 border-t" style="border-color:rgba(45,90,61,0.2)">
+    <div class="sidebar-footer p-4 border-t" style="border-color:rgba(45,90,61,0.2)">
       <div class="flex items-center gap-3 mb-3">
-        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(45,90,61,0.4);border:1px solid rgba(77,154,103,0.3);color:#6dbc86">A</div>
-        <div class="min-w-0">
-          <div class="text-xs font-medium text-white truncate" id="user-email">admin</div>
-          <div class="text-xs text-gray-600">Administrateur</div>
+        <div class="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold" style="background:rgba(45,90,61,0.4);border:1px solid rgba(77,154,103,0.3);color:#6dbc86">A</div>
+        <div class="sidebar-user-info min-w-0 overflow-hidden transition-all duration-300">
+          <div class="text-xs font-medium text-white truncate whitespace-nowrap" id="user-email">admin</div>
+          <div class="text-xs text-gray-600 whitespace-nowrap">Administrateur</div>
         </div>
       </div>
-      <button onclick="signOut()" class="nav-item w-full text-left hover:text-red-400">
+      <button onclick="signOut()" class="nav-item w-full text-left hover:text-red-400" data-tooltip="Déconnexion">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
         </svg>
-        Déconnexion
+        <span class="sidebar-label">Déconnexion</span>
       </button>
     </div>
   </aside>
@@ -977,6 +1035,19 @@
     db.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_OUT') window.location.href = 'login.html';
     });
+
+    // ── Toggle sidebar rétractable ────────────────────────────────────
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const collapsed = sidebar.classList.toggle('collapsed');
+      // Sauvegarde l'état dans localStorage pour le conserver entre les pages
+      localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0');
+    }
+
+    // Restaure l'état au chargement
+    if (localStorage.getItem('sidebar-collapsed') === '1') {
+      document.getElementById('sidebar').classList.add('collapsed');
+    }
 
     // ── Lancement ────────────────────────────────────────────────────
     init();
