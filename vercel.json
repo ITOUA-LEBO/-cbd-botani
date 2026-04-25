@@ -1,10 +1,10 @@
 {
-  "buildCommand": "node build.js",
+  "buildCommand": "node ./build.js",
   "outputDirectory": "dist",
   "installCommand": "echo 'no deps'",
   "framework": null,
   "rewrites": [
-    { "source": "/admin", "destination": "/admin/login.html" },
+    { "source": "/admin",  "destination": "/admin/login.html" },
     { "source": "/admin/", "destination": "/admin/login.html" }
   ]
 }
