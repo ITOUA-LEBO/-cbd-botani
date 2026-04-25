@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Admin — CBD Botani X Brother's</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      font-family: 'DM Sans', sans-serif;
+      color-scheme: dark;
+      color: #f3f4f6;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: rgba(10,26,16,0.95);
+      border-right: 1px solid rgba(45,90,61,0.3);
+      backdrop-filter: blur(20px);
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 12px;
+      font-size: 0.875rem; font-weight: 500;
+      color: #9ca3af; cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-item:hover { background: rgba(45,90,61,0.2); color: #d1fae5; }
+    .nav-item.active { background: rgba(45,90,61,0.3); color: #6dbc86; border: 1px solid rgba(77,154,103,0.25); }
+
+    /* ── Glass cards ── */
+    .glass-card {
+      background: rgba(26,58,42,0.1);
+      border: 1px solid rgba(77,154,103,0.15);
+      backdrop-filter: blur(12px);
+    }
+    .stat-card {
+      background: rgba(26,58,42,0.12);
+      border: 1px solid rgba(77,154,103,0.18);
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: rgba(77,154,103,0.35); }
+
+    /* ── Boutons ── */
+    .btn-primary {
+      background: linear-gradient(135deg,#2d5a3d,#1a3a2a);
+      border: 1px solid rgba(77,154,103,0.4);
+      color: #e8f5ec; font-weight: 600;
+      transition: all 0.2s ease; cursor: pointer;
+    }
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 0 20px rgba(45,90,61,0.4);
+      border-color: rgba(109,188,134,0.5);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-danger {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3);
+      color: #fca5a5; font-weight: 500; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-danger:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+
+    .btn-edit {
+      background: rgba(59,130,246,0.12);
+      border: 1px solid rgba(59,130,246,0.3);
+      color: #93c5fd; font-weight: 500; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-edit:hover { background: rgba(59,130,246,0.2); }
+
+    /* ── Inputs ── */
+    .input-field {
+      background: rgba(26,58,42,0.2);
+      border: 1px solid rgba(77,154,103,0.2);
+      color: #f3f4f6; border-radius: 10px;
+      padding: 10px 14px; font-size: 0.875rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: rgba(77,154,103,0.5);
+      box-shadow: 0 0 0 3px rgba(45,90,61,0.15);
+    }
+    .input-field::placeholder { color: #4b5563; }
+
+    select.input-field option { background: #111827; }
+
+    /* ── Table ── */
+    .table-row {
+      border-bottom: 1px solid rgba(45,90,61,0.12);
+      transition: background 0.15s;
+    }
+    .table-row:hover { background: rgba(26,58,42,0.15); }
+
+    /* ── Badge catégorie ── */
+    .cat-badge {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.08em;
+      padding: 2px 10px; border-radius: 999px; text-transform: uppercase;
+    }
+    .cat-Fleurs    { background:rgba(45,90,61,0.25);  border:1px solid rgba(77,154,103,0.3); color:#6dbc86; }
+    .cat-Huiles    { background:rgba(251,191,36,0.12); border:1px solid rgba(251,191,36,0.3); color:#fcd34d; }
+    .cat-Vape      { background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.3); color:#a5b4fc; }
+    .cat-Bien-être { background:rgba(236,72,153,0.12); border:1px solid rgba(236,72,153,0.3); color:#f9a8d4; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px); z-index: 100;
+      display: flex; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-box {
+      background: #111; border: 1px solid rgba(77,154,103,0.25);
+      border-radius: 24px; width: 100%; max-width: 560px;
+      max-height: 90vh; overflow-y: auto;
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px;
+      padding: 12px 18px; border-radius: 14px;
+      font-size: 0.85rem; font-weight: 500;
+      backdrop-filter: blur(12px);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.35s cubic-bezier(.4,0,.2,1);
+      z-index: 200; display: flex; align-items: center; gap-8px;
+      max-width: 320px;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.success { background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.35); color:#86efac; }
+    #toast.error   { background:rgba(239,68,68,0.15);  border:1px solid rgba(239,68,68,0.35);  color:#fca5a5; }
+
+    /* ── Upload zone ── */
+    .upload-zone {
+      border: 2px dashed rgba(77,154,103,0.3);
+      border-radius: 14px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: rgba(77,154,103,0.6);
+      background: rgba(45,90,61,0.1);
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #2d5a3d; border-radius: 3px; }
+
+    /* ── Toggle switch ── */
+    .toggle { position:relative; display:inline-block; width:42px; height:22px; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .slider {
+      position:absolute; inset:0; background:#2e2e2e; cursor:pointer;
+      border-radius:22px; border:1px solid rgba(255,255,255,0.1);
+      transition:background 0.25s;
+    }
+    .slider:before {
+      content:''; position:absolute; width:16px; height:16px;
+      left:2px; top:2px; background:#6b7280;
+      border-radius:50%; transition:all 0.25s;
+    }
+    input:checked + .slider { background:rgba(45,90,61,0.5); border-color:rgba(77,154,103,0.4); }
+    input:checked + .slider:before { transform:translateX(20px); background:#6dbc86; }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .sidebar.open { display: flex; position: fixed; inset: 0; z-index: 50; }
+    }
+  </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────────────────── -->
+  <aside id="sidebar" class="sidebar w-64 flex-shrink-0 flex flex-col h-full">
+    <!-- Logo -->
+    <div class="p-5 border-b" style="border-color:rgba(45,90,61,0.2)">
+      <a href="../index.html" class="flex items-center gap-3 cursor-pointer">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.35)">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
+            <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="text-xs font-bold text-white">CBD BOTANI</div>
+          <div class="text-xs font-medium" style="color:#6dbc86">Admin</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+      <div class="text-xs font-semibold text-gray-600 uppercase tracking-wider px-2 mb-3">Général</div>
+      <button class="nav-item active w-full text-left" onclick="showTab('dashboard')" data-tab="dashboard">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+        </svg>
+        Vue d'ensemble
+      </button>
+
+      <div class="text-xs font-semibold text-gray-600 uppercase tracking-wider px-2 mt-5 mb-3">Catalogue</div>
+      <button class="nav-item w-full text-left" onclick="showTab('produits')" data-tab="produits">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        Produits
+      </button>
+      <button class="nav-item w-full text-left" onclick="showTab('messages')" data-tab="messages">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        Messages
+        <span id="unread-badge" class="hidden ml-auto text-xs font-bold px-1.5 py-0.5 rounded-full" style="background:rgba(239,68,68,0.2);color:#fca5a5;border:1px solid rgba(239,68,68,0.3)">0</span>
+      </button>
+      <button class="nav-item w-full text-left" onclick="showTab('newsletter')" data-tab="newsletter">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+        Newsletter
+      </button>
+    </nav>
+
+    <!-- Pied sidebar : user + déconnexion -->
+    <div class="p-4 border-t" style="border-color:rgba(45,90,61,0.2)">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(45,90,61,0.4);border:1px solid rgba(77,154,103,0.3);color:#6dbc86">A</div>
+        <div class="min-w-0">
+          <div class="text-xs font-medium text-white truncate" id="user-email">admin</div>
+          <div class="text-xs text-gray-600">Administrateur</div>
+        </div>
+      </div>
+      <button onclick="signOut()" class="nav-item w-full text-left hover:text-red-400">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+        </svg>
+        Déconnexion
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN CONTENT ─────────────────────────────────────────────────── -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- Top bar -->
+    <header class="flex items-center justify-between px-6 py-4 border-b flex-shrink-0" style="background:rgba(10,10,10,0.8);border-color:rgba(45,90,61,0.2);backdrop-filter:blur(12px)">
+      <div class="flex items-center gap-3">
+        <!-- Burger mobile -->
+        <button class="md:hidden p-1.5 rounded-lg hover:bg-white/5 cursor-pointer" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Menu">
+          <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+        <h1 id="page-title" class="text-lg font-bold text-white">Vue d'ensemble</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="../index.html" target="_blank" class="text-xs text-gray-500 hover:text-green-400 transition-colors cursor-pointer flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+          Voir le site
+        </a>
+        <button onclick="openModal()" class="btn-primary px-4 py-2 text-xs rounded-xl flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+          </svg>
+          Ajouter produit
+        </button>
+      </div>
+    </header>
+
+    <!-- Contenu scrollable -->
+    <div class="flex-1 overflow-y-auto p-6">
+
+      <!-- ═══ TAB: DASHBOARD ════════════════════════════════════════════ -->
+      <div id="tab-dashboard">
+        <!-- Stats -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div class="stat-card rounded-2xl p-5 cursor-default">
+            <div class="text-xs text-gray-500 mb-2">Produits actifs</div>
+            <div id="stat-produits" class="text-3xl font-bold text-white">—</div>
+            <div class="text-xs text-green-400 mt-1">catalogue en ligne</div>
+          </div>
+          <div class="stat-card rounded-2xl p-5 cursor-default">
+            <div class="text-xs text-gray-500 mb-2">Messages</div>
+            <div id="stat-messages" class="text-3xl font-bold text-white">—</div>
+            <div class="text-xs text-gray-500 mt-1" id="stat-unread">— non lus</div>
+          </div>
+          <div class="stat-card rounded-2xl p-5 cursor-default">
+            <div class="text-xs text-gray-500 mb-2">Newsletter</div>
+            <div id="stat-newsletter" class="text-3xl font-bold text-white">—</div>
+            <div class="text-xs text-green-400 mt-1">abonnés</div>
+          </div>
+          <div class="stat-card rounded-2xl p-5 cursor-default">
+            <div class="text-xs text-gray-500 mb-2">Note client</div>
+            <div class="text-3xl font-bold text-white">5/5</div>
+            <div class="text-xs text-green-400 mt-1">+50 avis clients</div>
+          </div>
+        </div>
+
+        <!-- Produits récents -->
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="flex items-center justify-between p-5 border-b" style="border-color:rgba(45,90,61,0.15)">
+            <h2 class="font-bold text-white text-sm">Produits récents</h2>
+            <button onclick="showTab('produits')" class="text-xs text-green-400 hover:underline cursor-pointer">Voir tout →</button>
+          </div>
+          <div id="recent-products" class="divide-y" style="--tw-divide-opacity:1"></div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: PRODUITS ═════════════════════════════════════════════ -->
+      <div id="tab-produits" class="hidden">
+        <!-- Filtres -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <input id="search-input" type="search" placeholder="Rechercher un produit..." class="input-field flex-1 min-w-48"
+            oninput="filterProducts()"/>
+          <select id="filter-cat" class="input-field w-auto" onchange="filterProducts()">
+            <option value="">Toutes catégories</option>
+            <option>Fleurs</option><option>Huiles</option>
+            <option>Vape</option><option>Bien-être</option>
+          </select>
+          <select id="filter-status" class="input-field w-auto" onchange="filterProducts()">
+            <option value="">Tous statuts</option>
+            <option value="true">Actifs</option>
+            <option value="false">Inactifs</option>
+          </select>
+        </div>
+
+        <!-- Table produits -->
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+              <thead>
+                <tr style="border-bottom:1px solid rgba(45,90,61,0.2)">
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Produit</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Catégorie</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Prix</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Stock</th>
+                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Statut</th>
+                  <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-tbody">
+                <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500 text-sm">Chargement...</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-4 py-3 border-t text-xs text-gray-600" style="border-color:rgba(45,90,61,0.15)">
+            <span id="product-count">0 produit(s)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: MESSAGES ═════════════════════════════════════════════ -->
+      <div id="tab-messages" class="hidden">
+        <div id="messages-list" class="space-y-3"></div>
+      </div>
+
+      <!-- ═══ TAB: NEWSLETTER ═══════════════════════════════════════════ -->
+      <div id="tab-newsletter" class="hidden">
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="p-5 border-b" style="border-color:rgba(45,90,61,0.15)">
+            <h2 class="font-bold text-white text-sm">Abonnés newsletter</h2>
+          </div>
+          <div id="newsletter-list" class="divide-y" style="--tw-divide-opacity:1"></div>
+        </div>
+      </div>
+
+    </div><!-- /contenu scrollable -->
+  </main>
+
+  <!-- ── MODAL AJOUT / ÉDITION PRODUIT ────────────────────────────────── -->
+  <div id="product-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="flex items-center justify-between p-6 border-b" style="border-color:rgba(45,90,61,0.2)">
+        <h2 id="modal-title" class="text-lg font-bold text-white">Ajouter un produit</h2>
+        <button onclick="closeModal()" class="p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer" aria-label="Fermer">
+          <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <form id="product-form" class="p-6 space-y-4" onsubmit="saveProduct(event)">
+        <input type="hidden" id="product-id"/>
+
+        <!-- Nom -->
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1.5">Nom du produit <span class="text-red-400">*</span></label>
+          <input id="p-name" type="text" required placeholder="Ex: OG Kush Indoor" class="input-field"/>
+        </div>
+
+        <!-- Catégorie + Prix -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-400 mb-1.5">Catégorie <span class="text-red-400">*</span></label>
+            <select id="p-category" required class="input-field">
+              <option value="">Choisir...</option>
+              <option>Fleurs</option><option>Huiles</option>
+              <option>Vape</option><option>Bien-être</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-400 mb-1.5">Prix <span class="text-red-400">*</span></label>
+            <div class="flex gap-2">
+              <input id="p-price" type="number" min="0" step="0.01" required placeholder="9.90" class="input-field flex-1"/>
+              <select id="p-price-unit" class="input-field w-20">
+                <option value="€">€</option>
+                <option value="€/g">€/g</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1.5">Description</label>
+          <textarea id="p-description" rows="3" placeholder="Description du produit..." class="input-field resize-none"></textarea>
+        </div>
+
+        <!-- Stock + Statut -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-400 mb-1.5">Stock (unités)</label>
+            <input id="p-stock" type="number" min="0" placeholder="0" class="input-field"/>
+          </div>
+          <div class="flex items-end gap-3 pb-1">
+            <label class="block text-xs font-medium text-gray-400">Produit actif (visible)</label>
+            <label class="toggle ml-auto">
+              <input type="checkbox" id="p-active" checked/>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Upload image -->
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1.5">Image produit</label>
+          <div class="upload-zone p-5 text-center" id="upload-zone"
+            onclick="document.getElementById('p-image').click()"
+            ondragover="event.preventDefault();this.classList.add('dragover')"
+            ondragleave="this.classList.remove('dragover')"
+            ondrop="handleDrop(event)">
+            <div id="upload-preview" class="hidden mb-3">
+              <img id="preview-img" class="w-24 h-24 object-cover rounded-xl mx-auto" src="" alt="Aperçu"/>
+            </div>
+            <svg class="w-8 h-8 text-gray-600 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs text-gray-500">Cliquer ou glisser une image (JPG, PNG, WebP — max 5Mo)</p>
+            <input type="file" id="p-image" accept="image/*" class="hidden" onchange="handleFileSelect(event)"/>
+          </div>
+          <input type="hidden" id="p-image-url"/>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeModal()" class="flex-1 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 transition-colors cursor-pointer" style="border:1px solid rgba(255,255,255,0.1)">Annuler</button>
+          <button type="submit" id="save-btn" class="btn-primary flex-1 py-3 rounded-xl text-sm flex items-center justify-center gap-2">
+            <span id="save-btn-text">Enregistrer</span>
+            <svg id="save-spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── MODAL CONFIRMATION SUPPRESSION ───────────────────────────────── -->
+  <div id="delete-modal" class="modal-overlay hidden">
+    <div class="modal-box max-w-sm">
+      <div class="p-6 text-center">
+        <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3)">
+          <svg class="w-7 h-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Supprimer le produit ?</h3>
+        <p class="text-gray-400 text-sm mb-6">Cette action est irréversible. Le produit sera définitivement supprimé.</p>
+        <div class="flex gap-3">
+          <button onclick="closeDeleteModal()" class="flex-1 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 transition-colors cursor-pointer" style="border:1px solid rgba(255,255,255,0.1)">Annuler</button>
+          <button onclick="confirmDelete()" id="confirm-delete-btn" class="btn-danger flex-1 py-3 rounded-xl text-sm flex items-center justify-center gap-2">
+            <span>Supprimer</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ─────────────────────────────────────────────────────────── -->
+  <div id="toast" role="alert" aria-live="polite"></div>
+
+  <script src="../js/supabase-config.js"></script>
+  <script>
+    // ══════════════════════════════════════════════════════════════════
+    // ÉTAT GLOBAL
+    // ══════════════════════════════════════════════════════════════════
+    let allProducts = [];         // cache produits
+    let productToDelete = null;   // id en attente de suppression
+    let selectedFile = null;      // fichier image sélectionné
+
+    // ══════════════════════════════════════════════════════════════════
+    // INIT — vérifie la session, charge les données
+    // ══════════════════════════════════════════════════════════════════
+    async function init() {
+      if (!SUPABASE_CONFIGURED) {
+        showToast('Supabase non configuré. Éditez js/supabase-config.js', 'error');
+        return;
+      }
+
+      // Protection route : redirige vers login si pas de session
+      const { data: { session } } = await db.auth.getSession();
+      if (!session) {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Affiche l'email de l'admin
+      document.getElementById('user-email').textContent = session.user.email;
+
+      // Charge les données en parallèle
+      await Promise.all([loadProducts(), loadStats()]);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // NAVIGATION ENTRE ONGLETS
+    // ══════════════════════════════════════════════════════════════════
+    const tabTitles = {
+      dashboard: 'Vue d\'ensemble',
+      produits:  'Produits',
+      messages:  'Messages',
+      newsletter:'Newsletter',
+    };
+
+    function showTab(tab) {
+      // Cache tous les onglets
+      ['dashboard','produits','messages','newsletter'].forEach(t => {
+        document.getElementById('tab-' + t).classList.add('hidden');
+        document.querySelectorAll(`[data-tab="${t}"]`).forEach(el => el.classList.remove('active'));
+      });
+
+      // Affiche l'onglet cible
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+      document.querySelectorAll(`[data-tab="${tab}"]`).forEach(el => el.classList.add('active'));
+      document.getElementById('page-title').textContent = tabTitles[tab];
+
+      // Charge les données spécifiques à l'onglet
+      if (tab === 'messages')   loadMessages();
+      if (tab === 'newsletter') loadNewsletter();
+      if (tab === 'produits')   renderProductsTable();
+
+      // Ferme sidebar mobile
+      document.getElementById('sidebar').classList.remove('open');
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // PRODUITS — chargement
+    // ══════════════════════════════════════════════════════════════════
+    async function loadProducts() {
+      const { data, error } = await db
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) { showToast('Erreur chargement produits', 'error'); return; }
+      allProducts = data || [];
+      renderProductsTable();
+      renderRecentProducts();
+      document.getElementById('stat-produits').textContent = allProducts.filter(p => p.is_active).length;
+    }
+
+    // ── Rendu table ───────────────────────────────────────────────────
+    function renderProductsTable(list = null) {
+      const tbody = document.getElementById('products-tbody');
+      const items = list ?? allProducts;
+
+      if (!items.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500 text-sm">Aucun produit. <button onclick="openModal()" class="text-green-400 hover:underline cursor-pointer">Ajouter le premier ?</button></td></tr>';
+        document.getElementById('product-count').textContent = '0 produit(s)';
+        return;
+      }
+
+      tbody.innerHTML = items.map(p => `
+        <tr class="table-row">
+          <td class="px-4 py-3">
+            <div class="flex items-center gap-3">
+              ${p.image_url
+                ? `<img src="${p.image_url}" class="w-9 h-9 rounded-xl object-cover flex-shrink-0" alt="${p.name}"/>`
+                : `<div class="w-9 h-9 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:rgba(45,90,61,0.2)">
+                     <svg class="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                     </svg>
+                   </div>`}
+              <div class="min-w-0">
+                <div class="font-medium text-white text-sm truncate max-w-36">${escHtml(p.name)}</div>
+                <div class="text-xs text-gray-500 truncate max-w-36">${escHtml(p.description || '—')}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-4 py-3"><span class="cat-badge cat-${escHtml(p.category)}">${escHtml(p.category)}</span></td>
+          <td class="px-4 py-3 text-green-400 font-semibold text-sm">${p.price}${escHtml(p.price_unit)}</td>
+          <td class="px-4 py-3">
+            <span class="text-sm ${p.stock === 0 ? 'text-red-400' : p.stock <= 5 ? 'text-yellow-400' : 'text-gray-300'}">${p.stock}</span>
+          </td>
+          <td class="px-4 py-3">
+            <button onclick="toggleActive('${p.id}', ${p.is_active})" class="cursor-pointer" aria-label="Basculer statut">
+              <span class="text-xs font-medium px-2 py-1 rounded-full ${p.is_active
+                ? 'text-green-400 bg-green-400/10 border border-green-400/20'
+                : 'text-gray-500 bg-gray-500/10 border border-gray-500/20'}">
+                ${p.is_active ? 'Actif' : 'Inactif'}
+              </span>
+            </button>
+          </td>
+          <td class="px-4 py-3">
+            <div class="flex items-center justify-end gap-2">
+              <button onclick="editProduct('${p.id}')" class="btn-edit text-xs px-3 py-1.5 rounded-lg">Modifier</button>
+              <button onclick="promptDelete('${p.id}')" class="btn-danger text-xs px-3 py-1.5 rounded-lg">Suppr.</button>
+            </div>
+          </td>
+        </tr>`).join('');
+
+      document.getElementById('product-count').textContent = `${items.length} produit(s)`;
+    }
+
+    // ── Produits récents (dashboard) ──────────────────────────────────
+    function renderRecentProducts() {
+      const container = document.getElementById('recent-products');
+      const recent = allProducts.slice(0, 5);
+      if (!recent.length) {
+        container.innerHTML = '<div class="px-5 py-6 text-center text-gray-500 text-sm">Aucun produit.</div>';
+        return;
+      }
+      container.innerHTML = recent.map(p => `
+        <div class="flex items-center justify-between px-5 py-3 hover:bg-white/3 transition-colors" style="border-bottom:1px solid rgba(45,90,61,0.1)">
+          <div class="flex items-center gap-3">
+            <span class="cat-badge cat-${escHtml(p.category)}">${escHtml(p.category)}</span>
+            <span class="text-sm text-white font-medium">${escHtml(p.name)}</span>
+          </div>
+          <span class="text-green-400 text-sm font-semibold">${p.price}${escHtml(p.price_unit)}</span>
+        </div>`).join('');
+    }
+
+    // ── Filtre ────────────────────────────────────────────────────────
+    function filterProducts() {
+      const search = document.getElementById('search-input').value.toLowerCase();
+      const cat    = document.getElementById('filter-cat').value;
+      const status = document.getElementById('filter-status').value;
+
+      const filtered = allProducts.filter(p => {
+        const matchSearch = !search || p.name.toLowerCase().includes(search) || (p.description || '').toLowerCase().includes(search);
+        const matchCat    = !cat    || p.category === cat;
+        const matchStatus = status === '' || String(p.is_active) === status;
+        return matchSearch && matchCat && matchStatus;
+      });
+
+      renderProductsTable(filtered);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MODAL PRODUIT — ouverture / fermeture
+    // ══════════════════════════════════════════════════════════════════
+    function openModal(product = null) {
+      const modal = document.getElementById('product-modal');
+      modal.classList.remove('hidden');
+
+      if (product) {
+        // Mode édition
+        document.getElementById('modal-title').textContent   = 'Modifier le produit';
+        document.getElementById('save-btn-text').textContent = 'Mettre à jour';
+        document.getElementById('product-id').value     = product.id;
+        document.getElementById('p-name').value         = product.name;
+        document.getElementById('p-category').value     = product.category;
+        document.getElementById('p-price').value        = product.price;
+        document.getElementById('p-price-unit').value   = product.price_unit || '€';
+        document.getElementById('p-description').value  = product.description || '';
+        document.getElementById('p-stock').value        = product.stock ?? 0;
+        document.getElementById('p-active').checked     = product.is_active;
+        document.getElementById('p-image-url').value    = product.image_url || '';
+        if (product.image_url) {
+          document.getElementById('preview-img').src = product.image_url;
+          document.getElementById('upload-preview').classList.remove('hidden');
+        }
+      } else {
+        // Mode ajout
+        document.getElementById('modal-title').textContent   = 'Ajouter un produit';
+        document.getElementById('save-btn-text').textContent = 'Enregistrer';
+        document.getElementById('product-form').reset();
+        document.getElementById('product-id').value = '';
+        document.getElementById('upload-preview').classList.add('hidden');
+        selectedFile = null;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('product-modal').classList.add('hidden');
+      selectedFile = null;
+    }
+
+    function editProduct(id) {
+      const p = allProducts.find(x => x.id === id);
+      if (p) openModal(p);
+    }
+
+    // ── Fermer modal en cliquant overlay ─────────────────────────────
+    document.getElementById('product-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    document.getElementById('delete-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeDeleteModal();
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // UPLOAD IMAGE
+    // ══════════════════════════════════════════════════════════════════
+    function handleFileSelect(e) {
+      const file = e.target.files[0];
+      if (file) previewFile(file);
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('upload-zone').classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) previewFile(file);
+    }
+
+    function previewFile(file) {
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('Image trop grande (max 5 Mo)', 'error');
+        return;
+      }
+      selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('preview-img').src = e.target.result;
+        document.getElementById('upload-preview').classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function uploadImage(productId) {
+      if (!selectedFile) return document.getElementById('p-image-url').value || null;
+
+      const ext  = selectedFile.name.split('.').pop();
+      const path = `${productId}.${ext}`;
+
+      const { error } = await db.storage
+        .from('product-images')
+        .upload(path, selectedFile, { upsert: true, contentType: selectedFile.type });
+
+      if (error) { showToast('Erreur upload image : ' + error.message, 'error'); return null; }
+
+      const { data } = db.storage.from('product-images').getPublicUrl(path);
+      return data.publicUrl;
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // SAUVEGARDE PRODUIT (ajout ou mise à jour)
+    // ══════════════════════════════════════════════════════════════════
+    async function saveProduct(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('product-id').value;
+      setSaveLoading(true);
+
+      // Upload image si nécessaire
+      const imageUrl = await uploadImage(id || crypto.randomUUID());
+
+      const payload = {
+        name:        document.getElementById('p-name').value.trim(),
+        category:    document.getElementById('p-category').value,
+        price:       parseFloat(document.getElementById('p-price').value),
+        price_unit:  document.getElementById('p-price-unit').value,
+        description: document.getElementById('p-description').value.trim() || null,
+        stock:       parseInt(document.getElementById('p-stock').value) || 0,
+        is_active:   document.getElementById('p-active').checked,
+        image_url:   imageUrl,
+      };
+
+      let error;
+      if (id) {
+        ({ error } = await db.from('products').update(payload).eq('id', id));
+      } else {
+        ({ error } = await db.from('products').insert(payload));
+      }
+
+      setSaveLoading(false);
+
+      if (error) {
+        showToast('Erreur : ' + error.message, 'error');
+        return;
+      }
+
+      showToast(id ? 'Produit mis à jour !' : 'Produit ajouté !', 'success');
+      closeModal();
+      await loadProducts();
+    }
+
+    function setSaveLoading(loading) {
+      document.getElementById('save-btn').disabled = loading;
+      document.getElementById('save-btn-text').textContent = loading ? 'Enregistrement...' : 'Enregistrer';
+      document.getElementById('save-spinner').classList.toggle('hidden', !loading);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // SUPPRESSION PRODUIT
+    // ══════════════════════════════════════════════════════════════════
+    function promptDelete(id) {
+      productToDelete = id;
+      document.getElementById('delete-modal').classList.remove('hidden');
+    }
+
+    function closeDeleteModal() {
+      productToDelete = null;
+      document.getElementById('delete-modal').classList.add('hidden');
+    }
+
+    async function confirmDelete() {
+      if (!productToDelete) return;
+      const btn = document.getElementById('confirm-delete-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span>Suppression...</span>';
+
+      const { error } = await db.from('products').delete().eq('id', productToDelete);
+
+      btn.disabled = false;
+      btn.innerHTML = '<span>Supprimer</span>';
+      closeDeleteModal();
+
+      if (error) { showToast('Erreur suppression : ' + error.message, 'error'); return; }
+      showToast('Produit supprimé.', 'success');
+      await loadProducts();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // TOGGLE ACTIF / INACTIF
+    // ══════════════════════════════════════════════════════════════════
+    async function toggleActive(id, current) {
+      const { error } = await db.from('products').update({ is_active: !current }).eq('id', id);
+      if (error) { showToast('Erreur : ' + error.message, 'error'); return; }
+      showToast(!current ? 'Produit activé.' : 'Produit désactivé.', 'success');
+      await loadProducts();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MESSAGES DE CONTACT
+    // ══════════════════════════════════════════════════════════════════
+    async function loadMessages() {
+      const { data, error } = await db
+        .from('contact_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('messages-list');
+      if (error || !data?.length) {
+        container.innerHTML = '<div class="glass-card rounded-2xl p-8 text-center text-gray-500 text-sm">Aucun message.</div>';
+        return;
+      }
+
+      container.innerHTML = data.map(m => `
+        <div class="glass-card rounded-2xl p-5 ${!m.read ? 'border-green-400/20' : ''}">
+          <div class="flex items-start justify-between gap-4 mb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-semibold text-white text-sm">${escHtml(m.prenom)} ${escHtml(m.nom)}</span>
+                ${!m.read ? '<span class="text-xs px-2 py-0.5 rounded-full" style="background:rgba(45,90,61,0.25);color:#6dbc86;border:1px solid rgba(77,154,103,0.3)">Nouveau</span>' : ''}
+              </div>
+              <a href="mailto:${escHtml(m.email)}" class="text-xs text-green-400 hover:underline">${escHtml(m.email)}</a>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+              <span class="text-xs text-gray-600">${new Date(m.created_at).toLocaleDateString('fr-FR')}</span>
+              ${!m.read
+                ? `<button onclick="markRead('${m.id}')" class="text-xs px-2.5 py-1 rounded-lg cursor-pointer" style="background:rgba(45,90,61,0.2);border:1px solid rgba(77,154,103,0.2);color:#6dbc86">Marquer lu</button>`
+                : ''}
+            </div>
+          </div>
+          ${m.sujet ? `<div class="text-xs text-gray-500 mb-2 font-medium uppercase tracking-wide">${escHtml(m.sujet)}</div>` : ''}
+          <p class="text-gray-300 text-sm leading-relaxed">${escHtml(m.message)}</p>
+        </div>`).join('');
+    }
+
+    async function markRead(id) {
+      await db.from('contact_messages').update({ read: true }).eq('id', id);
+      loadMessages();
+      loadStats();
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // NEWSLETTER
+    // ══════════════════════════════════════════════════════════════════
+    async function loadNewsletter() {
+      const { data, error } = await db
+        .from('newsletter_subscribers')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      const container = document.getElementById('newsletter-list');
+      if (error || !data?.length) {
+        container.innerHTML = '<div class="px-5 py-8 text-center text-gray-500 text-sm">Aucun abonné.</div>';
+        return;
+      }
+
+      container.innerHTML = data.map(s => `
+        <div class="flex items-center justify-between px-5 py-3" style="border-bottom:1px solid rgba(45,90,61,0.1)">
+          <div class="flex items-center gap-3">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:rgba(45,90,61,0.3);color:#6dbc86">
+              ${s.email[0].toUpperCase()}
+            </div>
+            <a href="mailto:${escHtml(s.email)}" class="text-sm text-white hover:text-green-400 transition-colors">${escHtml(s.email)}</a>
+          </div>
+          <span class="text-xs text-gray-600">${new Date(s.created_at).toLocaleDateString('fr-FR')}</span>
+        </div>`).join('');
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // STATS DASHBOARD
+    // ══════════════════════════════════════════════════════════════════
+    async function loadStats() {
+      const [msgs, subs] = await Promise.all([
+        db.from('contact_messages').select('id, read', { count: 'exact' }),
+        db.from('newsletter_subscribers').select('id', { count: 'exact' }),
+      ]);
+
+      const total  = msgs.count ?? 0;
+      const unread = (msgs.data || []).filter(m => !m.read).length;
+      const subCnt = subs.count ?? 0;
+
+      document.getElementById('stat-messages').textContent    = total;
+      document.getElementById('stat-unread').textContent      = `${unread} non lu(s)`;
+      document.getElementById('stat-newsletter').textContent  = subCnt;
+
+      if (unread > 0) {
+        const badge = document.getElementById('unread-badge');
+        badge.textContent = unread;
+        badge.classList.remove('hidden');
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // DÉCONNEXION
+    // ══════════════════════════════════════════════════════════════════
+    async function signOut() {
+      await db.auth.signOut();
+      window.location.href = 'login.html';
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // TOAST NOTIFICATION
+    // ══════════════════════════════════════════════════════════════════
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `show ${type}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // UTILITAIRES
+    // ══════════════════════════════════════════════════════════════════
+    function escHtml(str) {
+      return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // Écoute changements auth (déconnexion dans un autre onglet)
+    db.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_OUT') window.location.href = 'login.html';
+    });
+
+    // ── Lancement ────────────────────────────────────────────────────
+    init();
+  </script>
+</body>
+</html>

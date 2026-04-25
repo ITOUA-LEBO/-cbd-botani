@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — CBD Botani X Brother's</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    body { background: #0a0a0a; font-family: 'DM Sans', sans-serif; color-scheme: dark; }
+
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(45,90,61,0.45) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(26,58,42,0.25) 0%, transparent 60%),
+        #0a0a0a;
+    }
+
+    .glass-card {
+      background: rgba(26,58,42,0.12);
+      backdrop-filter: blur(20px) saturate(1.4);
+      -webkit-backdrop-filter: blur(20px) saturate(1.4);
+      border: 1px solid rgba(77,154,103,0.2);
+    }
+
+    .input-field {
+      background: rgba(26,58,42,0.2);
+      border: 1px solid rgba(77,154,103,0.2);
+      color: #f3f4f6;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: rgba(77,154,103,0.5);
+      box-shadow: 0 0 0 3px rgba(45,90,61,0.2);
+    }
+    .input-field::placeholder { color: #4b5563; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2d5a3d 0%, #1a3a2a 100%);
+      border: 1px solid rgba(77,154,103,0.4);
+      color: #e8f5ec;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary:hover:not(:disabled) {
+      box-shadow: 0 0 24px rgba(45,90,61,0.4), 0 6px 20px rgba(0,0,0,0.4);
+      border-color: rgba(109,188,134,0.5);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Orb animation */
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(90px);
+      animation: float 10s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    @keyframes float {
+      0%,100% { transform: translate(0,0); }
+      50%      { transform: translate(20px,-30px); }
+    }
+
+    .alert {
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-error   { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+    .alert-success { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); color: #86efac; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb { animation: none; }
+    }
+  </style>
+</head>
+<body class="hero-bg min-h-screen flex items-center justify-center p-4">
+
+  <!-- Orbs décoratifs -->
+  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(45,90,61,0.3),transparent 70%);top:-100px;left:-100px;"></div>
+  <div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(26,58,42,0.25),transparent 70%);bottom:-80px;right:-80px;animation-delay:-5s;"></div>
+
+  <div class="relative z-10 w-full max-w-sm">
+
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <a href="../index.html" class="inline-flex items-center gap-3 cursor-pointer group">
+        <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,#2d5a3d,#1a3a2a);border:1px solid rgba(77,154,103,0.35)">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C12 2 4 6 4 13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13C20 6 12 2 12 2Z" fill="#4e9a67" opacity="0.8"/>
+            <path d="M12 6C12 6 7 9 7 13.5C7 16.537 9.239 19 12 19" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="12" y1="21" x2="12" y2="13" stroke="#6dbc86" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="text-left">
+          <div class="text-sm font-bold text-white leading-tight">CBD BOTANI</div>
+          <div class="text-xs font-medium leading-tight" style="color:#6dbc86">X BROTHER'S</div>
+        </div>
+      </a>
+      <p class="mt-4 text-gray-500 text-sm">Espace administration</p>
+    </div>
+
+    <!-- Card de connexion -->
+    <div class="glass-card rounded-3xl p-7">
+      <h1 class="text-xl font-bold text-white mb-1">Connexion admin</h1>
+      <p class="text-gray-500 text-sm mb-6">Accès réservé au commerçant</p>
+
+      <!-- Alerte dynamique -->
+      <div id="alert" class="hidden mb-4 alert"></div>
+
+      <form id="login-form" class="space-y-4" novalidate>
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-xs font-medium text-gray-400 mb-2">Adresse email</label>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <input id="email" type="email" required placeholder="admin@bxb-cbd.fr"
+              class="input-field w-full pl-9 pr-4 py-3 rounded-xl text-sm"
+              autocomplete="email"/>
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div>
+          <label for="password" class="block text-xs font-medium text-gray-400 mb-2">Mot de passe</label>
+          <div class="relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+            <input id="password" type="password" required placeholder="••••••••"
+              class="input-field w-full pl-9 pr-10 py-3 rounded-xl text-sm"
+              autocomplete="current-password"/>
+            <!-- Toggle affichage mot de passe -->
+            <button type="button" id="toggle-pwd" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors cursor-pointer" aria-label="Afficher/masquer le mot de passe">
+              <svg id="eye-open" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              <svg id="eye-closed" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bouton connexion -->
+        <button type="submit" id="submit-btn" class="btn-primary w-full py-3.5 rounded-2xl text-sm cursor-pointer flex items-center justify-center gap-2 mt-2">
+          <span id="btn-text">Se connecter</span>
+          <svg id="btn-spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Lien retour -->
+    <p class="text-center mt-6 text-gray-600 text-xs">
+      <a href="../index.html" class="hover:text-green-400 transition-colors cursor-pointer">← Retour au site</a>
+    </p>
+  </div>
+
+  <script src="../js/supabase-config.js"></script>
+  <script>
+    // ── Toggle affichage mot de passe ──────────────────────────────────
+    document.getElementById('toggle-pwd').addEventListener('click', () => {
+      const input = document.getElementById('password');
+      const isText = input.type === 'text';
+      input.type = isText ? 'password' : 'text';
+      document.getElementById('eye-open').classList.toggle('hidden', !isText);
+      document.getElementById('eye-closed').classList.toggle('hidden', isText);
+    });
+
+    // ── Afficher alerte ───────────────────────────────────────────────
+    function showAlert(msg, type = 'error') {
+      const el = document.getElementById('alert');
+      el.className = `alert alert-${type} mb-4`;
+      el.innerHTML = `
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="${type === 'error'
+              ? 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+              : 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'}"/>
+        </svg>
+        <span>${msg}</span>`;
+      el.classList.remove('hidden');
+    }
+
+    // ── État du bouton ────────────────────────────────────────────────
+    function setLoading(loading) {
+      const btn  = document.getElementById('submit-btn');
+      const text = document.getElementById('btn-text');
+      const spin = document.getElementById('btn-spinner');
+      btn.disabled = loading;
+      text.textContent = loading ? 'Connexion...' : 'Se connecter';
+      spin.classList.toggle('hidden', !loading);
+    }
+
+    // ── Vérifier session existante ────────────────────────────────────
+    async function checkSession() {
+      if (!SUPABASE_CONFIGURED) return;
+      const { data: { session } } = await db.auth.getSession();
+      if (session) window.location.href = 'dashboard.html';
+    }
+    checkSession();
+
+    // ── Soumission du formulaire ──────────────────────────────────────
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      document.getElementById('alert').classList.add('hidden');
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        showAlert('Veuillez remplir tous les champs.');
+        return;
+      }
+
+      // Bloquer si Supabase non configuré
+      if (!SUPABASE_CONFIGURED) {
+        showAlert('Supabase non configuré. Éditez js/supabase-config.js avec vos clés.', 'error');
+        return;
+      }
+
+      setLoading(true);
+
+      const { data, error } = await db.auth.signInWithPassword({ email, password });
+
+      setLoading(false);
+
+      if (error) {
+        const msgs = {
+          'Invalid login credentials': 'Email ou mot de passe incorrect.',
+          'Email not confirmed': 'Veuillez confirmer votre email.',
+          'Too many requests': 'Trop de tentatives. Réessayez dans quelques minutes.',
+        };
+        showAlert(msgs[error.message] || `Erreur : ${error.message}`);
+        return;
+      }
+
+      showAlert('Connexion réussie ! Redirection...', 'success');
+      setTimeout(() => window.location.href = 'dashboard.html', 800);
+    });
+  </script>
+</body>
+</html>
