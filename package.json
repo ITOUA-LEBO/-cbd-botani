@@ -1,0 +1,12 @@
+{
+  "name": "cbd-botani",
+  "version": "1.0.0",
+  "description": "CBD Botani X Brother's — Site vitrine premium avec espace admin",
+  "scripts": {
+    "build": "node build.js",
+    "setup": "bash setup.sh"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
