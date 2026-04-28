@@ -371,6 +371,44 @@
       color: #fff;
     }
 
+    /* ── Auth panier ── */
+    .cart-auth-panel {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(200,240,0,0.1);
+      background: rgba(20,30,0,0.15);
+    }
+    .cart-input {
+      width: 100%; padding: 9px 12px; border-radius: 10px;
+      background: rgba(20,30,0,0.3); border: 1px solid rgba(200,240,0,0.2);
+      color: #f3f4f6; font-size: 0.8rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .cart-input:focus { border-color: rgba(200,240,0,0.5); }
+    .cart-input::placeholder { color: #4b5563; }
+
+    /* ── Shipping banner ── */
+    #shipping-banner {
+      margin: 0 20px 0 20px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .ship-banner-free { background: rgba(139,196,0,0.15); border: 1px solid rgba(200,240,0,0.3); color: #c8f000; }
+    .ship-banner-progress { background: rgba(20,30,0,0.25); border: 1px solid rgba(200,240,0,0.15); color: #9ca3af; }
+
+    /* ── Express toggle ── */
+    .express-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-radius: 12px;
+      background: rgba(20,30,0,0.2); border: 1px solid rgba(200,240,0,0.15);
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .express-toggle:hover { border-color: rgba(200,240,0,0.35); }
+    .express-toggle.active { background: rgba(139,196,0,0.12); border-color: rgba(200,240,0,0.4); }
+
     /* ── Style graffiti (inspiré du prompt React) ── */
     .graffiti-title {
       font-family: 'Black Han Sans', Impact, 'Arial Black', sans-serif;
@@ -985,6 +1023,29 @@
       </button>
     </div>
 
+    <!-- Auth client -->
+    <div class="cart-auth-panel" id="cart-auth-panel">
+      <div id="cart-user-logged" class="hidden flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style="background:rgba(139,196,0,0.25);border:1px solid rgba(200,240,0,0.3);color:#c8f000" id="cart-user-avatar">?</div>
+          <span class="text-sm text-white font-medium" id="cart-user-name">Client</span>
+        </div>
+        <button onclick="cartSignOut()" class="text-xs text-gray-500 hover:text-red-400 transition-colors cursor-pointer">Déconnexion</button>
+      </div>
+      <div id="cart-user-form">
+        <p class="text-xs text-gray-500 mb-3">Connectez-vous pour suivre vos commandes</p>
+        <div class="space-y-2">
+          <input id="cart-email" type="email" placeholder="Email" class="cart-input"/>
+          <input id="cart-password" type="password" placeholder="Mot de passe" class="cart-input"/>
+          <div class="flex gap-2 pt-1">
+            <button onclick="cartLogin()" class="flex-1 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all" style="background:rgba(139,196,0,0.2);border:1px solid rgba(200,240,0,0.3);color:#c8f000">Connexion</button>
+            <button onclick="cartRegister()" class="flex-1 py-2 text-xs font-medium rounded-lg cursor-pointer transition-all" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#9ca3af">Créer un compte</button>
+          </div>
+          <div id="cart-auth-error" class="hidden text-xs text-red-400 text-center pt-1"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Corps : liste articles -->
     <div id="cart-items" class="flex-1 overflow-y-auto">
       <!-- Vide par défaut -->
@@ -998,13 +1059,47 @@
     </div>
 
     <!-- Footer : total + commande -->
-    <div id="cart-footer" class="hidden flex-shrink-0 border-t p-5 space-y-4" style="border-color:rgba(200,240,0,0.15)">
-      <!-- Récap -->
-      <div class="flex items-center justify-between">
-        <span class="text-sm text-gray-400">Total estimé</span>
-        <span id="cart-total" class="text-xl font-bold text-green-400"></span>
+    <div id="cart-footer" class="hidden flex-shrink-0 border-t p-5 space-y-3" style="border-color:rgba(200,240,0,0.15)">
+      <!-- Bannière seuil livraison gratuite -->
+      <div id="shipping-banner" class="hidden"></div>
+
+      <!-- Toggle express 24h -->
+      <div id="express-toggle-wrap" class="hidden">
+        <div class="express-toggle" id="express-toggle" onclick="toggleExpress()">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            <div>
+              <p class="text-sm text-white font-semibold">Expédition express 24h</p>
+              <p class="text-xs text-gray-500" id="express-price-label"></p>
+            </div>
+          </div>
+          <label class="toggle pointer-events-none">
+            <input type="checkbox" id="express-checkbox"/>
+            <span class="slider"></span>
+          </label>
+        </div>
       </div>
+
+      <!-- Récap total -->
+      <div class="space-y-1.5 pt-1">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-400">Sous-total</span>
+          <span id="cart-subtotal" class="text-white font-medium"></span>
+        </div>
+        <div class="flex items-center justify-between text-sm" id="shipping-line">
+          <span class="text-gray-400">Expédition</span>
+          <span id="cart-shipping-cost" class="text-white font-medium"></span>
+        </div>
+        <div class="flex items-center justify-between border-t pt-2 mt-1" style="border-color:rgba(200,240,0,0.12)">
+          <span class="text-white font-bold">Total</span>
+          <span id="cart-total" class="text-xl font-bold text-green-400"></span>
+        </div>
+      </div>
+
       <p class="text-xs text-gray-600">Prix indicatifs · Confirmés en boutique ou par téléphone.</p>
+
       <!-- CTA WhatsApp -->
       <button onclick="orderByWhatsApp()" class="w-full py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all"
         style="background:linear-gradient(135deg,#25d366,#128c4e);border:1px solid rgba(37,211,102,0.4);color:#fff;">
@@ -1013,7 +1108,6 @@
         </svg>
         Commander via WhatsApp
       </button>
-      <!-- Vider panier -->
       <button onclick="clearCart()" class="w-full py-2 text-xs text-gray-600 hover:text-red-400 transition-colors cursor-pointer">Vider le panier</button>
     </div>
   </div>
@@ -1275,30 +1369,147 @@
     // ═══════════════════════════════════════════════════════════════
     // PANIER
     // ═══════════════════════════════════════════════════════════════
-    let cart = [];   // [{ id, name, price, price_unit, category, qty }]
+    let cart = [];
+    let cartExpressMode = false;
+    let cartUser = null; // { email, name }
 
     function cartInit() {
       const saved = localStorage.getItem('bxb-cart');
       if (saved) { try { cart = JSON.parse(saved); } catch(e) {} }
+      cartExpressMode = localStorage.getItem('bxb-express') === '1';
+      cartCheckSession();
       updateCartUI();
     }
 
-    function cartSave() {
-      localStorage.setItem('bxb-cart', JSON.stringify(cart));
+    function cartSave() { localStorage.setItem('bxb-cart', JSON.stringify(cart)); }
+
+    // ── Shipping helpers ──────────────────────────────────────────
+    function getShipping() {
+      try { return JSON.parse(localStorage.getItem('bxb-shipping') || '{}'); } catch(e) { return {}; }
     }
 
+    function cartSubtotal() { return cart.reduce((s,i) => s + i.price * i.qty, 0); }
+    function cartTotalWeight() { return cart.reduce((s,i) => s + (i.weight || 0) * i.qty, 0); }
+
+    function shippingCost() {
+      const s = getShipping();
+      if (!s.enabled) return 0;
+      if (s.freeEnabled) {
+        const sub = cartSubtotal();
+        const wgt = cartTotalWeight();
+        let free = false;
+        if (s.freeMode === 'price')  free = sub  >= s.freeThresholdPrice;
+        else if (s.freeMode === 'weight') free = wgt >= s.freeThresholdWeight;
+        else free = sub >= s.freeThresholdPrice && wgt >= s.freeThresholdWeight;
+        if (free) return 0;
+      }
+      return cartExpressMode ? (s.priceExpress || 0) : (s.priceStandard || 0);
+    }
+
+    function shippingBannerText() {
+      const s = getShipping();
+      if (!s.enabled || !s.freeEnabled) return null;
+      const sub = cartSubtotal();
+      const wgt = cartTotalWeight();
+
+      if (shippingCost() === 0) return { free: true, text: '🎉 Livraison offerte !' };
+
+      if (s.freeMode === 'price') {
+        const diff = (s.freeThresholdPrice - sub).toFixed(2);
+        return { free: false, text: `Plus que ${diff} € pour la livraison offerte 🚚` };
+      }
+      if (s.freeMode === 'weight') {
+        const diff = s.freeThresholdWeight - wgt;
+        return { free: false, text: `Plus que ${diff} g pour la livraison offerte 🚚` };
+      }
+      // both
+      const diffP = Math.max(0, s.freeThresholdPrice - sub).toFixed(2);
+      const diffW = Math.max(0, s.freeThresholdWeight - wgt);
+      if (diffP > 0 && diffW > 0) return { free: false, text: `Encore ${diffP} € et ${diffW} g pour la livraison offerte 🚚` };
+      if (diffP > 0) return { free: false, text: `Encore ${diffP} € pour la livraison offerte 🚚` };
+      return { free: false, text: `Encore ${diffW} g pour la livraison offerte 🚚` };
+    }
+
+    // ── Auth Supabase ─────────────────────────────────────────────
+    async function cartCheckSession() {
+      if (typeof db === 'undefined') return;
+      const { data: { session } } = await db.auth.getSession();
+      if (session) {
+        cartUser = { email: session.user.email, name: session.user.email.split('@')[0] };
+        renderCartAuth();
+      }
+    }
+
+    async function cartLogin() {
+      if (typeof db === 'undefined') { showCartAuthError('Supabase non configuré.'); return; }
+      const email = document.getElementById('cart-email').value.trim();
+      const pwd   = document.getElementById('cart-password').value;
+      if (!email || !pwd) { showCartAuthError('Email et mot de passe requis.'); return; }
+      const { data, error } = await db.auth.signInWithPassword({ email, password: pwd });
+      if (error) { showCartAuthError(error.message); return; }
+      cartUser = { email: data.user.email, name: data.user.email.split('@')[0] };
+      renderCartAuth();
+    }
+
+    async function cartRegister() {
+      if (typeof db === 'undefined') { showCartAuthError('Supabase non configuré.'); return; }
+      const email = document.getElementById('cart-email').value.trim();
+      const pwd   = document.getElementById('cart-password').value;
+      if (!email || !pwd) { showCartAuthError('Email et mot de passe requis.'); return; }
+      if (pwd.length < 6) { showCartAuthError('Mot de passe minimum 6 caractères.'); return; }
+      const { data, error } = await db.auth.signUp({ email, password: pwd });
+      if (error) { showCartAuthError(error.message); return; }
+      cartUser = { email: data.user.email, name: data.user.email.split('@')[0] };
+      renderCartAuth();
+    }
+
+    async function cartSignOut() {
+      if (typeof db !== 'undefined') await db.auth.signOut();
+      cartUser = null;
+      renderCartAuth();
+    }
+
+    function showCartAuthError(msg) {
+      const el = document.getElementById('cart-auth-error');
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 3500);
+    }
+
+    function renderCartAuth() {
+      const logged = document.getElementById('cart-user-logged');
+      const form   = document.getElementById('cart-user-form');
+      const avatar = document.getElementById('cart-user-avatar');
+      const name   = document.getElementById('cart-user-name');
+      if (cartUser) {
+        logged.classList.remove('hidden');
+        form.classList.add('hidden');
+        if (avatar) avatar.textContent = cartUser.name[0].toUpperCase();
+        if (name)   name.textContent   = cartUser.name;
+      } else {
+        logged.classList.add('hidden');
+        form.classList.remove('hidden');
+      }
+    }
+
+    // ── Express toggle ────────────────────────────────────────────
+    function toggleExpress() {
+      cartExpressMode = !cartExpressMode;
+      localStorage.setItem('bxb-express', cartExpressMode ? '1' : '0');
+      document.getElementById('express-checkbox').checked = cartExpressMode;
+      document.getElementById('express-toggle').classList.toggle('active', cartExpressMode);
+      updateCartUI();
+    }
+
+    // ── Add / remove ─────────────────────────────────────────────
     function addToCart(e, product) {
       const btn = e.currentTarget;
       const existing = cart.find(i => i.id === product.id);
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ id: product.id, name: product.name, price: product.price, price_unit: product.price_unit || '€', category: product.category, qty: 1 });
-      }
+      if (existing) { existing.qty++; }
+      else { cart.push({ id: product.id, name: product.name, price: product.price, price_unit: product.price_unit || '€', category: product.category, weight: product.weight || 0, qty: 1 }); }
       cartSave();
       updateCartUI();
-
-      // Feedback visuel bouton
       btn.classList.add('added');
       btn.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Ajouté !`;
       setTimeout(() => {
@@ -1307,62 +1518,85 @@
       }, 1500);
     }
 
-    function removeFromCart(id) {
-      cart = cart.filter(i => i.id !== id);
-      cartSave();
-      updateCartUI();
-      renderCartItems();
-    }
+    function removeFromCart(id) { cart = cart.filter(i => i.id !== id); cartSave(); updateCartUI(); renderCartItems(); }
 
     function changeQty(id, delta) {
       const item = cart.find(i => i.id === id);
       if (!item) return;
       item.qty = Math.max(1, item.qty + delta);
-      cartSave();
-      updateCartUI();
-      renderCartItems();
+      cartSave(); updateCartUI(); renderCartItems();
     }
 
-    function clearCart() {
-      cart = [];
-      cartSave();
-      updateCartUI();
-      renderCartItems();
-    }
+    function clearCart() { cart = []; cartSave(); updateCartUI(); renderCartItems(); }
 
-    function cartTotal() {
-      return cart.reduce((sum, i) => sum + i.price * i.qty, 0);
-    }
+    function cartItemCount() { return cart.reduce((s,i) => s + i.qty, 0); }
 
-    function cartItemCount() {
-      return cart.reduce((sum, i) => sum + i.qty, 0);
-    }
-
+    // ── UI update (badges + footer) ───────────────────────────────
     function updateCartUI() {
       const count = cartItemCount();
-      // Badge desktop
       const badge = document.getElementById('cart-badge');
-      if (badge) {
-        badge.textContent = count > 99 ? '99+' : count;
-        badge.classList.toggle('visible', count > 0);
-      }
-      // Badge mobile
+      if (badge) { badge.textContent = count > 99 ? '99+' : count; badge.classList.toggle('visible', count > 0); }
       const badgeMob = document.getElementById('cart-badge-mobile');
-      if (badgeMob) {
-        badgeMob.textContent = count > 99 ? '99+' : count;
-        badgeMob.style.transform = count > 0 ? 'scale(1)' : 'scale(0)';
-      }
-      // Label header drawer
+      if (badgeMob) { badgeMob.textContent = count > 99 ? '99+' : count; badgeMob.style.transform = count > 0 ? 'scale(1)' : 'scale(0)'; }
       const label = document.getElementById('cart-count-label');
       if (label) label.textContent = count > 0 ? `(${count} article${count > 1 ? 's' : ''})` : '';
-      // Total
-      const total = document.getElementById('cart-total');
-      if (total) total.textContent = cartTotal().toFixed(2) + ' €';
-      // Footer drawer
+
       const footer = document.getElementById('cart-footer');
       if (footer) footer.classList.toggle('hidden', cart.length === 0);
+      if (!cart.length) return;
+
+      const s = getShipping();
+      const sub  = cartSubtotal();
+      const ship = shippingCost();
+      const total = sub + ship;
+
+      // Sous-total
+      const subtotalEl = document.getElementById('cart-subtotal');
+      if (subtotalEl) subtotalEl.textContent = sub.toFixed(2) + ' €';
+
+      // Ligne expédition
+      const shipLine = document.getElementById('shipping-line');
+      const shipCostEl = document.getElementById('cart-shipping-cost');
+      if (shipLine && shipCostEl) {
+        if (!s.enabled) { shipLine.classList.add('hidden'); }
+        else {
+          shipLine.classList.remove('hidden');
+          shipCostEl.textContent = ship === 0 ? 'Offerte 🎉' : ship.toFixed(2) + ' €';
+          shipCostEl.style.color = ship === 0 ? '#c8f000' : '';
+        }
+      }
+
+      // Total
+      const totalEl = document.getElementById('cart-total');
+      if (totalEl) totalEl.textContent = total.toFixed(2) + ' €';
+
+      // Bannière seuil
+      const banner = document.getElementById('shipping-banner');
+      if (banner) {
+        const info = shippingBannerText();
+        if (info) {
+          banner.textContent = info.text;
+          banner.className = info.free ? 'ship-banner-free' : 'ship-banner-progress';
+          banner.style.margin = '0 20px 4px 20px';
+          banner.classList.remove('hidden');
+        } else { banner.classList.add('hidden'); }
+      }
+
+      // Toggle express
+      const expWrap = document.getElementById('express-toggle-wrap');
+      const expLabel = document.getElementById('express-price-label');
+      if (expWrap) {
+        const showExpress = s.enabled && s.priceExpress > 0;
+        expWrap.classList.toggle('hidden', !showExpress);
+        if (showExpress && expLabel) expLabel.textContent = `+${s.priceExpress.toFixed(2)} € · Livraison sous 24h`;
+      }
+      const expChk = document.getElementById('express-checkbox');
+      const expToggle = document.getElementById('express-toggle');
+      if (expChk) expChk.checked = cartExpressMode;
+      if (expToggle) expToggle.classList.toggle('active', cartExpressMode);
     }
 
+    // ── Render items ──────────────────────────────────────────────
     function renderCartItems() {
       const container = document.getElementById('cart-items');
       const empty     = document.getElementById('cart-empty');
@@ -1378,27 +1612,29 @@
         div.className = 'cart-item';
         div.dataset.id = item.id;
         div.innerHTML = `
-          <div class="flex-1 min-w-0">
-            <p class="text-white text-sm font-semibold truncate">${escHtmlPublic(item.name)}</p>
-            <p class="text-xs text-gray-500 mt-0.5">${escHtmlPublic(item.category)}</p>
-            <p class="text-green-400 font-bold text-sm mt-1">${(item.price * item.qty).toFixed(2)} €</p>
-          </div>
-          <div class="flex items-center gap-2 flex-shrink-0">
-            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="Moins">−</button>
-            <span class="text-white text-sm font-bold w-5 text-center">${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="Plus">+</button>
-            <button onclick="removeFromCart('${item.id}')" class="ml-1 p-1 rounded-lg hover:bg-red-500/15 transition-colors cursor-pointer" aria-label="Supprimer">
-              <svg class="w-4 h-4 text-gray-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
-          </div>`;
+      <div class="flex-1 min-w-0">
+        <p class="text-white text-sm font-semibold truncate">${escHtmlPublic(item.name)}</p>
+        <p class="text-xs text-gray-500 mt-0.5">${escHtmlPublic(item.category)}</p>
+        <p class="text-green-400 font-bold text-sm mt-1">${(item.price * item.qty).toFixed(2)} €</p>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="Moins">−</button>
+        <span class="text-white text-sm font-bold w-5 text-center">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="Plus">+</button>
+        <button onclick="removeFromCart('${item.id}')" class="ml-1 p-1 rounded-lg hover:bg-red-500/15 transition-colors cursor-pointer" aria-label="Supprimer">
+          <svg class="w-4 h-4 text-gray-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>`;
         container.appendChild(div);
       });
     }
 
+    // ── Open / close ──────────────────────────────────────────────
     function openCart() {
       renderCartItems();
+      renderCartAuth();
       document.getElementById('cart-drawer').classList.add('open');
       document.getElementById('cart-overlay').classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -1410,11 +1646,17 @@
       document.body.style.overflow = '';
     }
 
+    // ── WhatsApp ──────────────────────────────────────────────────
     function orderByWhatsApp() {
       if (!cart.length) return;
+      const s = getShipping();
+      const sub  = cartSubtotal();
+      const ship = shippingCost();
+      const total = (sub + ship).toFixed(2);
       const lines = cart.map(i => `• ${i.name} x${i.qty} — ${(i.price * i.qty).toFixed(2)} €`).join('\n');
-      const total = cartTotal().toFixed(2);
-      const msg = encodeURIComponent(`Bonjour CBD Botani X Brother's ! 👋\n\nJe souhaite commander :\n\n${lines}\n\n*Total estimé : ${total} €*\n\nMerci de confirmer la disponibilité.`);
+      const shipLine = !s.enabled ? '' : ship === 0 ? '\n🚚 Livraison offerte' : `\n🚚 ${cartExpressMode ? 'Express 24h' : 'Standard'} : ${ship.toFixed(2)} €`;
+      const clientLine = cartUser ? `\n👤 Client : ${cartUser.email}` : '';
+      const msg = encodeURIComponent(`Bonjour CBD Botani X Brother's ! 👋\n\nJe souhaite commander :\n\n${lines}${shipLine}${clientLine}\n\n*Total : ${total} €*\n\nMerci de confirmer la disponibilité.`);
       window.open(`https://wa.me/33672258148?text=${msg}`, '_blank');
     }
 
