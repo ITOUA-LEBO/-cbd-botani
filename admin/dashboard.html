@@ -160,6 +160,8 @@
     .cat-Huiles    { background:rgba(251,191,36,0.12); border:1px solid rgba(251,191,36,0.3); color:#fcd34d; }
     .cat-Vape      { background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.3); color:#a5b4fc; }
     .cat-Bien-être { background:rgba(236,72,153,0.12); border:1px solid rgba(236,72,153,0.3); color:#f9a8d4; }
+    .cat-Promo     { background:rgba(239,68,68,0.15);  border:1px solid rgba(239,68,68,0.35); color:#fca5a5; }
+    .cat-default   { background:rgba(100,116,139,0.12); border:1px solid rgba(100,116,139,0.3); color:#94a3b8; }
 
     /* ── Modal ── */
     .modal-overlay {
@@ -266,6 +268,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
         </svg>
         <span class="sidebar-label">Produits</span>
+      </button>
+      <button class="nav-item w-full text-left" onclick="showTab('categories')" data-tab="categories" data-tooltip="Catégories">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+        </svg>
+        <span class="sidebar-label">Catégories</span>
       </button>
       <button class="nav-item w-full text-left" onclick="showTab('messages')" data-tab="messages" data-tooltip="Messages">
         <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -376,8 +384,6 @@
             oninput="filterProducts()"/>
           <select id="filter-cat" class="input-field w-auto" onchange="filterProducts()">
             <option value="">Toutes catégories</option>
-            <option>Fleurs</option><option>Huiles</option>
-            <option>Vape</option><option>Bien-être</option>
           </select>
           <select id="filter-status" class="input-field w-auto" onchange="filterProducts()">
             <option value="">Tous statuts</option>
@@ -408,6 +414,38 @@
           <div class="px-4 py-3 border-t text-xs text-gray-600" style="border-color:rgba(200,240,0,0.1)">
             <span id="product-count">0 produit(s)</span>
           </div>
+        </div>
+      </div>
+
+      <!-- ═══ TAB: CATÉGORIES ══════════════════════════════════════════ -->
+      <div id="tab-categories" class="hidden">
+        <div class="flex items-center justify-between mb-6">
+          <p class="text-sm text-gray-500">Gérez les catégories disponibles. Elles apparaissent dans les filtres et dans le formulaire d'ajout de produit.</p>
+          <button onclick="openCatModal()" class="btn-primary px-4 py-2 text-xs rounded-xl flex items-center gap-1.5 flex-shrink-0">
+            <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+            </svg>
+            Nouvelle catégorie
+          </button>
+        </div>
+
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="p-5 border-b" style="border-color:rgba(200,240,0,0.1)">
+            <h2 class="font-bold text-white text-sm">Catégories actives</h2>
+          </div>
+          <div id="categories-list" class="divide-y" style="--tw-divide-opacity:1">
+            <div class="px-5 py-8 text-center text-gray-500 text-sm">Chargement...</div>
+          </div>
+        </div>
+
+        <!-- Note Promo -->
+        <div class="mt-4 glass-card rounded-2xl p-5 flex items-start gap-3">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3)">
+            <svg class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <p class="text-sm text-gray-400">Les produits de la catégorie <span class="text-red-400 font-semibold">Promo</span> apparaissent toujours en premier dans la section Gammes & produits, avec un badge rouge <span class="text-red-400 font-bold">🔥 PROMO</span>.</p>
         </div>
       </div>
 
@@ -456,8 +494,6 @@
             <label class="block text-xs font-medium text-gray-400 mb-1.5">Catégorie <span class="text-red-400">*</span></label>
             <select id="p-category" required class="input-field">
               <option value="">Choisir...</option>
-              <option>Fleurs</option><option>Huiles</option>
-              <option>Vape</option><option>Bien-être</option>
             </select>
           </div>
           <div>
@@ -528,6 +564,31 @@
     </div>
   </div>
 
+  <!-- ── MODAL AJOUT CATÉGORIE ──────────────────────────────────────────── -->
+  <div id="cat-modal" class="modal-overlay hidden">
+    <div class="modal-box max-w-sm">
+      <div class="flex items-center justify-between p-6 border-b" style="border-color:rgba(200,240,0,0.15)">
+        <h2 class="text-lg font-bold text-white">Nouvelle catégorie</h2>
+        <button onclick="closeCatModal()" class="p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer" aria-label="Fermer">
+          <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <form id="cat-form" class="p-6 space-y-4" onsubmit="saveCategory(event)">
+        <div>
+          <label class="block text-xs font-medium text-gray-400 mb-1.5">Nom de la catégorie <span class="text-red-400">*</span></label>
+          <input id="cat-name" type="text" required placeholder="Ex: Résines" class="input-field" maxlength="40"/>
+          <p class="text-xs text-gray-600 mt-1.5">Attention : le nom doit correspondre exactement à celui utilisé dans les produits.</p>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeCatModal()" class="flex-1 py-3 rounded-xl text-sm font-medium text-gray-400 hover:bg-white/5 transition-colors cursor-pointer" style="border:1px solid rgba(255,255,255,0.1)">Annuler</button>
+          <button type="submit" class="btn-primary flex-1 py-3 rounded-xl text-sm">Créer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- ── MODAL CONFIRMATION SUPPRESSION ───────────────────────────────── -->
   <div id="delete-modal" class="modal-overlay hidden">
     <div class="modal-box max-w-sm">
@@ -560,6 +621,7 @@
     let allProducts = [];         // cache produits
     let productToDelete = null;   // id en attente de suppression
     let selectedFile = null;      // fichier image sélectionné
+    let allCategories = [];       // cache catégories (localStorage)
 
     // ══════════════════════════════════════════════════════════════════
     // INIT — vérifie la session, charge les données
@@ -581,6 +643,7 @@
       document.getElementById('user-email').textContent = session.user.email;
 
       // Charge les données en parallèle
+      loadCategories();
       await Promise.all([loadProducts(), loadStats()]);
     }
 
@@ -588,15 +651,16 @@
     // NAVIGATION ENTRE ONGLETS
     // ══════════════════════════════════════════════════════════════════
     const tabTitles = {
-      dashboard: 'Vue d\'ensemble',
-      produits:  'Produits',
-      messages:  'Messages',
-      newsletter:'Newsletter',
+      dashboard:  'Vue d\'ensemble',
+      produits:   'Produits',
+      categories: 'Catégories',
+      messages:   'Messages',
+      newsletter: 'Newsletter',
     };
 
     function showTab(tab) {
       // Cache tous les onglets
-      ['dashboard','produits','messages','newsletter'].forEach(t => {
+      ['dashboard','produits','categories','messages','newsletter'].forEach(t => {
         document.getElementById('tab-' + t).classList.add('hidden');
         document.querySelectorAll(`[data-tab="${t}"]`).forEach(el => el.classList.remove('active'));
       });
@@ -607,9 +671,10 @@
       document.getElementById('page-title').textContent = tabTitles[tab];
 
       // Charge les données spécifiques à l'onglet
-      if (tab === 'messages')   loadMessages();
-      if (tab === 'newsletter') loadNewsletter();
-      if (tab === 'produits')   renderProductsTable();
+      if (tab === 'messages')    loadMessages();
+      if (tab === 'newsletter')  loadNewsletter();
+      if (tab === 'produits')    renderProductsTable();
+      if (tab === 'categories')  renderCategoriesTab();
 
       // Ferme sidebar mobile
       document.getElementById('sidebar').classList.remove('open');
@@ -659,7 +724,7 @@
               </div>
             </div>
           </td>
-          <td class="px-4 py-3"><span class="cat-badge cat-${escHtml(p.category)}">${escHtml(p.category)}</span></td>
+          <td class="px-4 py-3"><span class="cat-badge cat-${escHtml(p.category.replace(/\s/g,'-'))} cat-default">${escHtml(p.category)}</span></td>
           <td class="px-4 py-3 text-green-400 font-semibold text-sm">${p.price}${escHtml(p.price_unit)}</td>
           <td class="px-4 py-3">
             <span class="text-sm ${p.stock === 0 ? 'text-red-400' : p.stock <= 5 ? 'text-yellow-400' : 'text-gray-300'}">${p.stock}</span>
@@ -695,7 +760,7 @@
       container.innerHTML = recent.map(p => `
         <div class="flex items-center justify-between px-5 py-3 hover:bg-white/3 transition-colors" style="border-bottom:1px solid rgba(200,240,0,0.08)">
           <div class="flex items-center gap-3">
-            <span class="cat-badge cat-${escHtml(p.category)}">${escHtml(p.category)}</span>
+            <span class="cat-badge cat-${escHtml(p.category.replace(/\s/g,'-'))} cat-default">${escHtml(p.category)}</span>
             <span class="text-sm text-white font-medium">${escHtml(p.name)}</span>
           </div>
           <span class="text-green-400 text-sm font-semibold">${p.price}${escHtml(p.price_unit)}</span>
@@ -997,6 +1062,102 @@
         badge.classList.remove('hidden');
       }
     }
+
+    // ══════════════════════════════════════════════════════════════════
+    // CATÉGORIES (stockées en localStorage)
+    // ══════════════════════════════════════════════════════════════════
+    const DEFAULT_CATS = ['Promo', 'Fleurs', 'Huiles', 'Vape', 'Bien-être'];
+
+    function loadCategories() {
+      const stored = localStorage.getItem('cbd-categories');
+      allCategories = stored ? JSON.parse(stored) : [...DEFAULT_CATS];
+      // Assure que Promo est toujours présente
+      if (!allCategories.includes('Promo')) allCategories.unshift('Promo');
+      refreshCategorySelects();
+    }
+
+    function saveCategoriesToStorage() {
+      localStorage.setItem('cbd-categories', JSON.stringify(allCategories));
+    }
+
+    function refreshCategorySelects() {
+      // Select du formulaire produit
+      const pCat = document.getElementById('p-category');
+      const currentVal = pCat.value;
+      pCat.innerHTML = '<option value="">Choisir...</option>' +
+        allCategories.map(c => `<option value="${escHtml(c)}"${c === currentVal ? ' selected' : ''}>${escHtml(c)}</option>`).join('');
+
+      // Select du filtre table produits
+      const filterCat = document.getElementById('filter-cat');
+      const filterVal = filterCat.value;
+      filterCat.innerHTML = '<option value="">Toutes catégories</option>' +
+        allCategories.map(c => `<option value="${escHtml(c)}"${c === filterVal ? ' selected' : ''}>${escHtml(c)}</option>`).join('');
+    }
+
+    function renderCategoriesTab() {
+      const container = document.getElementById('categories-list');
+      if (!allCategories.length) {
+        container.innerHTML = '<div class="px-5 py-8 text-center text-gray-500 text-sm">Aucune catégorie.</div>';
+        return;
+      }
+      container.innerHTML = allCategories.map(cat => {
+        const isPromo = cat === 'Promo';
+        const badgeClass = `cat-${cat.replace(/\s/g,'-')}`;
+        const usedCount = allProducts.filter(p => p.category === cat).length;
+        return `
+          <div class="flex items-center justify-between px-5 py-4" style="border-bottom:1px solid rgba(200,240,0,0.08)">
+            <div class="flex items-center gap-3">
+              <span class="cat-badge ${badgeClass} cat-default">${escHtml(cat)}</span>
+              <span class="text-xs text-gray-500">${usedCount} produit${usedCount > 1 ? 's' : ''}</span>
+              ${isPromo ? '<span class="text-xs text-red-400">🔥 Prioritaire</span>' : ''}
+            </div>
+            ${!isPromo
+              ? `<button onclick="deleteCategory('${escHtml(cat)}')" class="btn-danger text-xs px-3 py-1.5 rounded-lg" ${usedCount > 0 ? 'disabled title="Des produits utilisent cette catégorie"' : ''}>Supprimer</button>`
+              : '<span class="text-xs text-gray-600 italic">Fixe</span>'}
+          </div>`;
+      }).join('');
+    }
+
+    function openCatModal() {
+      document.getElementById('cat-modal').classList.remove('hidden');
+      document.getElementById('cat-form').reset();
+      document.getElementById('cat-name').focus();
+    }
+
+    function closeCatModal() {
+      document.getElementById('cat-modal').classList.add('hidden');
+    }
+
+    function saveCategory(e) {
+      e.preventDefault();
+      const name = document.getElementById('cat-name').value.trim();
+      if (!name) return;
+      if (allCategories.map(c => c.toLowerCase()).includes(name.toLowerCase())) {
+        showToast('Cette catégorie existe déjà.', 'error');
+        return;
+      }
+      allCategories.push(name);
+      saveCategoriesToStorage();
+      refreshCategorySelects();
+      renderCategoriesTab();
+      closeCatModal();
+      showToast(`Catégorie "${name}" créée !`, 'success');
+    }
+
+    function deleteCategory(name) {
+      const used = allProducts.some(p => p.category === name);
+      if (used) { showToast('Impossible : des produits utilisent cette catégorie.', 'error'); return; }
+      allCategories = allCategories.filter(c => c !== name);
+      saveCategoriesToStorage();
+      refreshCategorySelects();
+      renderCategoriesTab();
+      showToast(`Catégorie "${name}" supprimée.`, 'success');
+    }
+
+    // Fermer modal catégorie en cliquant overlay
+    document.getElementById('cat-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeCatModal();
+    });
 
     // ══════════════════════════════════════════════════════════════════
     // DÉCONNEXION

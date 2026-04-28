@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS public.products (
   id          UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name        TEXT NOT NULL,
-  category    TEXT NOT NULL CHECK (category IN ('Fleurs','Huiles','Vape','Bien-être')),
+  category    TEXT NOT NULL,
   description TEXT,
   price       NUMERIC(10,2) NOT NULL CHECK (price >= 0),
   price_unit  TEXT DEFAULT '€' CHECK (price_unit IN ('€', '€/g')),

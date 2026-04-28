@@ -314,22 +314,7 @@
       transform: translateY(-4px);
     }
 
-    /* Drip animation sur les cartes produit au hover */
-    .drip-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 10px;
-      background: #c8f000;
-      clip-path: polygon(0 0,5% 100%,10% 0,15% 100%,20% 0,25% 100%,30% 0,35% 100%,40% 0,45% 100%,50% 0,55% 100%,60% 0,65% 100%,70% 0,75% 100%,80% 0,85% 100%,90% 0,95% 100%,100% 0);
-      opacity: 0;
-      transform: translateY(4px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-    .product-card:hover .drip-bar {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    /* Drip supprimé */
 
     /* Rotation légère des cartes produit */
     .product-card:nth-child(2n)   { transform: rotate(-1.5deg); }
@@ -337,20 +322,7 @@
     .product-card:nth-child(4n)   { transform: rotate(-0.8deg); }
     .product-card:hover            { transform: rotate(0deg) translateY(-6px) scale(1.02) !important; }
 
-    /* Badge graffiti (tag) */
-    .graffiti-tag {
-      font-family: Impact, 'Arial Black', sans-serif;
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      padding: 2px 8px;
-      border: 2px solid #000;
-      box-shadow: 2px 2px 0px rgba(0,0,0,0.9);
-      transform: rotate(8deg);
-      position: absolute;
-      top: -8px; right: -6px;
-      z-index: 10;
-      line-height: 1.4;
-    }
+    /* Badge graffiti (tag) supprimé */
 
     /* Bouton graffiti style */
     .btn-graffiti {
@@ -448,9 +420,6 @@
           <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's Logo"
             class="w-32 h-32 sm:w-40 sm:h-40 rounded-full object-cover"
             style="border:3px solid #c8f000;box-shadow:0 0 40px rgba(200,240,0,0.35),6px 6px 0px rgba(0,0,0,0.8)"/>
-          <!-- Drip décoratif sous le logo -->
-          <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-24 h-4"
-            style="background:#c8f000;clip-path:polygon(0 0,8% 100%,16% 0,24% 100%,32% 0,40% 100%,48% 0,56% 100%,64% 0,72% 100%,80% 0,88% 100%,96% 0,100% 50%);opacity:0.8"></div>
         </div>
       </div>
 
@@ -514,13 +483,9 @@
 
     <!-- Filtres + flèches -->
     <div class="reveal reveal-delay-2 flex items-center justify-between gap-4 px-4 sm:px-6 max-w-7xl mx-auto mb-8">
-      <!-- Filtres catégorie -->
+      <!-- Filtres catégorie (générés dynamiquement) -->
       <div class="flex flex-wrap gap-2" id="cat-filters">
         <button onclick="filterCat('tous')" data-cat="tous" class="cat-filter-btn active px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Tous</button>
-        <button onclick="filterCat('Fleurs')" data-cat="Fleurs" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Fleurs</button>
-        <button onclick="filterCat('Huiles')" data-cat="Huiles" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Huiles</button>
-        <button onclick="filterCat('Vape')" data-cat="Vape" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Vape</button>
-        <button onclick="filterCat('Bien-être')" data-cat="Bien-être" class="cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200">Bien-être</button>
       </div>
       <!-- Flèches navigation -->
       <div class="flex gap-2 flex-shrink-0">
@@ -1043,23 +1008,20 @@
       return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
 
-    const GRAFFITI_TAGS = ['HOT','NEW','FIRE','TOP','DANK','FRESH'];
-    let tagIdx = 0;
-
     function buildCard(p, delay) {
       const img = p.image_url
         ? `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" class="w-full h-full object-cover" loading="lazy"/>`
         : (CAT_SVG[p.category] || CAT_SVG['Bien-être']);
 
-      const tag = GRAFFITI_TAGS[tagIdx++ % GRAFFITI_TAGS.length];
-      const tagColors = {HOT:'#ef4444',NEW:'#c8f000',FIRE:'#fb923c',TOP:'#fbbf24',DANK:'#c8f000',FRESH:'#8bc400'};
-      const tagBg = tagColors[tag] || '#c8f000';
+      const isPromo = p.category === 'Promo';
+      const promoBadge = isPromo
+        ? `<div class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full text-xs font-bold text-black" style="background:#ef4444;box-shadow:0 2px 8px rgba(239,68,68,0.5)">🔥 PROMO</div>`
+        : '';
 
       return `
         <div class="product-card glass-card sticker-card rounded-2xl overflow-hidden flex-shrink-0 cursor-default group relative"
-          style="width:280px;animation-delay:${delay}ms" data-cat="${escHtmlPublic(p.category)}">
-          <!-- Tag graffiti -->
-          <div class="graffiti-tag text-black font-black" style="background:${tagBg}">${tag}</div>
+          style="width:280px;animation-delay:${delay}ms${isPromo ? ';border-color:rgba(239,68,68,0.4)' : ''}" data-cat="${escHtmlPublic(p.category)}">
+          ${promoBadge}
           <div class="product-img h-48 flex items-center justify-center overflow-hidden">
             ${img}
           </div>
@@ -1071,9 +1033,15 @@
               <span class="text-green-400 font-black" style="font-family:Impact,'Arial Black',sans-serif;font-size:1.1rem;text-shadow:1px 1px 0 rgba(0,0,0,0.5)">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
             </div>
           </div>
-          <!-- Drip effet hover -->
-          <div class="drip-bar"></div>
         </div>`;
+    }
+
+    function sortWithPromoFirst(list) {
+      return [...list].sort((a, b) => {
+        if (a.category === 'Promo' && b.category !== 'Promo') return -1;
+        if (a.category !== 'Promo' && b.category === 'Promo') return 1;
+        return 0;
+      });
     }
 
     function renderPublicProducts(list) {
@@ -1089,8 +1057,24 @@
       }
 
       empty.classList.add('hidden');
-      carousel.insertAdjacentHTML('beforeend', list.map((p, i) => buildCard(p, i * 50)).join(''));
+      const sorted = sortWithPromoFirst(list);
+      carousel.insertAdjacentHTML('beforeend', sorted.map((p, i) => buildCard(p, i * 50)).join(''));
       carousel.scrollLeft = 0;
+    }
+
+    function buildCatFilters(products) {
+      const cats = ['Promo', ...new Set(products.map(p => p.category).filter(c => c !== 'Promo'))];
+      const container = document.getElementById('cat-filters');
+      // Garde le bouton "Tous", retire les anciens boutons de catégorie
+      container.querySelectorAll('[data-cat]:not([data-cat="tous"])').forEach(el => el.remove());
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.onclick = () => filterCat(cat);
+        btn.dataset.cat = cat;
+        btn.className = 'cat-filter-btn px-4 py-1.5 rounded-full text-sm font-medium cursor-pointer transition-all duration-200';
+        btn.textContent = cat;
+        container.appendChild(btn);
+      });
     }
 
     function filterCat(cat) {
@@ -1125,11 +1109,11 @@
         .from('products')
         .select('id, name, category, description, price, price_unit, image_url')
         .eq('is_active', true)
-        .order('category')
         .order('name');
 
       if (error || !data) return;
       allPublicProducts = data;
+      buildCatFilters(data);
       renderPublicProducts(data);
     }
 
