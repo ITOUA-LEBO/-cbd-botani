@@ -399,15 +399,6 @@
     .ship-banner-free { background: rgba(139,196,0,0.15); border: 1px solid rgba(200,240,0,0.3); color: #c8f000; }
     .ship-banner-progress { background: rgba(20,30,0,0.25); border: 1px solid rgba(200,240,0,0.15); color: #9ca3af; }
 
-    /* ── Express toggle ── */
-    .express-toggle {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 14px; border-radius: 12px;
-      background: rgba(20,30,0,0.2); border: 1px solid rgba(200,240,0,0.15);
-      cursor: pointer; transition: border-color 0.2s;
-    }
-    .express-toggle:hover { border-color: rgba(200,240,0,0.35); }
-    .express-toggle.active { background: rgba(139,196,0,0.12); border-color: rgba(200,240,0,0.4); }
 
     /* ── Style graffiti (inspiré du prompt React) ── */
     .graffiti-title {
@@ -1063,25 +1054,6 @@
       <!-- Bannière seuil livraison gratuite -->
       <div id="shipping-banner" class="hidden"></div>
 
-      <!-- Toggle express 24h -->
-      <div id="express-toggle-wrap" class="hidden">
-        <div class="express-toggle" id="express-toggle" onclick="toggleExpress()">
-          <div class="flex items-center gap-2">
-            <svg class="w-4 h-4 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-            <div>
-              <p class="text-sm text-white font-semibold">Expédition express 24h</p>
-              <p class="text-xs text-gray-500" id="express-price-label"></p>
-            </div>
-          </div>
-          <label class="toggle pointer-events-none">
-            <input type="checkbox" id="express-checkbox"/>
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
       <!-- Récap total -->
       <div class="space-y-1.5 pt-1">
         <div class="flex items-center justify-between text-sm">
@@ -1089,7 +1061,7 @@
           <span id="cart-subtotal" class="text-white font-medium"></span>
         </div>
         <div class="flex items-center justify-between text-sm" id="shipping-line">
-          <span class="text-gray-400">Expédition</span>
+          <span class="text-gray-400">⚡ Express 24h</span>
           <span id="cart-shipping-cost" class="text-white font-medium"></span>
         </div>
         <div class="flex items-center justify-between border-t pt-2 mt-1" style="border-color:rgba(200,240,0,0.12)">
@@ -1370,13 +1342,11 @@
     // PANIER
     // ═══════════════════════════════════════════════════════════════
     let cart = [];
-    let cartExpressMode = false;
     let cartUser = null; // { email, name }
 
     function cartInit() {
       const saved = localStorage.getItem('bxb-cart');
       if (saved) { try { cart = JSON.parse(saved); } catch(e) {} }
-      cartExpressMode = localStorage.getItem('bxb-express') === '1';
       cartCheckSession();
       updateCartUI();
     }
@@ -1403,7 +1373,7 @@
         else free = sub >= s.freeThresholdPrice && wgt >= s.freeThresholdWeight;
         if (free) return 0;
       }
-      return cartExpressMode ? (s.priceExpress || 0) : (s.priceStandard || 0);
+      return s.priceExpress || 0;
     }
 
     function shippingBannerText() {
@@ -1493,15 +1463,6 @@
       }
     }
 
-    // ── Express toggle ────────────────────────────────────────────
-    function toggleExpress() {
-      cartExpressMode = !cartExpressMode;
-      localStorage.setItem('bxb-express', cartExpressMode ? '1' : '0');
-      document.getElementById('express-checkbox').checked = cartExpressMode;
-      document.getElementById('express-toggle').classList.toggle('active', cartExpressMode);
-      updateCartUI();
-    }
-
     // ── Add / remove ─────────────────────────────────────────────
     function addToCart(e, product) {
       const btn = e.currentTarget;
@@ -1582,18 +1543,6 @@
         } else { banner.classList.add('hidden'); }
       }
 
-      // Toggle express
-      const expWrap = document.getElementById('express-toggle-wrap');
-      const expLabel = document.getElementById('express-price-label');
-      if (expWrap) {
-        const showExpress = s.enabled && s.priceExpress > 0;
-        expWrap.classList.toggle('hidden', !showExpress);
-        if (showExpress && expLabel) expLabel.textContent = `+${s.priceExpress.toFixed(2)} € · Livraison sous 24h`;
-      }
-      const expChk = document.getElementById('express-checkbox');
-      const expToggle = document.getElementById('express-toggle');
-      if (expChk) expChk.checked = cartExpressMode;
-      if (expToggle) expToggle.classList.toggle('active', cartExpressMode);
     }
 
     // ── Render items ──────────────────────────────────────────────
@@ -1654,7 +1603,7 @@
       const ship = shippingCost();
       const total = (sub + ship).toFixed(2);
       const lines = cart.map(i => `• ${i.name} x${i.qty} — ${(i.price * i.qty).toFixed(2)} €`).join('\n');
-      const shipLine = !s.enabled ? '' : ship === 0 ? '\n🚚 Livraison offerte' : `\n🚚 ${cartExpressMode ? 'Express 24h' : 'Standard'} : ${ship.toFixed(2)} €`;
+      const shipLine = !s.enabled ? '' : ship === 0 ? '\n🚚 Livraison offerte' : `\n⚡ Express 24h : ${ship.toFixed(2)} €`;
       const clientLine = cartUser ? `\n👤 Client : ${cartUser.email}` : '';
       const msg = encodeURIComponent(`Bonjour CBD Botani X Brother's ! 👋\n\nJe souhaite commander :\n\n${lines}${shipLine}${clientLine}\n\n*Total : ${total} €*\n\nMerci de confirmer la disponibilité.`);
       window.open(`https://wa.me/33672258148?text=${msg}`, '_blank');

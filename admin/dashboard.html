@@ -471,18 +471,13 @@
             </label>
           </div>
 
-          <!-- Tarifs -->
+          <!-- Tarif -->
           <div class="glass-card rounded-2xl p-6 space-y-5">
-            <h3 class="text-white font-bold text-sm border-b pb-3" style="border-color:rgba(200,240,0,0.12)">Tarifs d'expédition</h3>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-medium text-gray-400 mb-1.5">Expédition standard (€)</label>
-                <input id="ship-price-standard" type="number" min="0" step="0.01" placeholder="4.90" class="input-field" oninput="saveShipping()"/>
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-400 mb-1.5">Express 24h (€)</label>
-                <input id="ship-price-express" type="number" min="0" step="0.01" placeholder="9.90" class="input-field" oninput="saveShipping()"/>
-              </div>
+            <h3 class="text-white font-bold text-sm border-b pb-3" style="border-color:rgba(200,240,0,0.12)">Tarif d'expédition</h3>
+            <div>
+              <label class="block text-xs font-medium text-gray-400 mb-1.5">Prix expédition express 24h (€)</label>
+              <input id="ship-price-express" type="number" min="0" step="0.01" placeholder="9.90" class="input-field" oninput="saveShipping()"/>
+              <p class="text-xs text-gray-600 mt-1.5">Seule option d'expédition disponible.</p>
             </div>
           </div>
 
@@ -1252,7 +1247,6 @@
     function loadShippingSettings() {
       const s = getShippingSettings();
       document.getElementById('ship-enabled').checked         = s.enabled;
-      document.getElementById('ship-price-standard').value    = s.priceStandard ?? '';
       document.getElementById('ship-price-express').value     = s.priceExpress   ?? '';
       document.getElementById('ship-free-enabled').checked    = s.freeEnabled;
       document.getElementById('ship-free-mode').value         = s.freeMode || 'price';
@@ -1270,7 +1264,6 @@
     function saveShipping(showFeedback = false) {
       const s = {
         enabled:              document.getElementById('ship-enabled').checked,
-        priceStandard:        parseFloat(document.getElementById('ship-price-standard').value) || 0,
         priceExpress:         parseFloat(document.getElementById('ship-price-express').value)  || 0,
         freeEnabled:          document.getElementById('ship-free-enabled').checked,
         freeMode:             document.getElementById('ship-free-mode').value,
