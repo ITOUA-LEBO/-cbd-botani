@@ -297,6 +297,80 @@
       .product-card { animation: none; }
     }
 
+    /* ── Panier ── */
+    #cart-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: 380px; max-width: 100vw;
+      background: rgba(10,12,2,0.97);
+      border-left: 1px solid rgba(200,240,0,0.18);
+      backdrop-filter: blur(24px);
+      z-index: 200;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column;
+    }
+    #cart-drawer.open { transform: translateX(0); }
+
+    #cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(2px);
+      z-index: 199;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    #cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(200,240,0,0.08);
+      transition: background 0.15s;
+    }
+    .cart-item:hover { background: rgba(139,196,0,0.04); }
+
+    .qty-btn {
+      width: 26px; height: 26px;
+      border-radius: 8px; border: 1px solid rgba(200,240,0,0.25);
+      background: rgba(20,30,0,0.3); color: #c8f000;
+      font-size: 1rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+    }
+    .qty-btn:hover { background: rgba(139,196,0,0.25); border-color: rgba(200,240,0,0.5); }
+
+    #cart-badge {
+      position: absolute; top: -5px; right: -5px;
+      min-width: 18px; height: 18px;
+      background: #ef4444; color: #fff;
+      font-size: 0.6rem; font-weight: 700;
+      border-radius: 999px; padding: 0 4px;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid #0a0a0a;
+      transform: scale(0);
+      transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+    }
+    #cart-badge.visible { transform: scale(1); }
+
+    .add-to-cart-btn {
+      width: 100%; padding: 10px;
+      background: rgba(139,196,0,0.18);
+      border: 1px solid rgba(200,240,0,0.3);
+      color: #c8f000; font-size: 0.78rem; font-weight: 700;
+      border-radius: 10px; cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .add-to-cart-btn:hover {
+      background: rgba(139,196,0,0.32);
+      border-color: rgba(200,240,0,0.55);
+      box-shadow: 0 0 12px rgba(200,240,0,0.2);
+    }
+    .add-to-cart-btn.added {
+      background: rgba(139,196,0,0.35);
+      border-color: rgba(200,240,0,0.6);
+      color: #fff;
+    }
+
     /* ── Style graffiti (inspiré du prompt React) ── */
     .graffiti-title {
       font-family: 'Black Han Sans', Impact, 'Arial Black', sans-serif;
@@ -378,11 +452,25 @@
         </div>
 
         <div class="hidden md:flex items-center gap-3">
+          <!-- Icône panier -->
+          <button onclick="openCart()" class="relative p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer" aria-label="Panier">
+            <svg class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span id="cart-badge"></span>
+          </button>
           <a href="#produits" class="btn-primary px-5 py-2 text-sm rounded-xl cursor-pointer">Découvrir</a>
         </div>
 
-        <!-- Mobile hamburger -->
-        <button id="hamburger" class="md:hidden p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer" aria-label="Menu">
+        <!-- Mobile : panier + hamburger -->
+        <div class="md:hidden flex items-center gap-1">
+          <button onclick="openCart()" class="relative p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer" aria-label="Panier">
+            <svg class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            <span id="cart-badge-mobile" class="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-[0.6rem] font-bold rounded-full px-1 flex items-center justify-center border-2 border-[#0a0a0a] scale-0 transition-transform duration-200"></span>
+          </button>
+          <button id="hamburger" class="p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer" aria-label="Menu">
           <svg id="ham-open" class="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -390,6 +478,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
+        </div><!-- /mobile flex -->
       </div>
     </div>
 
@@ -875,6 +964,60 @@
     </div>
   </footer>
 
+  <!-- ── OVERLAY PANIER ───────────────────────────────────────────────── -->
+  <div id="cart-overlay" onclick="closeCart()"></div>
+
+  <!-- ── DRAWER PANIER ─────────────────────────────────────────────────── -->
+  <div id="cart-drawer" role="dialog" aria-label="Panier">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-5 py-4 border-b flex-shrink-0" style="border-color:rgba(200,240,0,0.15)">
+      <div class="flex items-center gap-2">
+        <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <h2 class="text-white font-bold text-base">Mon panier</h2>
+        <span id="cart-count-label" class="text-xs text-gray-500"></span>
+      </div>
+      <button onclick="closeCart()" class="p-1.5 rounded-xl hover:bg-white/5 transition-colors cursor-pointer" aria-label="Fermer">
+        <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Corps : liste articles -->
+    <div id="cart-items" class="flex-1 overflow-y-auto">
+      <!-- Vide par défaut -->
+      <div id="cart-empty" class="flex flex-col items-center justify-center h-full gap-4 py-16 text-center px-6">
+        <svg class="w-14 h-14 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+        </svg>
+        <p class="text-gray-500 text-sm">Votre panier est vide.</p>
+        <button onclick="closeCart()" class="text-green-400 text-sm font-medium hover:underline cursor-pointer">Voir les produits →</button>
+      </div>
+    </div>
+
+    <!-- Footer : total + commande -->
+    <div id="cart-footer" class="hidden flex-shrink-0 border-t p-5 space-y-4" style="border-color:rgba(200,240,0,0.15)">
+      <!-- Récap -->
+      <div class="flex items-center justify-between">
+        <span class="text-sm text-gray-400">Total estimé</span>
+        <span id="cart-total" class="text-xl font-bold text-green-400"></span>
+      </div>
+      <p class="text-xs text-gray-600">Prix indicatifs · Confirmés en boutique ou par téléphone.</p>
+      <!-- CTA WhatsApp -->
+      <button onclick="orderByWhatsApp()" class="w-full py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all"
+        style="background:linear-gradient(135deg,#25d366,#128c4e);border:1px solid rgba(37,211,102,0.4);color:#fff;">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Commander via WhatsApp
+      </button>
+      <!-- Vider panier -->
+      <button onclick="clearCart()" class="w-full py-2 text-xs text-gray-600 hover:text-red-400 transition-colors cursor-pointer">Vider le panier</button>
+    </div>
+  </div>
+
   <script>
     // ── Scroll reveal ──────────────────────────────────────────────────────────
     const observer = new IntersectionObserver((entries) => {
@@ -1029,9 +1172,15 @@
             <span class="badge text-xs">${escHtmlPublic(p.category)}</span>
             <h3 class="graffiti-title text-base font-black text-white mt-2 mb-1 group-hover:text-green-400 transition-colors duration-200">${escHtmlPublic(p.name)}</h3>
             <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">${escHtmlPublic(p.description || '')}</p>
-            <div class="mt-4 flex items-center justify-between">
+            <div class="mt-3 flex items-center justify-between gap-3">
               <span class="text-green-400 font-black" style="font-family:Impact,'Arial Black',sans-serif;font-size:1.1rem;text-shadow:1px 1px 0 rgba(0,0,0,0.5)">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
             </div>
+            <button class="add-to-cart-btn mt-3" onclick="addToCart(event, ${JSON.stringify(p).replace(/"/g,'&quot;')})">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+              </svg>
+              Ajouter
+            </button>
           </div>
         </div>`;
     }
@@ -1120,7 +1269,157 @@
     document.addEventListener('DOMContentLoaded', () => {
       initCarouselDrag();
       setTimeout(loadPublicProducts, 100);
+      cartInit();
     });
+
+    // ═══════════════════════════════════════════════════════════════
+    // PANIER
+    // ═══════════════════════════════════════════════════════════════
+    let cart = [];   // [{ id, name, price, price_unit, category, qty }]
+
+    function cartInit() {
+      const saved = localStorage.getItem('bxb-cart');
+      if (saved) { try { cart = JSON.parse(saved); } catch(e) {} }
+      updateCartUI();
+    }
+
+    function cartSave() {
+      localStorage.setItem('bxb-cart', JSON.stringify(cart));
+    }
+
+    function addToCart(e, product) {
+      const btn = e.currentTarget;
+      const existing = cart.find(i => i.id === product.id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ id: product.id, name: product.name, price: product.price, price_unit: product.price_unit || '€', category: product.category, qty: 1 });
+      }
+      cartSave();
+      updateCartUI();
+
+      // Feedback visuel bouton
+      btn.classList.add('added');
+      btn.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Ajouté !`;
+      setTimeout(() => {
+        btn.classList.remove('added');
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg> Ajouter`;
+      }, 1500);
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(i => i.id !== id);
+      cartSave();
+      updateCartUI();
+      renderCartItems();
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      item.qty = Math.max(1, item.qty + delta);
+      cartSave();
+      updateCartUI();
+      renderCartItems();
+    }
+
+    function clearCart() {
+      cart = [];
+      cartSave();
+      updateCartUI();
+      renderCartItems();
+    }
+
+    function cartTotal() {
+      return cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+    }
+
+    function cartItemCount() {
+      return cart.reduce((sum, i) => sum + i.qty, 0);
+    }
+
+    function updateCartUI() {
+      const count = cartItemCount();
+      // Badge desktop
+      const badge = document.getElementById('cart-badge');
+      if (badge) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.classList.toggle('visible', count > 0);
+      }
+      // Badge mobile
+      const badgeMob = document.getElementById('cart-badge-mobile');
+      if (badgeMob) {
+        badgeMob.textContent = count > 99 ? '99+' : count;
+        badgeMob.style.transform = count > 0 ? 'scale(1)' : 'scale(0)';
+      }
+      // Label header drawer
+      const label = document.getElementById('cart-count-label');
+      if (label) label.textContent = count > 0 ? `(${count} article${count > 1 ? 's' : ''})` : '';
+      // Total
+      const total = document.getElementById('cart-total');
+      if (total) total.textContent = cartTotal().toFixed(2) + ' €';
+      // Footer drawer
+      const footer = document.getElementById('cart-footer');
+      if (footer) footer.classList.toggle('hidden', cart.length === 0);
+    }
+
+    function renderCartItems() {
+      const container = document.getElementById('cart-items');
+      const empty     = document.getElementById('cart-empty');
+      if (!cart.length) {
+        empty.classList.remove('hidden');
+        container.querySelectorAll('.cart-item').forEach(el => el.remove());
+        return;
+      }
+      empty.classList.add('hidden');
+      container.querySelectorAll('.cart-item').forEach(el => el.remove());
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.dataset.id = item.id;
+        div.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <p class="text-white text-sm font-semibold truncate">${escHtmlPublic(item.name)}</p>
+            <p class="text-xs text-gray-500 mt-0.5">${escHtmlPublic(item.category)}</p>
+            <p class="text-green-400 font-bold text-sm mt-1">${(item.price * item.qty).toFixed(2)} €</p>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="Moins">−</button>
+            <span class="text-white text-sm font-bold w-5 text-center">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="Plus">+</button>
+            <button onclick="removeFromCart('${item.id}')" class="ml-1 p-1 rounded-lg hover:bg-red-500/15 transition-colors cursor-pointer" aria-label="Supprimer">
+              <svg class="w-4 h-4 text-gray-600 hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>`;
+        container.appendChild(div);
+      });
+    }
+
+    function openCart() {
+      renderCartItems();
+      document.getElementById('cart-drawer').classList.add('open');
+      document.getElementById('cart-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart() {
+      document.getElementById('cart-drawer').classList.remove('open');
+      document.getElementById('cart-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function orderByWhatsApp() {
+      if (!cart.length) return;
+      const lines = cart.map(i => `• ${i.name} x${i.qty} — ${(i.price * i.qty).toFixed(2)} €`).join('\n');
+      const total = cartTotal().toFixed(2);
+      const msg = encodeURIComponent(`Bonjour CBD Botani X Brother's ! 👋\n\nJe souhaite commander :\n\n${lines}\n\n*Total estimé : ${total} €*\n\nMerci de confirmer la disponibilité.`);
+      window.open(`https://wa.me/33672258148?text=${msg}`, '_blank');
+    }
+
+    // Fermer drawer avec Escape
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
   </script>
 </body>
 </html>
