@@ -7,37 +7,35 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&family=Black+Han+Sans&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            green: {
-              950: '#0a0a00',
-              900: '#121500',
-              800: '#1a2000',
-              700: '#3a5500',
-              600: '#6a8c00',
-              500: '#8bc400',
-              400: '#c8f000',
+            lime: {
+              400: '#ffffff',
+              500: '#e0e0e0',
+              600: '#5a8000',
+              900: '#1a2000',
             },
-            dark: {
+            terra: {
+              400: '#c47a5a',
+              500: '#8B4A2F',
+              700: '#4a2218',
+            },
+            ink: {
               950: '#050505',
               900: '#0a0a0a',
               800: '#111111',
               700: '#1a1a1a',
               600: '#242424',
-              500: '#2e2e2e',
             }
           },
           fontFamily: {
-            sans: ['DM Sans', 'sans-serif'],
-            display: ['Playfair Display', 'serif'],
+            sans: ['Syne', 'sans-serif'],
+            display: ['Cormorant Garamond', 'Georgia', 'serif'],
           },
-          backdropBlur: {
-            xs: '2px',
-          }
         }
       }
     }
@@ -46,155 +44,168 @@
     * { box-sizing: border-box; }
 
     :root {
-      --green-primary: #8bc400;
-      --green-dark: #1a2000;
-      --green-glow: rgba(200, 240, 0, 0.4);
-      --glass-bg: rgba(20, 30, 0, 0.15);
-      --glass-border: rgba(200, 240, 0, 0.2);
+      --glass: rgba(255,255,255,0.12);
+      --glass-border: rgba(255,255,255,0.18);
+      --glass-hover: rgba(255,255,255,0.2);
+      --terra: #8B4A2F;
+      --ink: #0a0a0a;
+      --grain-opacity: 0.045;
     }
 
-    html { color-scheme: dark; }
+    html { color-scheme: dark; background: #0a0a0a; }
 
     body {
-      background: #0a0a0a;
-      font-family: 'DM Sans', sans-serif;
+      background: transparent;
+      font-family: 'Syne', sans-serif;
       overflow-x: hidden;
     }
 
-    /* Animated gradient background — bannière en fond */
-    .hero-bg {
-      background:
-        linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.72) 60%, rgba(10,10,10,0.92) 100%),
-        radial-gradient(ellipse 80% 50% at 50% 50%, rgba(139,196,0,0.12) 0%, transparent 70%),
-        url('images/cbd-banniere.jpeg') center center / cover no-repeat;
-    }
-
-
-    /* Orbs */
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      animation: orbFloat 8s ease-in-out infinite;
+    /* ── Grain noise texture sur tout le site ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
       pointer-events: none;
-    }
-    .orb-1 {
-      width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(139,196,0,0.22) 0%, transparent 70%);
-      top: -150px; left: -100px;
-      animation-delay: 0s;
-    }
-    .orb-2 {
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(200,240,0,0.14) 0%, transparent 70%);
-      top: 200px; right: -80px;
-      animation-delay: -3s;
-    }
-    .orb-3 {
-      width: 300px; height: 300px;
-      background: radial-gradient(circle, rgba(26,42,0,0.35) 0%, transparent 70%);
-      bottom: 100px; left: 30%;
-      animation-delay: -5s;
+      z-index: 9999;
+      opacity: var(--grain-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
     }
 
-    @keyframes orbFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33%       { transform: translate(30px, -40px) scale(1.05); }
-      66%       { transform: translate(-20px, 20px) scale(0.97); }
+    /* ── Hero ── */
+    .hero-bg {
+      background: transparent;
     }
 
-    /* Glass cards */
-    .glass-card {
-      background: rgba(20, 30, 0, 0.12);
-      backdrop-filter: blur(16px) saturate(1.4);
-      -webkit-backdrop-filter: blur(16px) saturate(1.4);
-      border: 1px solid rgba(200, 240, 0, 0.18);
-      transition: all 0.35s cubic-bezier(.4,0,.2,1);
-    }
-    .glass-card:hover {
-      background: rgba(20, 30, 0, 0.22);
-      border-color: rgba(200, 240, 0, 0.35);
-      transform: translateY(-6px);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,240,0,0.12), inset 0 1px 0 rgba(255,255,255,0.04);
-    }
-
-    /* Nav glass */
+    /* ── Nav ── */
     .nav-glass {
-      background: rgba(10, 10, 10, 0.7);
-      backdrop-filter: blur(20px) saturate(1.8);
-      -webkit-backdrop-filter: blur(20px) saturate(1.8);
-      border-bottom: 1px solid rgba(200, 240, 0, 0.15);
+      background: rgba(10, 10, 10, 0.4);
+      backdrop-filter: blur(24px) saturate(1.8);
+      -webkit-backdrop-filter: blur(24px) saturate(1.8);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
 
-    /* Pill badge */
+    /* ── Badge pill editorial ── */
     .badge {
-      background: rgba(139, 196, 0, 0.18);
-      border: 1px solid rgba(200, 240, 0, 0.35);
-      color: #c8f000;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
+      display: inline-block;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.7);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      padding: 4px 14px;
+      padding: 5px 16px;
       border-radius: 999px;
     }
 
-    /* CTA button */
+    /* ── Arrondis globaux ── */
+    .btn-primary, .btn-outline, .btn-graffiti { border-radius: 12px !important; }
+    .glass-card { border-radius: 16px !important; }
+    .add-to-cart-btn { border-radius: 10px !important; }
+    input, textarea, select { border-radius: 10px !important; }
+
+    /* ── Bouton principal ── */
     .btn-primary {
-      background: linear-gradient(135deg, #8bc400 0%, #5a8000 100%);
-      border: 1px solid rgba(200,240,0,0.5);
-      color: #0a0a0a;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
       font-weight: 700;
-      letter-spacing: 0.03em;
-      transition: all 0.25s ease;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
     }
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-    .btn-primary:hover::before { opacity: 1; }
     .btn-primary:hover {
-      box-shadow: 0 0 30px rgba(200,240,0,0.45), 0 8px 24px rgba(0,0,0,0.4);
-      border-color: rgba(200,240,0,0.8);
-      transform: translateY(-2px);
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.4);
+      color: #fff;
     }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary span, .btn-primary > *:not(::after) { position: relative; z-index: 1; }
 
+    /* ── Bouton outline ── */
     .btn-outline {
-      border: 1px solid rgba(200,240,0,0.4);
-      color: #c8f000;
-      font-weight: 500;
-      transition: all 0.25s ease;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.75);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
     }
     .btn-outline:hover {
-      background: rgba(139,196,0,0.15);
-      border-color: rgba(200,240,0,0.65);
+      background: rgba(255,255,255,0.14);
+      border-color: rgba(255,255,255,0.35);
+      color: #fff;
     }
 
-    /* Section reveal animation */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    /* ── Bouton graffiti ── */
+    .btn-graffiti {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .btn-graffiti:hover {
+      background: rgba(255,255,255,0.25);
+      border-color: rgba(255,255,255,0.4);
+      color: #fff;
     }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
-    .reveal-delay-4 { transition-delay: 0.4s; }
 
-    /* Product card image placeholder */
+    /* ── Cards liquid glass ── */
+    .glass-card {
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(20px) saturate(1.6);
+      -webkit-backdrop-filter: blur(20px) saturate(1.6);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255,255,255,0.13);
+      border-color: rgba(255,255,255,0.22);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    /* ── Carte produit ── */
+    .product-card {
+      animation: cardIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform: translateY(28px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .product-card .product-reveal {
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-card:hover .product-reveal {
+      clip-path: inset(0% 0 0 0);
+    }
+
+    /* ── Image produit ── */
     .product-img {
-      background: linear-gradient(135deg, rgba(20,30,0,0.6) 0%, rgba(10,15,0,0.85) 100%);
+      background: linear-gradient(135deg, rgba(14,18,4,0.9) 0%, rgba(6,8,2,0.95) 100%);
       position: relative;
       overflow: hidden;
     }
@@ -202,141 +213,188 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, transparent 40%, rgba(5,10,0,0.8) 100%);
+      background: linear-gradient(180deg, transparent 45%, rgba(4,6,2,0.85) 100%);
     }
 
-    /* Leaf SVG pattern */
-    .leaf-pattern {
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 C15 5 5 15 5 30 C5 45 20 55 30 55 C30 55 30 35 30 5Z' fill='none' stroke='rgba(200,240,0,0.05)' stroke-width='1'/%3E%3C/svg%3E");
-      background-size: 60px 60px;
+    /* ── Reveal animations ── */
+    .reveal { will-change: opacity, filter; }
+
+    /* ── Sticky section wrapper ── */
+    .sticky-wrap {
+      position: relative;
+      height: 200vh;
     }
-
-    /* Divider line */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(200,240,0,0.3), transparent);
-    }
-
-    /* Text glow */
-    .text-glow {
-      text-shadow: 0 0 40px rgba(200,240,0,0.45);
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #0a0a0a; }
-    ::-webkit-scrollbar-thumb { background: #8bc400; border-radius: 3px; }
-
-    /* Floating particles */
-    .particle {
-      position: absolute;
-      width: 3px; height: 3px;
-      background: rgba(200,240,0,0.55);
-      border-radius: 50%;
-      animation: particleFloat linear infinite;
+    .sticky-inner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      padding-top: 80px;
+      overflow: hidden;
+      opacity: 0;
+      filter: blur(14px);
+      will-change: opacity, filter;
       pointer-events: none;
-    }
-    @keyframes particleFloat {
-      0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-      10%  { opacity: 1; }
-      90%  { opacity: 0.6; }
-      100% { transform: translateY(-120vh) translateX(40px) scale(0.3); opacity: 0; }
+      z-index: 1;
     }
 
-    /* Mobile menu */
-    #mobile-menu {
+    /* ── Section separator ── */
+    .section-sep {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 0;
+      gap: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .section-sep::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 160px;
+      background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+      animation: sepPulse 3s ease-in-out infinite;
+    }
+    @keyframes sepPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.7); }
+      50%       { opacity: 1;   transform: scaleY(1); }
+    }
+
+    /* ── Divider (conservé comme fallback) ── */
+    .divider {
       display: none;
     }
-    #mobile-menu.open {
-      display: flex;
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+    /* ── Texte display ── */
+    .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+    .hero-display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 700;
+      font-style: italic;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
     }
 
-    /* Smooth anchor offset */
+    /* ── Titre section Syne oversized ── */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-size: clamp(0.85rem, 2vw, 1.2rem);
+    }
+
+    /* ── Mobile menu ── */
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+
     section { scroll-margin-top: 80px; }
 
     /* ── Carousel ── */
     #products-carousel::-webkit-scrollbar { display: none; }
 
-    /* Boutons flèches hover */
     #carousel-prev:hover, #carousel-next:hover {
-      background: rgba(139,196,0,0.35) !important;
-      border-color: rgba(200,240,0,0.5) !important;
-      transform: scale(1.05);
+      background: rgba(255,255,255,0.12) !important;
+      border-color: rgba(255,255,255,0.3) !important;
     }
 
     /* ── Filtres catégorie ── */
     .cat-filter-btn {
-      background: rgba(20,30,0,0.15);
-      border: 1px solid rgba(200,240,0,0.15);
-      color: #6b7280;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.4);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.4s ease;
     }
     .cat-filter-btn:hover {
-      background: rgba(20,30,0,0.28);
-      border-color: rgba(200,240,0,0.32);
-      color: #d9f59b;
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.8);
     }
     .cat-filter-btn.active {
-      background: rgba(139,196,0,0.28);
-      border-color: rgba(200,240,0,0.55);
-      color: #c8f000;
-      box-shadow: 0 0 16px rgba(200,240,0,0.22);
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: #fff;
     }
 
-    /* ── Carte produit dynamique ── */
-    .product-card {
-      animation: cardIn 0.45s ease both;
+    /* ── Sticker card ── */
+    .sticker-card {
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @keyframes cardIn {
-      from { opacity:0; transform:translateY(20px); }
-      to   { opacity:1; transform:translateY(0); }
+    .sticker-card:hover {
+      border-color: rgba(255,255,255,0.22);
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, .orb, .particle, .reveal { animation: none !important; transition: none !important; }
-      .reveal { opacity: 1; transform: none; }
-      .product-card { animation: none; }
+    /* ── Supprime les rotations graffiti ── */
+    .product-card:nth-child(2n),
+    .product-card:nth-child(3n),
+    .product-card:nth-child(4n) { transform: none; }
+    .product-card:hover { transform: translateY(-5px) !important; }
+
+    /* ── Graffiti-title → Cormorant Garamond ── */
+    .graffiti-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
     /* ── Panier ── */
     #cart-drawer {
       position: fixed; top: 0; right: 0; bottom: 0;
       width: 380px; max-width: 100vw;
-      background: rgba(10,12,2,0.97);
-      border-left: 1px solid rgba(200,240,0,0.18);
-      backdrop-filter: blur(24px);
+      background: rgba(10,10,10,0.55);
+      backdrop-filter: blur(32px) saturate(1.8);
+      -webkit-backdrop-filter: blur(32px) saturate(1.8);
+      border-left: 1px solid rgba(255,255,255,0.1);
       z-index: 200;
       transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex; flex-direction: column;
     }
     #cart-drawer.open { transform: translateX(0); }
 
     #cart-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(2px);
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
       z-index: 199;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s ease;
     }
     #cart-overlay.open { opacity: 1; pointer-events: all; }
 
     .cart-item {
       display: flex; align-items: center; gap: 12px;
       padding: 14px 20px;
-      border-bottom: 1px solid rgba(200,240,0,0.08);
-      transition: background 0.15s;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.2s;
     }
-    .cart-item:hover { background: rgba(139,196,0,0.04); }
+    .cart-item:hover { background: rgba(255,255,255,0.04); }
 
     .qty-btn {
       width: 26px; height: 26px;
-      border-radius: 8px; border: 1px solid rgba(200,240,0,0.25);
-      background: rgba(20,30,0,0.3); color: #c8f000;
+      border-radius: 8px; border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.08); color: #fff;
       font-size: 1rem; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+      cursor: pointer; transition: all 0.2s; flex-shrink: 0;
     }
-    .qty-btn:hover { background: rgba(139,196,0,0.25); border-color: rgba(200,240,0,0.5); }
+    .qty-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.35); }
 
     #cart-badge {
       position: absolute; top: -5px; right: -5px;
@@ -347,43 +405,44 @@
       display: flex; align-items: center; justify-content: center;
       border: 2px solid #0a0a0a;
       transform: scale(0);
-      transition: transform 0.2s cubic-bezier(.34,1.56,.64,1);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
     }
     #cart-badge.visible { transform: scale(1); }
 
     .add-to-cart-btn {
       width: 100%; padding: 10px;
-      background: rgba(139,196,0,0.18);
-      border: 1px solid rgba(200,240,0,0.3);
-      color: #c8f000; font-size: 0.78rem; font-weight: 700;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #fff; font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
       border-radius: 10px; cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.4s ease;
       display: flex; align-items: center; justify-content: center; gap: 6px;
     }
     .add-to-cart-btn:hover {
-      background: rgba(139,196,0,0.32);
-      border-color: rgba(200,240,0,0.55);
-      box-shadow: 0 0 12px rgba(200,240,0,0.2);
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.32);
     }
     .add-to-cart-btn.added {
-      background: rgba(139,196,0,0.35);
-      border-color: rgba(200,240,0,0.6);
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.35);
       color: #fff;
     }
 
     /* ── Auth panier ── */
     .cart-auth-panel {
       padding: 16px 20px;
-      border-bottom: 1px solid rgba(200,240,0,0.1);
-      background: rgba(20,30,0,0.15);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
     }
     .cart-input {
       width: 100%; padding: 9px 12px; border-radius: 10px;
-      background: rgba(20,30,0,0.3); border: 1px solid rgba(200,240,0,0.2);
-      color: #f3f4f6; font-size: 0.8rem;
-      outline: none; transition: border-color 0.2s;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: #f3f4f6; font-family: 'Syne', sans-serif; font-size: 0.8rem;
+      outline: none; transition: border-color 0.3s;
     }
-    .cart-input:focus { border-color: rgba(200,240,0,0.5); }
+    .cart-input:focus { border-color: rgba(255,255,255,0.3); }
     .cart-input::placeholder { color: #4b5563; }
 
     /* ── Shipping banner ── */
@@ -391,73 +450,111 @@
       margin: 0 20px 0 20px;
       padding: 10px 14px;
       border-radius: 12px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
+      font-family: 'Syne', sans-serif;
       font-weight: 600;
+      letter-spacing: 0.06em;
       text-align: center;
-      transition: all 0.3s ease;
+      transition: all 0.4s ease;
     }
-    .ship-banner-free { background: rgba(139,196,0,0.15); border: 1px solid rgba(200,240,0,0.3); color: #c8f000; }
-    .ship-banner-progress { background: rgba(20,30,0,0.25); border: 1px solid rgba(200,240,0,0.15); color: #9ca3af; }
+    .ship-banner-free { background: rgba(255,255,255,0.1); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+    .ship-banner-progress { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #6b7280; }
 
+    @media (max-width: 640px) {
+      /* Nav logo plus petit */
+      .nav-logo-img { width: 28px !important; height: 28px !important; }
+      .nav-logo-name { font-size: 0.7rem !important; }
+      .nav-logo-sub  { font-size: 0.55rem !important; }
 
-    /* ── Style graffiti (inspiré du prompt React) ── */
-    .graffiti-title {
-      font-family: 'Black Han Sans', Impact, 'Arial Black', sans-serif;
-      letter-spacing: -0.03em;
+      /* ── Hero ── */
+      #hero { padding-top: 72px; padding-bottom: 28px; min-height: 100svh; align-items: center; }
+      #hero > div.relative { padding-top: 0; }
+      .hero-display { font-size: clamp(1rem, 6vw, 1.4rem) !important; line-height: 1.05 !important; }
+      #hero .badge { font-size: 0.48rem; padding: 3px 9px; }
+      #hero .reveal.mb-8 { margin-bottom: 0.6rem !important; }
+      #hero h1 { margin-bottom: 0.6rem !important; }
+      #hero p { font-size: 0.65rem !important; margin-bottom: 0.7rem !important; line-height: 1.5 !important; }
+      #hero .btn-graffiti, #hero .btn-outline { padding: 5px 12px; font-size: 0.6rem; }
+      #hero .flex.flex-col.sm\\:flex-row { gap: 0.5rem !important; }
+
+      /* ── Sections ── */
+      section { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+      .section-sep { padding: 40px 0 !important; }
+      .section-title { font-size: 0.85rem !important; }
+
+      /* ── À propos : card glass trop grande ── */
+      #apropos .glass-card { padding: 0.6rem !important; }
+      #apropos .space-y-5 { gap: 0.4rem !important; }
+      #apropos .space-y-5 p { font-size: 0.65rem !important; }
+      #apropos .text-sm { font-size: 0.65rem !important; }
+      #apropos p.text-gray-400, #apropos p.text-gray-600 { font-size: 0.65rem !important; margin-bottom: 0.5rem !important; }
+      #apropos .mb-10 { margin-bottom: 0.75rem !important; }
+
+      /* ── Valeurs : cards plus compactes ── */
+      #valeurs .grid { gap: 1px; }
+      #valeurs .glass-card { padding: 0.6rem !important; }
+      #valeurs p { font-size: 0.65rem !important; }
+      #valeurs h3 { font-size: 0.72rem !important; margin-bottom: 0.3rem !important; }
+      #valeurs .mb-6 { margin-bottom: 0.5rem !important; }
+
+      /* ── Contact : cards infos + formulaire ── */
+      #contact .glass-card { padding: 0.6rem !important; }
+      #contact .text-sm { font-size: 0.65rem !important; }
+      #contact .text-xs { font-size: 0.55rem !important; }
+      #contact p.text-gray-500 { font-size: 0.62rem !important; margin-bottom: 0.6rem !important; }
+      #contact .mb-10 { margin-bottom: 0.75rem !important; }
+      #contact .space-y-2 { gap: 0.35rem !important; }
+      #contact h3 { font-size: 0.72rem !important; margin-bottom: 0.4rem !important; }
+      #contact .p-7 { padding: 0.75rem !important; }
+      #contact .p-6 { padding: 0.6rem !important; }
+      #contact .space-y-4 > div { margin-bottom: 0.4rem !important; }
+
+      /* Newsletter mini */
+      #contact .glass-card .text-sm { font-size: 0.65rem !important; }
+      #contact .glass-card .text-xs { font-size: 0.55rem !important; }
+      #contact .glass-card .w-5 { width: 1rem !important; height: 1rem !important; }
+      #contact form.flex { gap: 0.35rem !important; }
+
+      /* Inputs */
+      input, textarea, select { padding: 6px 9px !important; font-size: 0.68rem !important; }
+      textarea { rows: 3; min-height: 60px !important; }
+      label { font-size: 0.58rem !important; margin-bottom: 3px !important; }
+
+      /* Produits */
+      .product-img { height: 110px !important; }
+      .product-img svg { width: 40px !important; height: 40px !important; }
+      .product-card { width: 185px !important; }
+
+      /* Footer */
+      footer { padding-top: 1.2rem !important; padding-bottom: 1.2rem !important; }
+      footer .text-sm { font-size: 0.6rem !important; }
+      footer img { width: 18px !important; height: 18px !important; }
+
+      /* Panier */
+      #cart-drawer { width: 100vw; }
     }
 
-    /* Effet sticker : ombre noire décalée */
-    .sticker-card {
-      border: 3px solid #000;
-      box-shadow: 6px 6px 0px rgba(0,0,0,0.95);
-      transition: box-shadow 0.25s cubic-bezier(.34,1.56,.64,1), transform 0.25s cubic-bezier(.34,1.56,.64,1);
-    }
-    .sticker-card:hover {
-      box-shadow: 10px 10px 0px rgba(0,0,0,0.95);
-      transform: translateY(-4px);
-    }
-
-    /* Drip supprimé */
-
-    /* Rotation légère des cartes produit */
-    .product-card:nth-child(2n)   { transform: rotate(-1.5deg); }
-    .product-card:nth-child(3n)   { transform: rotate(1.2deg); }
-    .product-card:nth-child(4n)   { transform: rotate(-0.8deg); }
-    .product-card:hover            { transform: rotate(0deg) translateY(-6px) scale(1.02) !important; }
-
-    /* Badge graffiti (tag) supprimé */
-
-    /* Bouton graffiti style */
-    .btn-graffiti {
-      background: #c8f000;
-      border: 3px solid #000;
-      box-shadow: 4px 4px 0px rgba(0,0,0,0.95);
-      color: #000;
-      font-family: Impact, 'Arial Black', sans-serif;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      transition: all 0.2s cubic-bezier(.34,1.56,.64,1);
-    }
-    .btn-graffiti:hover {
-      box-shadow: 6px 6px 0px rgba(0,0,0,0.95);
-      transform: translateY(-2px) scale(1.03);
-      background: #d9f500;
-    }
-    .btn-graffiti:active {
-      box-shadow: 2px 2px 0px rgba(0,0,0,0.95);
-      transform: translateY(1px);
-    }
-
-    /* Paint splat décoratif */
-    .paint-splat {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      pointer-events: none;
+    @media (prefers-reduced-motion: reduce) {
+      *, .reveal { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+      .product-card { animation: none; }
     }
   </style>
 </head>
 <body class="text-gray-100">
+
+
+  <div style="position:relative;z-index:1;">
+
+  <!-- Vidéo de fond fixe — canvas ping-pong -->
+  <div id="hero-bg-wrap" style="position:fixed;inset:0;z-index:0;pointer-events:none;">
+    <canvas id="hero-canvas" style="width:100%;height:100%;object-fit:cover;display:block;"></canvas>
+    <!-- Vidéo cachée utilisée comme source de frames -->
+    <video id="hero-video" muted playsinline preload="auto"
+      src="images/From KlickPin CF Refresh these dreamy streetwear look tips that bring style function and personality together that balance trend comfort and everyday function - Pin-1618549864058372 (1).mp4"
+      style="display:none;"></video>
+    <div id="hero-overlay" style="position:absolute;inset:0;background:rgba(5,5,5,0.5);transition:opacity 0.3s ease;"></div>
+  </div>
 
   <!-- NAV -->
   <nav class="nav-glass fixed top-0 left-0 right-0 z-50">
@@ -465,19 +562,19 @@
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <a href="#hero" class="flex items-center gap-2 group cursor-pointer">
-          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's" class="w-10 h-10 rounded-xl object-cover" style="border:1px solid rgba(200,240,0,0.35)"/>
+          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's" class="nav-logo-img w-10 h-10 rounded-xl object-cover" style="border:1px solid rgba(255,255,255,0.25)"/>
           <div>
-            <div class="text-sm font-bold text-white leading-tight tracking-wide">CBD BOTANI</div>
-            <div class="text-xs text-green-400 leading-tight font-medium tracking-widest">X BROTHER'S</div>
+            <div class="nav-logo-name text-sm font-bold text-white leading-tight tracking-wide">CBD BOTANI</div>
+            <div class="nav-logo-sub text-xs leading-tight font-medium tracking-widest" style="color:#8B4A2F">X BROTHER'S</div>
           </div>
         </a>
 
         <!-- Desktop nav -->
         <div class="hidden md:flex items-center gap-1">
-          <a href="#produits" class="px-4 py-2 text-sm text-gray-300 hover:text-green-400 transition-colors duration-200 rounded-lg hover:bg-white/5 cursor-pointer">Produits</a>
-          <a href="#apropos" class="px-4 py-2 text-sm text-gray-300 hover:text-green-400 transition-colors duration-200 rounded-lg hover:bg-white/5 cursor-pointer">À propos</a>
-          <a href="#valeurs" class="px-4 py-2 text-sm text-gray-300 hover:text-green-400 transition-colors duration-200 rounded-lg hover:bg-white/5 cursor-pointer">Nos valeurs</a>
-          <a href="#contact" class="px-4 py-2 text-sm text-gray-300 hover:text-green-400 transition-colors duration-200 rounded-lg hover:bg-white/5 cursor-pointer">Contact</a>
+          <a href="#produits" class="px-4 py-2 text-gray-500 hover:text-white transition-colors duration-300 cursor-pointer" style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase">Produits</a>
+          <a href="#apropos" class="px-4 py-2 text-gray-500 hover:text-white transition-colors duration-300 cursor-pointer" style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase">À propos</a>
+          <a href="#valeurs" class="px-4 py-2 text-gray-500 hover:text-white transition-colors duration-300 cursor-pointer" style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase">Nos valeurs</a>
+          <a href="#contact" class="px-4 py-2 text-gray-500 hover:text-white transition-colors duration-300 cursor-pointer" style="font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase">Contact</a>
         </div>
 
         <div class="hidden md:flex items-center gap-3">
@@ -488,7 +585,7 @@
             </svg>
             <span id="cart-badge"></span>
           </button>
-          <a href="#produits" class="btn-primary px-5 py-2 text-sm rounded-xl cursor-pointer">Découvrir</a>
+          <a href="#produits" class="btn-primary px-5 py-2.5 text-sm cursor-pointer relative overflow-hidden" style="border-radius:12px"><span class="relative z-10">Découvrir</span></a>
         </div>
 
         <!-- Mobile : panier + hamburger -->
@@ -517,87 +614,90 @@
       <a href="#apropos" class="block px-4 py-3 text-sm text-gray-300 hover:text-green-400 transition-colors cursor-pointer" onclick="closeMobileMenu()">À propos</a>
       <a href="#valeurs" class="block px-4 py-3 text-sm text-gray-300 hover:text-green-400 transition-colors cursor-pointer" onclick="closeMobileMenu()">Nos valeurs</a>
       <a href="#contact" class="block px-4 py-3 text-sm text-gray-300 hover:text-green-400 transition-colors cursor-pointer" onclick="closeMobileMenu()">Contact</a>
-      <a href="#produits" class="btn-primary mt-2 px-5 py-2.5 text-sm rounded-xl text-center block cursor-pointer" onclick="closeMobileMenu()">Découvrir</a>
+      <a href="#produits" class="btn-primary mt-2 px-5 py-2.5 text-sm text-center block cursor-pointer relative overflow-hidden" style="border-radius:12px" onclick="closeMobileMenu()"><span class="relative z-10">Découvrir</span></a>
     </div>
   </nav>
 
   <!-- HERO -->
-  <section id="hero" class="relative min-h-screen flex items-center justify-center hero-bg overflow-hidden">
-    <!-- Orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <!-- Particles container -->
+  <div class="sticky-wrap" id="wrap-hero">
+  <div class="sticky-inner" id="inner-hero" style="opacity:1;filter:blur(0px);pointer-events:auto">
+  <section id="hero" class="relative w-full flex items-end hero-bg overflow-hidden pb-20 pt-36" style="height:100vh">
     <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
 
-    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-16">
+    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 sm:px-10">
+      <!-- Layout asymétrique : texte oversized à gauche, infos à droite -->
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-end">
 
-      <!-- Mascotte -->
-      <div class="reveal flex justify-center mb-6">
-        <div class="relative inline-block">
-          <img src="images/mascotte.jpg" alt="CBD Botani Mascotte"
-            class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover mt-6"
-            style="border:3px solid #c8f000;box-shadow:0 0 40px rgba(200,240,0,0.35),6px 6px 0px rgba(0,0,0,0.8)"/>
+        <!-- Colonne gauche : titre oversize -->
+        <div>
+          <div class="reveal mb-8">
+            <span class="badge">Ivry-sur-Seine · CBD Premium</span>
+          </div>
+
+          <h1 class="reveal reveal-delay-1 hero-display text-[clamp(1.2rem,3vw,2.5rem)] text-white leading-[0.92] mb-4">
+            Le CBD<br/>
+            <em style="color:#fff">premium</em><br/>
+            <span style="color:#fff;opacity:0.35;font-size:0.45em;font-style:normal;font-weight:400;letter-spacing:0.04em;text-transform:uppercase;font-family:'Syne',sans-serif">accessible.</span>
+          </h1>
+
+          <p class="reveal reveal-delay-2 text-gray-400 max-w-lg leading-loose mb-10" style="font-size:0.78rem;letter-spacing:0.02em">
+            Fleurs, huiles, résines, e-liquides &amp; bien-être sélectionnés avec soin.<br/>
+            Une expérience CBD distincte à Ivry-sur-Seine.
+          </p>
+
+          <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4 items-start">
+            <a href="#produits" class="btn-graffiti px-4 py-2 text-xs cursor-pointer inline-block relative overflow-hidden">
+              <span class="relative z-10">Explorer nos produits</span>
+            </a>
+            <a href="#apropos" class="btn-outline px-4 py-2 text-xs cursor-pointer">
+              Notre histoire
+            </a>
+          </div>
         </div>
-      </div>
 
-      <div class="reveal">
-        <span class="badge">Ivry-sur-Seine · CBD Premium</span>
-      </div>
-
-      <h1 class="reveal reveal-delay-1 graffiti-title text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[1.05] mt-6 mb-6">
-        <span class="text-white" style="text-shadow:0 2px 20px rgba(0,0,0,0.9),0 0 40px rgba(0,0,0,0.7)">Le CBD premium</span><br/>
-        <span class="text-glow" style="background:linear-gradient(135deg,#c8f000 0%,#8bc400 50%,#5a8000 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 2px 12px rgba(0,0,0,0.9))">accessible.</span>
-      </h1>
-
-      <p class="reveal reveal-delay-2 text-gray-300 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed mb-10" style="text-shadow:0 1px 8px rgba(0,0,0,0.8)">
-        Fleurs, huiles, résines, e-liquides & bien-être sélectionnés avec soin.<br class="hidden sm:block"/>
-        Une expérience CBD <span class="text-green-400 font-medium">premium</span> à Ivry-sur-Seine.
-      </p>
-
-      <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="#produits" class="btn-graffiti px-8 py-3.5 rounded-xl text-base cursor-pointer inline-block">
-          Explorer nos produits
-        </a>
-        <a href="#apropos" class="btn-outline px-8 py-3.5 rounded-2xl text-base cursor-pointer">
-          Notre histoire
-        </a>
-      </div>
-
-      <!-- Stats bar -->
-      <div class="reveal reveal-delay-4 mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto">
-        <div class="glass-card rounded-2xl p-4 text-center cursor-default">
-          <div class="text-2xl font-bold text-green-400">5/5</div>
-          <div class="text-xs text-gray-500 mt-1">+50 avis clients</div>
+        <!-- Colonne droite : stats (cachée sur mobile) -->
+        <div class="hero-stats-col hidden lg:flex reveal reveal-delay-2 flex-col gap-4 items-start lg:items-end">
+          <div class="glass-card p-5 w-full" style="border-radius:16px">
+            <div class="space-y-4">
+              <div class="flex items-baseline justify-between">
+                <span class="text-gray-600 text-xs uppercase tracking-widest">Avis clients</span>
+                <span class="font-display text-sm font-bold" style="color:#fff">5/5</span>
+              </div>
+              <div style="height:1px;background:rgba(255,255,255,0.06)"></div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-gray-600 text-xs uppercase tracking-widest">Gammes</span>
+                <span class="font-display text-sm font-bold" style="color:#fff">5+</span>
+              </div>
+              <div style="height:1px;background:rgba(255,255,255,0.06)"></div>
+              <div class="flex items-baseline justify-between">
+                <span class="text-gray-600 text-xs uppercase tracking-widest">Légal & contrôlé</span>
+                <span class="font-display text-sm font-bold" style="color:#8B4A2F">100%</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="glass-card rounded-2xl p-4 text-center cursor-default">
-          <div class="text-2xl font-bold text-green-400">5+</div>
-          <div class="text-xs text-gray-500 mt-1">Gammes premium</div>
-        </div>
-        <div class="glass-card rounded-2xl p-4 text-center cursor-default">
-          <div class="text-2xl font-bold text-green-400">100%</div>
-          <div class="text-xs text-gray-500 mt-1">Légal & contrôlé</div>
-        </div>
+
       </div>
     </div>
 
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
-      <svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-      </svg>
+    <!-- Indicateur scroll -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-30">
+      <div style="width:1px;height:56px;background:linear-gradient(180deg,rgba(255,255,255,0.4),transparent);margin:0 auto"></div>
     </div>
   </section>
-
-  <div class="divider"></div>
+  </div></div>
 
   <!-- PRODUCTS -->
-  <section id="produits" class="py-24 overflow-hidden" style="position:relative;">
-    <div style="position:absolute;inset:0;background:url('images/bg-produits.jpg') center center/cover no-repeat;opacity:0.22;filter:blur(18px);pointer-events:none;z-index:0;transform:scale(1.08);"></div>
-    <div class="text-center mb-12 px-4 sm:px-6" style="position:relative;z-index:1;">
-      <div class="reveal"><span class="badge">Notre sélection</span></div>
-      <h2 class="reveal reveal-delay-1 font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-4">Gammes & produits</h2>
-      <p class="reveal reveal-delay-2 text-gray-400 max-w-xl mx-auto">Chaque produit est rigoureusement sélectionné pour sa qualité, son terpène et son effet.</p>
+  <div class="sticky-wrap" id="wrap-produits">
+  <div class="sticky-inner" id="inner-produits">
+  <section id="produits" class="w-full py-12 overflow-hidden" style="position:relative;">
+    <div style="position:absolute;inset:0;background:transparent;pointer-events:none;z-index:0;"></div>
+    <div class="px-6 sm:px-10 max-w-6xl mx-auto mb-12" style="position:relative;z-index:1;">
+      <div class="reveal mb-3"><span class="badge">Notre sélection</span></div>
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+        <h2 class="reveal reveal-delay-1 section-title text-base sm:text-lg text-white leading-none">Gammes<br/><span style="color:#fff">&amp; produits</span></h2>
+        <p class="reveal reveal-delay-2 text-gray-500 max-w-xs leading-relaxed" style="font-size:0.75rem;letter-spacing:0.02em">Chaque produit sélectionné pour sa qualité, son terpène et son effet.</p>
+      </div>
     </div>
 
     <!-- Filtres + flèches -->
@@ -610,17 +710,17 @@
       <div class="flex gap-2 flex-shrink-0">
         <button id="carousel-prev" onclick="carouselScroll(-1)"
           class="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
-          style="background:rgba(20,30,0,0.2);border:1px solid rgba(200,240,0,0.18)"
+          style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14)"
           aria-label="Précédent">
-          <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-4 h-4" style="color:#fff" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
           </svg>
         </button>
         <button id="carousel-next" onclick="carouselScroll(1)"
           class="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200"
-          style="background:rgba(139,196,0,0.25);border:1px solid rgba(200,240,0,0.35)"
+          style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25)"
           aria-label="Suivant">
-          <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-4 h-4" style="color:#fff" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
           </svg>
         </button>
@@ -631,10 +731,10 @@
     <div class="relative">
       <!-- Dégradé fondu gauche -->
       <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-12 z-10"
-        style="background:linear-gradient(90deg,#0a0a0a,transparent)"></div>
+        style="background:linear-gradient(90deg,rgba(0,0,0,0.4),transparent)"></div>
       <!-- Dégradé fondu droite -->
       <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-10"
-        style="background:linear-gradient(270deg,#0a0a0a,transparent)"></div>
+        style="background:linear-gradient(270deg,rgba(0,0,0,0.4),transparent)"></div>
 
       <!-- Piste scrollable -->
       <div id="products-carousel"
@@ -642,40 +742,40 @@
         style="scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-left:max(24px, calc((100vw - 1280px)/2 + 24px));padding-right:max(24px, calc((100vw - 1280px)/2 + 24px))">
 
         <!-- Skeletons de chargement -->
-        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
+        <div class="skeleton-card glass-card overflow-hidden flex-shrink-0 animate-pulse" style="width:272px;border-radius:16px">
+          <div class="h-48" style="background:rgba(255,255,255,0.06)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-24" style="background:rgba(139,196,0,0.2)"></div>
-            <div class="h-5 rounded-full w-3/4" style="background:rgba(139,196,0,0.15)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
-            <div class="h-3 rounded-full w-2/3" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-4 rounded-full w-24" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="h-5 rounded-full w-3/4" style="background:rgba(255,255,255,0.08)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(255,255,255,0.06)"></div>
+            <div class="h-3 rounded-full w-2/3" style="background:rgba(255,255,255,0.06)"></div>
           </div>
         </div>
-        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
+        <div class="skeleton-card glass-card overflow-hidden flex-shrink-0 animate-pulse" style="width:272px;border-radius:16px">
+          <div class="h-48" style="background:rgba(255,255,255,0.06)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-20" style="background:rgba(139,196,0,0.2)"></div>
-            <div class="h-5 rounded-full w-4/5" style="background:rgba(139,196,0,0.15)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
-            <div class="h-3 rounded-full w-1/2" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-4 rounded-full w-20" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="h-5 rounded-full w-4/5" style="background:rgba(255,255,255,0.08)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(255,255,255,0.06)"></div>
+            <div class="h-3 rounded-full w-1/2" style="background:rgba(255,255,255,0.06)"></div>
           </div>
         </div>
-        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
+        <div class="skeleton-card glass-card overflow-hidden flex-shrink-0 animate-pulse" style="width:272px;border-radius:16px">
+          <div class="h-48" style="background:rgba(255,255,255,0.06)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-28" style="background:rgba(139,196,0,0.2)"></div>
-            <div class="h-5 rounded-full w-3/5" style="background:rgba(139,196,0,0.15)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
-            <div class="h-3 rounded-full w-3/4" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-4 rounded-full w-28" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="h-5 rounded-full w-3/5" style="background:rgba(255,255,255,0.08)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(255,255,255,0.06)"></div>
+            <div class="h-3 rounded-full w-3/4" style="background:rgba(255,255,255,0.06)"></div>
           </div>
         </div>
-        <div class="skeleton-card glass-card rounded-3xl overflow-hidden flex-shrink-0 animate-pulse" style="width:280px">
-          <div class="h-48" style="background:rgba(20,30,0,0.3)"></div>
+        <div class="skeleton-card glass-card overflow-hidden flex-shrink-0 animate-pulse" style="width:272px;border-radius:16px">
+          <div class="h-48" style="background:rgba(255,255,255,0.06)"></div>
           <div class="p-5 space-y-3">
-            <div class="h-4 rounded-full w-16" style="background:rgba(139,196,0,0.2)"></div>
-            <div class="h-5 rounded-full w-2/3" style="background:rgba(139,196,0,0.15)"></div>
-            <div class="h-3 rounded-full w-full" style="background:rgba(139,196,0,0.1)"></div>
-            <div class="h-3 rounded-full w-4/5" style="background:rgba(139,196,0,0.1)"></div>
+            <div class="h-4 rounded-full w-16" style="background:rgba(255,255,255,0.1)"></div>
+            <div class="h-5 rounded-full w-2/3" style="background:rgba(255,255,255,0.08)"></div>
+            <div class="h-3 rounded-full w-full" style="background:rgba(255,255,255,0.06)"></div>
+            <div class="h-3 rounded-full w-4/5" style="background:rgba(255,255,255,0.06)"></div>
           </div>
         </div>
       </div>
@@ -684,67 +784,66 @@
     <!-- Message vide -->
     <div id="products-empty" class="hidden text-center py-16 text-gray-500 text-sm px-4">Aucun produit dans cette catégorie.</div>
   </section>
-
-  <div class="divider"></div>
+  </div></div>
 
   <!-- ABOUT -->
-  <section id="apropos" class="py-24 px-4 sm:px-6" style="background:radial-gradient(ellipse 70% 50% at 20% 50%, rgba(20,30,0,0.2) 0%, transparent 70%)">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+  <div class="sticky-wrap" id="wrap-apropos">
+  <div class="sticky-inner" id="inner-apropos">
+  <section id="apropos" class="w-full py-12 px-6 sm:px-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-center">
+
         <!-- Left visual -->
         <div class="reveal order-2 lg:order-1">
           <div class="relative">
-            <!-- Main card -->
-            <div class="glass-card rounded-3xl p-8 relative z-10">
-              <div class="flex items-center gap-4 mb-6">
-                <img src="images/cbd-logo.jpeg" alt="Logo CBD Botani" class="w-12 h-12 rounded-2xl object-cover flex-shrink-0" style="border:2px solid rgba(200,240,0,0.35)"/>
+            <div class="glass-card p-4 relative z-10" style="border-radius:16px">
+              <div class="flex items-center gap-3 mb-4">
+                <img src="images/cbd-logo.jpeg" alt="Logo CBD Botani" class="w-6 h-6 object-cover flex-shrink-0" style="clip-path:polygon(8% 0%,92% 0%,100% 8%,100% 92%,92% 100%,8% 100%,0% 92%,0% 8%);border:1px solid rgba(255,255,255,0.25)"/>
                 <div>
-                  <div class="text-white font-bold">CBD Botani X Brother's</div>
-                  <div class="text-green-400 text-sm">Ivry-sur-Seine</div>
+                  <div class="text-white font-bold text-sm tracking-wide" style="font-family:'Syne',sans-serif">CBD Botani X Brother's</div>
+                  <div class="text-xs mt-0.5" style="color:#8B4A2F;letter-spacing:0.1em">Ivry-sur-Seine</div>
                 </div>
               </div>
-              <div class="space-y-4">
-                <div class="flex items-start gap-3">
-                  <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                  <p class="text-gray-300 text-sm">Produits testés en laboratoire certifié</p>
+              <div class="space-y-5">
+                <div class="flex items-start gap-4">
+                  <div style="width:1px;height:100%;background:rgba(255,255,255,0.12);flex-shrink:0;margin-top:5px;align-self:stretch"></div>
+                  <p class="text-gray-400 text-sm leading-relaxed">Produits testés en laboratoire certifié</p>
                 </div>
-                <div class="flex items-start gap-3">
-                  <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                  <p class="text-gray-300 text-sm">Conformité totale à la législation française</p>
+                <div class="flex items-start gap-4">
+                  <div style="width:1px;height:100%;background:rgba(255,255,255,0.12);flex-shrink:0;margin-top:5px;align-self:stretch"></div>
+                  <p class="text-gray-400 text-sm leading-relaxed">Conformité totale à la législation française</p>
                 </div>
-                <div class="flex items-start gap-3">
-                  <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                  <p class="text-gray-300 text-sm">Conseil personnalisé en boutique</p>
+                <div class="flex items-start gap-4">
+                  <div style="width:1px;height:100%;background:rgba(139,74,47,0.4);flex-shrink:0;margin-top:5px;align-self:stretch"></div>
+                  <p class="text-gray-400 text-sm leading-relaxed">Conseil personnalisé en boutique</p>
                 </div>
-                <div class="flex items-start gap-3">
-                  <div class="w-2 h-2 rounded-full bg-green-500 mt-1.5 flex-shrink-0"></div>
-                  <p class="text-gray-300 text-sm">Sourcing éthique & traçabilité complète</p>
+                <div class="flex items-start gap-4">
+                  <div style="width:1px;height:100%;background:rgba(139,74,47,0.4);flex-shrink:0;margin-top:5px;align-self:stretch"></div>
+                  <p class="text-gray-400 text-sm leading-relaxed">Sourcing éthique &amp; traçabilité complète</p>
                 </div>
               </div>
             </div>
-            <!-- Floating badge -->
-            <div class="absolute -top-4 -right-4 glass-card rounded-2xl px-4 py-3 z-20">
-              <div class="text-2xl font-bold text-green-400">100%</div>
-              <div class="text-xs text-gray-400">Naturel</div>
-            </div>
-            <!-- Bg blur -->
-            <div class="absolute inset-0 rounded-3xl blur-2xl opacity-20 -z-10" style="background:radial-gradient(circle, #8bc400, transparent)"></div>
+            <!-- Accent terra -->
+            <div class="absolute -bottom-3 -left-3 z-0" style="width:100%;height:100%;border-radius:16px;border:1px dashed rgba(139,74,47,0.2);pointer-events:none"></div>
           </div>
         </div>
 
         <!-- Right text -->
         <div class="reveal reveal-delay-2 order-1 lg:order-2">
           <span class="badge">Notre histoire</span>
-          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-6">Nés à Ivry,<br/><span style="color:#c8f000">passionnés</span> du CBD.</h2>
-          <p class="text-gray-400 text-lg leading-relaxed mb-6">
+          <h2 class="section-title text-base sm:text-lg text-white mt-3 mb-3 leading-none">
+            Nés à Ivry,<br/><span style="color:#fff">passionnés</span><br/>
+            <span class="font-display italic font-normal text-base sm:text-lg" style="color:rgba(255,255,255,0.45)">du CBD.</span>
+          </h2>
+          <p class="text-gray-400 leading-loose mb-5" style="font-size:0.78rem;letter-spacing:0.02em">
             CBD Botani X Brother's est né d'une passion commune : démocratiser l'accès à des produits CBD de haute qualité, dans un cadre de confiance et de transparence totale.
           </p>
-          <p class="text-gray-500 leading-relaxed mb-8">
-            Basés à Ivry-sur-Seine, nous sélectionnons chaque produit avec exigence — fleurs cultivées en Europe, huiles formulées par des experts, résines artisanales. Notre engagement : vous offrir le meilleur du CBD, légalement et éthiquement.
+          <p class="text-gray-600 leading-loose mb-10" style="font-size:0.75rem">
+            Basés à Ivry-sur-Seine, nous sélectionnons chaque produit avec exigence — fleurs cultivées en Europe, huiles formulées par des experts, résines artisanales.
           </p>
-          <a href="#contact" class="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-semibold cursor-pointer">
-            Nous contacter
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <a href="#contact" class="btn-primary inline-flex items-center gap-2 px-4 py-2 text-xs cursor-pointer relative overflow-hidden">
+            <span class="relative z-10">Nous contacter</span>
+            <svg class="w-3 h-3 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
@@ -752,121 +851,95 @@
       </div>
     </div>
   </section>
-
-  <div class="divider"></div>
+  </div></div>
 
   <!-- VALUES -->
-  <section id="valeurs" class="py-24 px-4 sm:px-6">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-16">
-        <div class="reveal"><span class="badge">Nos engagements</span></div>
-        <h2 class="reveal reveal-delay-1 font-display text-4xl sm:text-5xl font-bold text-white mt-4">Ce qui nous distingue</h2>
+  <div class="sticky-wrap" id="wrap-valeurs">
+  <div class="sticky-inner" id="inner-valeurs">
+  <section id="valeurs" class="w-full py-12 px-6 sm:px-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+        <div>
+          <div class="reveal mb-3"><span class="badge">Nos engagements</span></div>
+          <h2 class="reveal reveal-delay-1 section-title text-base sm:text-lg text-white leading-none">Ce qui nous<br/><span style="color:#fff">distingue</span></h2>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-px" style="border:1px dashed rgba(255,255,255,0.08);border-radius:16px;overflow:hidden">
         <!-- Value 1 -->
-        <div class="reveal glass-card rounded-3xl p-7 cursor-default">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-            <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-3">Qualité certifiée</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Chaque lot est accompagné d'un certificat d'analyse en laboratoire indépendant. Transparence totale sur les taux de CBD et THC.</p>
+        <div class="reveal glass-card p-4 cursor-default" style="border:none;border-radius:0">
+          <div class="mb-3" style="width:2px;height:16px;background:linear-gradient(180deg,#ffffff,transparent)"></div>
+          <div class="mb-1 text-xs uppercase tracking-widest" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">01</div>
+          <h3 class="text-sm font-bold text-white mb-3" style="font-family:'Syne',sans-serif;letter-spacing:-0.02em">Qualité certifiée</h3>
+          <p class="text-gray-500 leading-relaxed" style="font-size:0.75rem">Chaque lot accompagné d'un certificat d'analyse en laboratoire indépendant. Transparence totale sur les taux de CBD et THC.</p>
         </div>
 
         <!-- Value 2 -->
-        <div class="reveal reveal-delay-1 glass-card rounded-3xl p-7 cursor-default">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-            <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-3">Sourcing éthique</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Nous travaillons exclusivement avec des producteurs européens respectueux de l'environnement, sans pesticides ni métaux lourds.</p>
+        <div class="reveal reveal-delay-1 glass-card p-4 cursor-default" style="border:none;border-radius:0;border-left:1px dashed rgba(255,255,255,0.08)">
+          <div class="mb-3" style="width:2px;height:16px;background:linear-gradient(180deg,#ffffff,transparent)"></div>
+          <div class="mb-1 text-xs uppercase tracking-widest" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">02</div>
+          <h3 class="text-sm font-bold text-white mb-3" style="font-family:'Syne',sans-serif;letter-spacing:-0.02em">Sourcing éthique</h3>
+          <p class="text-gray-500 leading-relaxed" style="font-size:0.75rem">Producteurs européens respectueux de l'environnement, sans pesticides ni métaux lourds. Traçabilité complète.</p>
         </div>
 
         <!-- Value 3 -->
-        <div class="reveal reveal-delay-2 glass-card rounded-3xl p-7 cursor-default">
-          <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-            <svg class="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-lg font-bold text-white mb-3">Conseil expert</h3>
-          <p class="text-gray-400 text-sm leading-relaxed">Notre équipe vous guide dans le choix du produit adapté à vos attentes — sans jargon, avec bienveillance et professionnalisme.</p>
+        <div class="reveal reveal-delay-2 glass-card p-4 cursor-default" style="border:none;border-radius:0;border-left:1px dashed rgba(255,255,255,0.08)">
+          <div class="mb-3" style="width:2px;height:16px;background:linear-gradient(180deg,#8B4A2F,transparent)"></div>
+          <div class="mb-1 text-xs uppercase tracking-widest" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">03</div>
+          <h3 class="text-sm font-bold text-white mb-3" style="font-family:'Syne',sans-serif;letter-spacing:-0.02em">Conseil expert</h3>
+          <p class="text-gray-500 leading-relaxed" style="font-size:0.75rem">Notre équipe vous guide dans le choix du produit adapté — sans jargon, avec bienveillance et professionnalisme.</p>
         </div>
       </div>
     </div>
   </section>
+  </div></div>
 
-  <div class="divider"></div>
+  <div style="height:100vh"></div>
 
   <!-- CONTACT -->
-  <section id="contact" class="py-24 px-4 sm:px-6" style="background:radial-gradient(ellipse 60% 50% at 80% 50%, rgba(20,30,0,0.2) 0%, transparent 70%)">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+  <section id="contact" class="w-full py-12 px-6 sm:px-10" style="position:relative;z-index:2">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16 items-start">
         <!-- Info -->
         <div class="reveal">
           <span class="badge">Nous trouver</span>
-          <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-4 mb-6">Venez nous<br/><span style="color:#c8f000">rendre visite</span></h2>
-          <p class="text-gray-400 text-lg leading-relaxed mb-10">Notre boutique à Ivry-sur-Seine vous accueille dans un espace moderne et discret.</p>
+          <h2 class="section-title text-base sm:text-lg text-white mt-3 mb-3 leading-none">Venez nous<br/><span style="color:#fff">rendre visite</span></h2>
+          <p class="text-gray-500 leading-loose mb-10" style="font-size:0.78rem">Notre boutique à Ivry-sur-Seine vous accueille dans un espace moderne et discret.</p>
 
-          <div class="space-y-4">
-            <!-- Adresse -->
+          <div class="space-y-2">
             <a href="https://maps.google.com/?q=50+Bd+Paul+Vaillant+Couturier,+94200+Ivry-sur-Seine" target="_blank" rel="noopener"
-              class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:border-green-400/40 transition-all">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
+              class="glass-card p-5 flex items-start gap-5 cursor-pointer transition-all" style="border-radius:16px">
+              <div style="width:1px;height:auto;min-height:40px;background:rgba(255,255,255,0.18);flex-shrink:0;align-self:stretch"></div>
               <div>
-                <div class="text-white font-semibold text-sm">Adresse</div>
-                <div class="text-gray-400 text-sm mt-0.5">50 Bd Paul Vaillant Couturier</div>
-                <div class="text-gray-500 text-xs mt-0.5">94200 Ivry-sur-Seine</div>
+                <div class="text-xs uppercase tracking-widest mb-1" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">Adresse</div>
+                <div class="text-gray-300 text-sm">50 Bd Paul Vaillant Couturier</div>
+                <div class="text-gray-600 text-xs mt-0.5">94200 Ivry-sur-Seine</div>
               </div>
             </a>
 
-            <!-- Horaires -->
-            <div class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-default">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-              </div>
+            <div class="glass-card p-5 flex items-start gap-5 cursor-default" style="border-radius:16px">
+              <div style="width:1px;min-height:40px;background:rgba(255,255,255,0.18);flex-shrink:0;align-self:stretch"></div>
               <div>
-                <div class="text-white font-semibold text-sm">Horaires</div>
-                <div class="text-gray-400 text-sm mt-0.5">Lun – Ven : 10h00 – 20h00</div>
-                <div class="text-gray-400 text-sm">Samedi : 10h00 – 23h30</div>
+                <div class="text-xs uppercase tracking-widest mb-1" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">Horaires</div>
+                <div class="text-gray-300 text-sm">Lun – Ven : 10h00 – 20h00</div>
+                <div class="text-gray-300 text-sm">Samedi : 10h00 – 23h30</div>
                 <div class="text-gray-500 text-sm">Dimanche : 12h00 – 20h00</div>
               </div>
             </div>
 
-            <!-- Téléphone -->
-            <a href="tel:+33672258148" class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-pointer hover:border-green-400/40 transition-all">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                </svg>
-              </div>
+            <a href="tel:+33672258148" class="glass-card p-5 flex items-start gap-5 cursor-pointer transition-all" style="border-radius:16px">
+              <div style="width:1px;min-height:40px;background:rgba(139,74,47,0.5);flex-shrink:0;align-self:stretch"></div>
               <div>
-                <div class="text-white font-semibold text-sm">Téléphone</div>
-                <div class="text-gray-400 text-sm mt-0.5">+33 6 72 25 81 48</div>
+                <div class="text-xs uppercase tracking-widest mb-1" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">Téléphone</div>
+                <div class="text-gray-300 text-sm">+33 6 72 25 81 48</div>
               </div>
             </a>
 
-            <!-- Email / Réseaux -->
-            <div class="glass-card rounded-2xl p-5 flex items-start gap-4 cursor-default">
-              <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                </svg>
-              </div>
+            <div class="glass-card p-5 flex items-start gap-5 cursor-default" style="border-radius:16px">
+              <div style="width:1px;min-height:40px;background:rgba(139,74,47,0.5);flex-shrink:0;align-self:stretch"></div>
               <div>
-                <div class="text-white font-semibold text-sm">Email & réseaux</div>
-                <a href="mailto:contact@bxb-cbd.fr" class="text-gray-400 text-sm mt-0.5 hover:text-green-400 transition-colors block">contact@bxb-cbd.fr</a>
+                <div class="text-xs uppercase tracking-widest mb-1" style="color:#8B4A2F;font-family:'Syne',sans-serif;font-weight:700">Email &amp; réseaux</div>
+                <a href="mailto:contact@bxb-cbd.fr" class="text-gray-400 text-sm hover:text-white transition-colors block">contact@bxb-cbd.fr</a>
               </div>
             </div>
           </div>
@@ -874,36 +947,35 @@
 
         <!-- Form + Newsletter -->
         <div class="space-y-5">
-          <!-- Formulaire de contact -->
           <div class="reveal reveal-delay-2">
-            <div class="glass-card rounded-3xl p-7">
-              <h3 class="text-xl font-bold text-white mb-6">Envoyer un message</h3>
+            <div class="glass-card p-7" style="border-radius:16px">
+              <h3 class="text-base font-bold text-white mb-5" style="font-family:'Syne',sans-serif;letter-spacing:-0.03em">Envoyer un message</h3>
               <form onsubmit="handleSubmit(event)" class="space-y-4">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label for="prenom" class="block text-xs font-medium text-gray-400 mb-2">Prénom</label>
                     <input id="prenom" type="text" placeholder="Jean" required
-                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
-                      style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
+                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                      style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14)"/>
                   </div>
                   <div>
                     <label for="nom" class="block text-xs font-medium text-gray-400 mb-2">Nom</label>
                     <input id="nom" type="text" placeholder="Dupont" required
-                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
-                      style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
+                      class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                      style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14)"/>
                   </div>
                 </div>
                 <div>
                   <label for="email" class="block text-xs font-medium text-gray-400 mb-2">Email</label>
                   <input id="email" type="email" placeholder="jean@exemple.fr" required
-                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
-                    style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
+                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                    style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14)"/>
                 </div>
                 <div>
                   <label for="sujet" class="block text-xs font-medium text-gray-400 mb-2">Sujet</label>
                   <select id="sujet"
-                    class="w-full px-4 py-3 rounded-xl text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all cursor-pointer"
-                    style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)">
+                    class="w-full px-4 py-3 rounded-xl text-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all cursor-pointer"
+                    style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14)">
                     <option value="" class="bg-gray-900">Sélectionner...</option>
                     <option value="info" class="bg-gray-900">Informations produit</option>
                     <option value="commande" class="bg-gray-900">Commande / disponibilité</option>
@@ -914,12 +986,12 @@
                 <div>
                   <label for="message" class="block text-xs font-medium text-gray-400 mb-2">Message</label>
                   <textarea id="message" rows="4" placeholder="Votre message..." required
-                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all resize-none"
-                    style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"></textarea>
+                    class="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all resize-none"
+                    style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14)"></textarea>
                 </div>
-                <button type="submit" id="submit-btn" class="btn-primary w-full py-3.5 rounded-2xl text-sm font-semibold cursor-pointer flex items-center justify-center gap-2">
-                  <span id="btn-text">Envoyer le message</span>
-                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button type="submit" id="submit-btn" class="btn-primary w-full py-2 text-xs font-semibold cursor-pointer flex items-center justify-center gap-2 relative overflow-hidden" style="border-radius:12px">
+                  <span id="btn-text" class="relative z-10">Envoyer le message</span>
+                  <svg class="w-3 h-3 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
                   </svg>
                 </button>
@@ -930,11 +1002,10 @@
             </div>
           </div>
 
-          <!-- Newsletter -->
-          <div class="reveal reveal-delay-3 glass-card rounded-3xl p-6">
+          <div class="reveal reveal-delay-3 glass-card p-6" style="border-radius:16px">
             <div class="flex items-center gap-3 mb-4">
-              <div class="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(139,196,0,0.18);border:1px solid rgba(200,240,0,0.25)">
-                <svg class="w-4 h-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div class="w-5 h-5 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18)">
+                <svg class="w-2.5 h-2.5" style="color:#fff" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
                 </svg>
               </div>
@@ -945,9 +1016,9 @@
             </div>
             <form onsubmit="handleNewsletter(event)" class="flex gap-2">
               <input id="newsletter-email" type="email" placeholder="votre@email.fr" required
-                class="flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-green-500 transition-all"
-                style="background:rgba(20,30,0,0.25);border:1px solid rgba(200,240,0,0.18)"/>
-              <button type="submit" id="nl-btn" class="btn-primary px-4 py-2.5 rounded-xl text-sm font-semibold cursor-pointer whitespace-nowrap">
+                class="flex-1 px-4 py-2.5 rounded-xl text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all"
+                style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14)"/>
+              <button type="submit" id="nl-btn" class="btn-primary px-4 py-2.5 text-sm font-semibold cursor-pointer whitespace-nowrap relative overflow-hidden" style="border-radius:12px">
                 S'abonner
               </button>
             </form>
@@ -961,34 +1032,33 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="border-t py-10 px-4 sm:px-6" style="border-color:rgba(200,240,0,0.15);background:rgba(5,5,5,0.8)">
-    <div class="max-w-7xl mx-auto">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
-        <div class="flex items-center gap-3">
-          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's" class="w-9 h-9 rounded-lg object-cover" style="border:1px solid rgba(200,240,0,0.3)"/>
+  <footer class="border-t py-12 px-6 sm:px-10" style="border-color:rgba(255,255,255,0.08);background:rgba(3,3,3,0.3);backdrop-filter:blur(12px)">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 mb-8">
+        <div class="flex items-center gap-4">
+          <img src="images/cbd-logo.jpeg" alt="CBD Botani X Brother's" class="w-5 h-5 object-cover flex-shrink-0" style="clip-path:polygon(8% 0%,92% 0%,100% 8%,100% 92%,92% 100%,8% 100%,0% 92%,0% 8%);border:1px solid rgba(255,255,255,0.2)"/>
           <div>
-            <div class="text-sm font-bold text-white">CBD Botani X Brother's</div>
-            <div class="text-xs text-gray-600">Ivry-sur-Seine · CBD Premium</div>
+            <div class="text-sm font-bold text-white" style="font-family:'Syne',sans-serif;letter-spacing:-0.01em">CBD Botani X Brother's</div>
+            <div class="text-xs mt-0.5" style="color:#8B4A2F;letter-spacing:0.08em">Ivry-sur-Seine · CBD Premium</div>
           </div>
         </div>
 
-        <div class="flex items-center gap-5 text-xs text-gray-500">
-          <a href="#produits" class="hover:text-green-400 transition-colors cursor-pointer">Produits</a>
-          <a href="#apropos" class="hover:text-green-400 transition-colors cursor-pointer">À propos</a>
-          <a href="#contact" class="hover:text-green-400 transition-colors cursor-pointer">Contact</a>
-          <a href="tel:+33672258148" class="hover:text-green-400 transition-colors cursor-pointer">06 72 25 81 48</a>
+        <div class="flex items-center gap-6 text-xs text-gray-600" style="font-family:'Syne',sans-serif;font-weight:600;letter-spacing:0.08em;text-transform:uppercase">
+          <a href="#produits" class="hover:text-lime-400 transition-colors cursor-pointer">Produits</a>
+          <a href="#apropos" class="hover:text-lime-400 transition-colors cursor-pointer">À propos</a>
+          <a href="#contact" class="hover:text-lime-400 transition-colors cursor-pointer">Contact</a>
+          <a href="tel:+33672258148" class="hover:text-lime-400 transition-colors cursor-pointer">06 72 25 81 48</a>
         </div>
 
-        <div class="text-xs text-gray-600 text-center">
-          <p>Produits conformes à la législation française · THC &lt; 0.3%</p>
-          <p class="mt-1">© 2025 CBD Botani X Brother's · Tous droits réservés</p>
+        <div class="text-xs text-gray-700" style="letter-spacing:0.04em">
+          <p>THC &lt; 0.3% · Conforme à la législation française</p>
+          <p class="mt-1">© 2025 CBD Botani X Brother's</p>
         </div>
       </div>
 
-      <!-- Lien admin discret -->
-      <div class="border-t pt-4 text-center" style="border-color:rgba(200,240,0,0.08)">
-        <a href="admin/login.html" class="text-gray-700 hover:text-green-500 text-xs transition-colors duration-200 cursor-pointer select-none">
-          Espace pro
+      <div class="border-t pt-4 text-center" style="border-color:rgba(255,255,255,0.05)">
+        <a href="admin/login.html" class="text-gray-800 hover:text-gray-500 text-xs transition-colors duration-200 cursor-pointer select-none" style="letter-spacing:0.1em">
+          espace pro
         </a>
       </div>
     </div>
@@ -1000,7 +1070,7 @@
   <!-- ── DRAWER PANIER ─────────────────────────────────────────────────── -->
   <div id="cart-drawer" role="dialog" aria-label="Panier">
     <!-- Header -->
-    <div class="flex items-center justify-between px-5 py-4 border-b flex-shrink-0" style="border-color:rgba(200,240,0,0.15)">
+    <div class="flex items-center justify-between px-5 py-4 border-b flex-shrink-0" style="border-color:rgba(255,255,255,0.12)">
       <div class="flex items-center gap-2">
         <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
@@ -1019,7 +1089,7 @@
     <div class="cart-auth-panel" id="cart-auth-panel">
       <div id="cart-user-logged" class="hidden flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style="background:rgba(139,196,0,0.25);border:1px solid rgba(200,240,0,0.3);color:#c8f000" id="cart-user-avatar">?</div>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:#fff" id="cart-user-avatar">?</div>
           <span class="text-sm text-white font-medium" id="cart-user-name">Client</span>
         </div>
         <button onclick="cartSignOut()" class="text-xs text-gray-500 hover:text-red-400 transition-colors cursor-pointer">Déconnexion</button>
@@ -1030,7 +1100,7 @@
           <input id="cart-email" type="email" placeholder="Email" class="cart-input"/>
           <input id="cart-password" type="password" placeholder="Mot de passe" class="cart-input"/>
           <div class="flex gap-2 pt-1">
-            <button onclick="cartLogin()" class="flex-1 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all" style="background:rgba(139,196,0,0.2);border:1px solid rgba(200,240,0,0.3);color:#c8f000">Connexion</button>
+            <button onclick="cartLogin()" class="flex-1 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#fff">Connexion</button>
             <button onclick="cartRegister()" class="flex-1 py-2 text-xs font-medium rounded-lg cursor-pointer transition-all" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:#9ca3af">Créer un compte</button>
           </div>
           <div id="cart-auth-error" class="hidden text-xs text-red-400 text-center pt-1"></div>
@@ -1046,12 +1116,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
         </svg>
         <p class="text-gray-500 text-sm">Votre panier est vide.</p>
-        <button onclick="closeCart()" class="text-green-400 text-sm font-medium hover:underline cursor-pointer">Voir les produits →</button>
+        <button onclick="closeCart(); scrollToSection('produits')" class="text-white text-sm font-medium hover:underline cursor-pointer">Voir les produits →</button>
       </div>
     </div>
 
     <!-- Footer : total + commande -->
-    <div id="cart-footer" class="hidden flex-shrink-0 border-t p-5 space-y-3" style="border-color:rgba(200,240,0,0.15)">
+    <div id="cart-footer" class="hidden flex-shrink-0 border-t p-5 space-y-3" style="border-color:rgba(255,255,255,0.12)">
       <!-- Bannière seuil livraison gratuite -->
       <div id="shipping-banner" class="hidden"></div>
 
@@ -1065,16 +1135,16 @@
           <span class="text-gray-400">⚡ Express 24h</span>
           <span id="cart-shipping-cost" class="text-white font-medium"></span>
         </div>
-        <div class="flex items-center justify-between border-t pt-2 mt-1" style="border-color:rgba(200,240,0,0.12)">
+        <div class="flex items-center justify-between border-t pt-2 mt-1" style="border-color:rgba(255,255,255,0.08)">
           <span class="text-white font-bold">Total</span>
-          <span id="cart-total" class="text-xl font-bold text-green-400"></span>
+          <span id="cart-total" class="text-xl font-bold" style="color:#fff"></span>
         </div>
       </div>
 
       <p class="text-xs text-gray-600">Prix indicatifs · Confirmés en boutique ou par téléphone.</p>
 
       <!-- CTA WhatsApp -->
-      <button onclick="orderByWhatsApp()" class="w-full py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all"
+      <button onclick="orderByWhatsApp()" class="w-full py-3.5 text-sm font-bold flex items-center justify-center gap-2 cursor-pointer transition-all" style="border-radius:3px"
         style="background:linear-gradient(135deg,#25d366,#128c4e);border:1px solid rgba(37,211,102,0.4);color:#fff;">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -1086,39 +1156,135 @@
   </div>
 
   <script>
-    // ── Scroll reveal ──────────────────────────────────────────────────────────
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
+    // ── Sticky sections fade ──────────────────────────────────────────────────
+    function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const stickyWraps = Array.from(document.querySelectorAll('.sticky-wrap'));
 
-    // Trigger hero reveals immediately
+    // Hero reveals : visibles immédiatement
     setTimeout(() => {
-      document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible'));
+      document.querySelectorAll('#hero .reveal').forEach(el => {
+        el.style.opacity = '1'; el.style.filter = 'blur(0px)';
+      });
     }, 100);
 
-    // ── Particles ─────────────────────────────────────────────────────────────
-    function createParticle() {
-      const container = document.getElementById('particles');
-      if (!container) return;
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left = Math.random() * 100 + 'vw';
-      p.style.bottom = '0';
-      const dur = 8 + Math.random() * 12;
-      p.style.animationDuration = dur + 's';
-      p.style.animationDelay = Math.random() * 4 + 's';
-      p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
-      container.appendChild(p);
-      setTimeout(() => p.remove(), (dur + 4) * 1000);
+    function onScroll() {
+      const vh = window.innerHeight;
+
+      // Chaque sticky-wrap : position fixed, fade-in/out selon scroll dans le wrap
+      stickyWraps.forEach(wrap => {
+        const inner = wrap.querySelector('.sticky-inner');
+        if (!inner) return;
+        const rect    = wrap.getBoundingClientRect();
+        const wrapH   = wrap.offsetHeight;
+        const scrolled = -rect.top; // positif quand on a commencé à scroller dans le wrap
+        const progress = clamp(scrolled / wrapH, 0, 1);
+
+        // En dehors du wrap : caché
+        if (scrolled < -vh || scrolled > wrapH + vh) {
+          inner.style.opacity = 0;
+          inner.style.pointerEvents = 'none';
+          return;
+        }
+
+        // Fade-in : 0→0.2, plein : 0.2→0.65, fade-out : 0.65→0.85 (finit bien avant la fin du wrap)
+        let opacity;
+        if      (progress < 0.2)   opacity = clamp(progress / 0.2, 0, 1);
+        else if (progress < 0.65)  opacity = 1;
+        else                       opacity = clamp(1 - (progress - 0.65) / 0.2, 0, 1);
+
+        // Scroll interne pendant la phase visible
+        const scrollAmt = 100;
+        let ty = 0;
+        if (progress >= 0.2 && progress <= 0.7) {
+          const visibleProgress = (progress - 0.2) / 0.5;
+          ty = -visibleProgress * scrollAmt;
+        } else if (progress < 0.2) {
+          ty = 0;
+        } else {
+          ty = -scrollAmt;
+        }
+
+        inner.style.opacity   = opacity;
+        inner.style.filter    = `blur(${(1 - opacity) * 14}px)`;
+        inner.style.transform = `translateY(${ty}px)`;
+        inner.style.pointerEvents = opacity > 0.05 ? 'auto' : 'none';
+      });
     }
-    setInterval(createParticle, 1200);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ── Navigation vers une section ──────────────────────────────────────────
+    function scrollToSection(id) {
+      // Contact : section en flux normal, scroll direct
+      if (id === 'contact') {
+        const el = document.getElementById('contact');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      // Sections sticky : scroll jusqu'au milieu du wrap (phase visible)
+      const wrap = document.getElementById('wrap-' + id);
+      if (!wrap) return;
+      const wrapTop  = wrap.getBoundingClientRect().top + window.scrollY;
+      const wrapH    = wrap.offsetHeight;
+      const target   = wrapTop + wrapH * 0.35; // milieu de la phase visible
+      window.scrollTo({ top: target, behavior: 'smooth' });
+    }
+
+    // Intercepte tous les liens ancres internes
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        scrollToSection(id);
+        if (typeof closeMobileMenu === 'function') closeMobileMenu();
+      });
+    });
+
+    // ── Vidéo : joue quand immobile, pause au scroll ─────────────────────────
+    (function startBgVideo() {
+      const video  = document.getElementById('hero-video');
+      const canvas = document.getElementById('hero-canvas');
+      if (!video || !canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize);
+
+      let rafId = null;
+      function draw() {
+        if (!video.videoWidth) { rafId = requestAnimationFrame(draw); return; }
+        const vr = video.videoWidth / video.videoHeight;
+        const cr = canvas.width / canvas.height;
+        let sw, sh, sx, sy;
+        if (vr > cr) { sh = video.videoHeight; sw = sh * cr; sy = 0; sx = (video.videoWidth - sw) / 2; }
+        else         { sw = video.videoWidth;  sh = sw / cr; sx = 0; sy = (video.videoHeight - sh) / 2; }
+        ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+        rafId = requestAnimationFrame(draw);
+      }
+
+      function startDraw() { if (!rafId) rafId = requestAnimationFrame(draw); }
+      function stopDraw()  { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+
+      // Scroll : joue pendant le scroll, pause après 150ms d'inactivité
+      let scrollTimer = null;
+      window.addEventListener('scroll', () => {
+        video.play().catch(() => {}); startDraw();
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => { video.pause(); stopDraw(); }, 150);
+      }, { passive: true });
+
+      video.loop = true;
+      // Démarre en pause, attend le premier scroll
+      if (video.readyState >= 2) { startDraw(); }
+      else video.addEventListener('canplay', () => { startDraw(); }, { once: true });
+    })();
+
+
+    // particles container kept for DOM compatibility but not populated
 
     // ── Mobile menu ───────────────────────────────────────────────────────────
     const hamburger = document.getElementById('hamburger');
@@ -1194,9 +1360,9 @@
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 60) {
-        nav.style.borderBottomColor = 'rgba(200,240,0,0.28)';
+        nav.style.borderBottomColor = 'rgba(255,255,255,0.2)';
       } else {
-        nav.style.borderBottomColor = 'rgba(200,240,0,0.15)';
+        nav.style.borderBottomColor = 'rgba(255,255,255,0.12)';
       }
     }, { passive: true });
   </script>
@@ -1208,10 +1374,10 @@
 
     // SVG fallback par catégorie quand pas d'image uploadée
     const CAT_SVG = {
-      'Fleurs': `<svg class="w-20 h-20 opacity-60" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="55" rx="12" ry="22" fill="#3a5500" opacity="0.8"/><ellipse cx="26" cy="45" rx="10" ry="18" fill="#1a2000" opacity="0.9" transform="rotate(-20 26 45)"/><ellipse cx="54" cy="45" rx="10" ry="18" fill="#1a2000" opacity="0.9" transform="rotate(20 54 45)"/><line x1="40" y1="77" x2="40" y2="33" stroke="#8bc400" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="28" r="7" fill="#6a8c00" opacity="0.9"/><circle cx="40" cy="28" r="3" fill="#c8f000"/></svg>`,
-      'Huiles': `<svg class="w-14 h-20 opacity-60" viewBox="0 0 64 80" fill="none"><rect x="26" y="0" width="12" height="8" rx="3" fill="#3a5500"/><rect x="22" y="7" width="20" height="4" rx="2" fill="#1a2000"/><rect x="18" y="11" width="28" height="45" rx="10" fill="#1a2000" opacity="0.9"/><rect x="22" y="30" width="20" height="20" rx="7" fill="#6a8c00" opacity="0.6"/><circle cx="32" cy="40" r="5" fill="#c8f000" opacity="0.5"/></svg>`,
-      'Vape':   `<svg class="w-12 h-20 opacity-60" viewBox="0 0 56 80" fill="none"><rect x="16" y="0" width="24" height="10" rx="4" fill="#3a5500"/><rect x="20" y="9" width="16" height="6" rx="2" fill="#1a2000"/><rect x="8" y="14" width="40" height="55" rx="12" fill="#1a2000" opacity="0.9"/><rect x="12" y="42" width="32" height="23" rx="8" fill="#6a8c00" opacity="0.55"/><path d="M20 35 Q28 28 36 35" stroke="#c8f000" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>`,
-      'Bien-être': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#1a2000"/><circle cx="32" cy="32" r="18" fill="#3a5500" opacity="0.7"/><circle cx="32" cy="32" r="8" fill="#8bc400" opacity="0.8"/><circle cx="32" cy="32" r="3" fill="#c8f000"/></svg>`,
+      'Fleurs': `<svg class="w-20 h-20 opacity-60" viewBox="0 0 80 80" fill="none"><ellipse cx="40" cy="55" rx="12" ry="22" fill="#3a5500" opacity="0.8"/><ellipse cx="26" cy="45" rx="10" ry="18" fill="#1a2000" opacity="0.9" transform="rotate(-20 26 45)"/><ellipse cx="54" cy="45" rx="10" ry="18" fill="#1a2000" opacity="0.9" transform="rotate(20 54 45)"/><line x1="40" y1="77" x2="40" y2="33" stroke="#e0e0e0" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="28" r="7" fill="#6a8c00" opacity="0.9"/><circle cx="40" cy="28" r="3" fill="#ffffff"/></svg>`,
+      'Huiles': `<svg class="w-14 h-20 opacity-60" viewBox="0 0 64 80" fill="none"><rect x="26" y="0" width="12" height="8" rx="3" fill="#3a5500"/><rect x="22" y="7" width="20" height="4" rx="2" fill="#1a2000"/><rect x="18" y="11" width="28" height="45" rx="10" fill="#1a2000" opacity="0.9"/><rect x="22" y="30" width="20" height="20" rx="7" fill="#6a8c00" opacity="0.6"/><circle cx="32" cy="40" r="5" fill="#ffffff" opacity="0.5"/></svg>`,
+      'Vape':   `<svg class="w-12 h-20 opacity-60" viewBox="0 0 56 80" fill="none"><rect x="16" y="0" width="24" height="10" rx="4" fill="#3a5500"/><rect x="20" y="9" width="16" height="6" rx="2" fill="#1a2000"/><rect x="8" y="14" width="40" height="55" rx="12" fill="#1a2000" opacity="0.9"/><rect x="12" y="42" width="32" height="23" rx="8" fill="#6a8c00" opacity="0.55"/><path d="M20 35 Q28 28 36 35" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>`,
+      'Bien-être': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#1a2000"/><circle cx="32" cy="32" r="18" fill="#3a5500" opacity="0.7"/><circle cx="32" cy="32" r="8" fill="#e0e0e0" opacity="0.8"/><circle cx="32" cy="32" r="3" fill="#ffffff"/></svg>`,
     };
 
     function escHtmlPublic(str) {
@@ -1220,34 +1386,31 @@
 
     function buildCard(p, delay) {
       const img = p.image_url
-        ? `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" class="w-full h-full object-cover" loading="lazy"/>`
+        ? `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy"/>`
         : (CAT_SVG[p.category] || CAT_SVG['Bien-être']);
 
       const isPromo = p.category === 'Promo';
       const promoBadge = isPromo
-        ? `<div class="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full text-xs font-bold text-black" style="background:#ef4444;box-shadow:0 2px 8px rgba(239,68,68,0.5)">🔥 PROMO</div>`
+        ? `<div class="absolute top-3 left-3 z-10 px-2.5 py-1 text-xs font-bold text-white" style="background:#8B4A2F;font-family:'Syne',sans-serif;letter-spacing:0.1em;text-transform:uppercase;border-radius:12px">Promo</div>`
         : '';
 
+      const pJson = JSON.stringify(p).replace(/"/g,'&quot;');
       return `
-        <div class="product-card glass-card sticker-card rounded-2xl overflow-hidden flex-shrink-0 cursor-default group relative"
-          style="width:280px;animation-delay:${delay}ms${isPromo ? ';border-color:rgba(239,68,68,0.4)' : ''}" data-cat="${escHtmlPublic(p.category)}">
+        <div class="product-card glass-card sticker-card overflow-hidden flex-shrink-0 cursor-pointer group relative"
+          style="width:272px;border-radius:16px;animation-delay:${delay}ms${isPromo ? ';border-color:rgba(139,74,47,0.3)' : ''}" data-cat="${escHtmlPublic(p.category)}"
+          onclick="openProductModal(${pJson})">
           ${promoBadge}
           <div class="product-img h-48 flex items-center justify-center overflow-hidden">
             ${img}
           </div>
           <div class="p-5">
-            <span class="badge text-xs">${escHtmlPublic(p.category)}</span>
-            <h3 class="graffiti-title text-base font-black text-white mt-2 mb-1 group-hover:text-green-400 transition-colors duration-200">${escHtmlPublic(p.name)}</h3>
-            <p class="text-gray-400 text-sm leading-relaxed line-clamp-2">${escHtmlPublic(p.description || '')}</p>
-            <div class="mt-3 flex items-center justify-between gap-3">
-              <span class="text-green-400 font-black" style="font-family:Impact,'Arial Black',sans-serif;font-size:1.1rem;text-shadow:1px 1px 0 rgba(0,0,0,0.5)">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
+            <span class="badge" style="font-size:0.6rem">${escHtmlPublic(p.category)}</span>
+            <h3 class="graffiti-title text-base font-bold text-white mt-3 mb-1" style="font-family:'Syne',sans-serif">${escHtmlPublic(p.name)}</h3>
+            <p class="text-gray-600 text-xs leading-relaxed line-clamp-2" style="font-size:0.78rem">${escHtmlPublic(p.description || '')}</p>
+            <div class="mt-4 flex items-center justify-between gap-3">
+              <span class="font-display font-bold" style="color:#fff;font-size:1.4rem;font-style:italic">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
+              <span style="font-size:0.65rem;color:rgba(255,255,255,0.35);font-family:'Syne',sans-serif;">Voir →</span>
             </div>
-            <button class="add-to-cart-btn mt-3" onclick="addToCart(event, ${JSON.stringify(p).replace(/"/g,'&quot;')})">
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
-              </svg>
-              Ajouter
-            </button>
           </div>
         </div>`;
     }
@@ -1524,7 +1687,7 @@
         else {
           shipLine.classList.remove('hidden');
           shipCostEl.textContent = ship === 0 ? 'Offerte 🎉' : ship.toFixed(2) + ' €';
-          shipCostEl.style.color = ship === 0 ? '#c8f000' : '';
+          shipCostEl.style.color = ship === 0 ? '#ffffff' : '';
         }
       }
 
@@ -1561,11 +1724,20 @@
         const div = document.createElement('div');
         div.className = 'cart-item';
         div.dataset.id = item.id;
+        const thumb = item.image_url
+          ? `<img src="${escHtmlPublic(item.image_url)}" alt="${escHtmlPublic(item.name)}"
+               style="width:52px;height:52px;object-fit:cover;border-radius:10px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1)"/>`
+          : `<div style="width:52px;height:52px;border-radius:10px;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);
+               background:linear-gradient(135deg,rgba(14,18,4,0.9),rgba(6,8,2,0.95));
+               display:flex;align-items:center;justify-content:center;overflow:hidden">
+               ${(CAT_SVG[item.category] || CAT_SVG['Bien-être']).replace(/class="w-\d+ h-\d+/g, 'style="width:28px;height:28px').replace(/class="/g, 'style="')}
+             </div>`;
         div.innerHTML = `
+      ${thumb}
       <div class="flex-1 min-w-0">
         <p class="text-white text-sm font-semibold truncate">${escHtmlPublic(item.name)}</p>
-        <p class="text-xs text-gray-500 mt-0.5">${escHtmlPublic(item.category)}</p>
-        <p class="text-green-400 font-bold text-sm mt-1">${(item.price * item.qty).toFixed(2)} €</p>
+        <p class="text-xs text-gray-500 mt-0.5">${escHtmlPublic(item.category)}${item.weight ? ' · ' + item.weight : ''}</p>
+        <p class="font-bold text-sm mt-1" style="color:#fff">${(item.price * item.qty).toFixed(2)} €</p>
       </div>
       <div class="flex items-center gap-2 flex-shrink-0">
         <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="Moins">−</button>
@@ -1613,5 +1785,239 @@
     // Fermer drawer avec Escape
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
   </script>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       MODAL PRODUIT
+  ══════════════════════════════════════════════════════════════ -->
+  <div id="product-modal-overlay" onclick="closeProductModal()" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:300;opacity:0;pointer-events:none;transition:opacity 0.3s ease;"></div>
+
+  <div id="product-modal" style="position:fixed;inset:0;z-index:301;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
+    <div id="product-modal-box"
+      style="width:100%;max-width:680px;max-height:90vh;overflow-y:auto;border-radius:24px;
+             background:rgba(12,12,12,0.7);backdrop-filter:blur(32px) saturate(1.8);
+             border:1px solid rgba(255,255,255,0.14);
+             box-shadow:0 40px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.12);
+             transform:scale(0.94) translateY(20px);opacity:0;
+             transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease;
+             pointer-events:none;">
+
+      <!-- Header image -->
+      <div id="modal-img-wrap" style="width:100%;height:240px;overflow:hidden;border-radius:24px 24px 0 0;position:relative;">
+        <div id="modal-img-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);"></div>
+        <!-- Bouton fermer -->
+        <button onclick="closeProductModal()" style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">✕</button>
+        <!-- Badge promo -->
+        <div id="modal-promo-badge" class="hidden" style="position:absolute;top:14px;left:14px;background:#8B4A2F;color:#fff;font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:999px;">Promo</div>
+      </div>
+
+      <!-- Contenu -->
+      <div style="padding:28px 28px 32px;">
+
+        <!-- Badge catégorie + nom -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span id="modal-cat" class="badge" style="font-size:0.55rem;"></span>
+        </div>
+        <h2 id="modal-name" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;color:#fff;letter-spacing:-0.03em;margin-bottom:6px;"></h2>
+
+        <!-- Prix -->
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:20px;">
+          <span id="modal-price" style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;font-style:italic;color:#fff;"></span>
+          <span id="modal-unit" style="font-size:0.75rem;color:rgba(255,255,255,0.45);font-family:'Syne',sans-serif;"></span>
+        </div>
+
+        <!-- Séparateur -->
+        <div style="height:1px;background:rgba(255,255,255,0.08);margin-bottom:20px;"></div>
+
+        <!-- Description longue -->
+        <div id="modal-desc" style="font-size:0.82rem;line-height:1.8;color:rgba(255,255,255,0.6);margin-bottom:20px;"></div>
+
+        <!-- Sélecteur de poids (si applicable) -->
+        <div id="modal-weight-wrap" style="margin-bottom:20px;display:none;">
+          <div style="font-size:0.6rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.4);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Sélectionner le poids</div>
+          <div id="modal-weight-options" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+
+        <!-- Infos produit en grid -->
+        <div id="modal-infos" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;"></div>
+
+        <!-- Sélecteur de quantité + bouton panier -->
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:12px;overflow:hidden;">
+            <button onclick="modalQty(-1)" style="width:38px;height:38px;background:transparent;border:none;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">−</button>
+            <span id="modal-qty" style="min-width:30px;text-align:center;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;">1</span>
+            <button onclick="modalQty(1)" style="width:38px;height:38px;background:transparent;border:none;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">+</button>
+          </div>
+          <button id="modal-add-btn" onclick="modalAddToCart()" class="btn-primary" style="flex:1;padding:11px 20px;font-size:0.78rem;display:flex;align-items:center;justify-content:center;gap:8px;">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+            Ajouter au panier
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── Modal produit ────────────────────────────────────────────────────
+    let modalProduct = null;
+    let modalQtyVal = 1;
+
+    function openProductModal(p) {
+      modalProduct = p;
+      modalQtyVal = 1;
+
+      // Image
+      const imgInner = document.getElementById('modal-img-inner');
+      if (p.image_url) {
+        imgInner.innerHTML = `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" style="width:100%;height:100%;object-fit:cover;"/>`;
+      } else {
+        imgInner.innerHTML = CAT_SVG[p.category] || CAT_SVG['Bien-être'];
+      }
+
+      // Badge promo
+      const promoBadge = document.getElementById('modal-promo-badge');
+      p.category === 'Promo' ? promoBadge.classList.remove('hidden') : promoBadge.classList.add('hidden');
+
+      // Textes
+      document.getElementById('modal-cat').textContent = p.category;
+      document.getElementById('modal-name').textContent = p.name;
+      document.getElementById('modal-price').textContent = p.price;
+      document.getElementById('modal-unit').textContent = p.price_unit || '€';
+      document.getElementById('modal-qty').textContent = '1';
+
+      // ── Descriptions longues par catégorie ──
+      const catDesc = {
+        'Fleurs': [
+          `${p.name} est une fleur CBD indoor cultivée avec soin en Europe, récoltée à maturité optimale pour préserver l'intégralité de son profil terpénique. Sa structure dense et sa résine abondante témoignent d'une culture maîtrisée, sans pesticides ni intrants chimiques.`,
+          `En termes d'arômes, attendez-vous à des notes complexes et persistantes qui varient selon la variété — du fruité au boisé, en passant par des touches terreuses ou florales. Chaque bouffée révèle la richesse d'un produit tracé du producteur jusqu'à vous.`,
+          `Taux de CBD certifié en laboratoire indépendant. THC strictement inférieur à 0.3% conformément à la législation française.`
+        ],
+        'Huiles': [
+          `${p.name} est formulée à partir d'un extrait CBD de haute pureté, dilué dans une base d'huile MCT de noix de coco premium. Ce vecteur lipidique favorise une absorption optimale, pour un effet ressenti plus rapidement et durablement.`,
+          `Disponible en spectre complet (full-spectrum) ou large spectre (broad-spectrum) selon la référence. Le spectre complet conserve l'ensemble des cannabinoïdes et terpènes naturellement présents, créant l'effet d'entourage reconnu par les spécialistes.`,
+          `Mode d'emploi : quelques gouttes sous la langue, maintenir 60 secondes avant d'avaler. Conserver à l'abri de la lumière et de la chaleur. Flacon 10ml.`
+        ],
+        'Vape': [
+          `${p.name} est un e-liquide CBD formulé avec des arômes naturels de qualité alimentaire, sans diacétyle ni huiles végétales. La base 50/50 PG/VG garantit une compatibilité universelle avec la quasi-totalité des vaporisateurs du marché.`,
+          `La concentration en CBD est rigoureusement mesurée et certifiée. Chaque bouffée délivre une dose précise, idéale pour un usage ponctuel ou régulier. La vaporisation assure une biodisponibilité élevée comparée aux autres modes de consommation.`,
+          `Aucune nicotine. THC 0% — légal et sans effet psychoactif. Compatible cigarettes électroniques standard.`
+        ],
+        'Bien-être': [
+          `${p.name} fait partie de notre gamme bien-être, conçue pour s'intégrer naturellement à votre routine quotidienne. Ce produit allie les propriétés du CBD à des ingrédients soigneusement sélectionnés pour leur qualité et leur synergie.`,
+          `Chaque formulation est développée dans le respect des matières premières : extraction douce, ingrédients traçables, aucun additif inutile. Nous travaillons exclusivement avec des producteurs européens certifiés pour garantir une cohérence qualitative à chaque lot.`,
+          `Convient à une utilisation topique ou orale selon le format. Notre équipe en boutique vous guide dans le choix le plus adapté à vos besoins.`
+        ],
+        'Promo': [
+          `${p.name} est disponible en promotion pour une durée limitée. Malgré le tarif réduit, la qualité reste identique à notre sélection standard — même sourcing, mêmes certifications, même exigence.`,
+          `Ces offres correspondent à des fins de lot, des nouveautés en test ou des invendus de saison. C'est l'occasion idéale pour découvrir un produit sans compromis sur la qualité.`,
+          `Stock limité. Profitez-en avant rupture.`
+        ],
+      };
+      const paragraphs = catDesc[p.category] || catDesc['Bien-être'];
+      const shortDesc = p.description ? `<p style="color:rgba(255,255,255,0.4);font-size:0.75rem;margin-bottom:14px;font-style:italic;border-left:2px solid rgba(255,255,255,0.15);padding-left:10px;">${p.description}</p>` : '';
+      document.getElementById('modal-desc').innerHTML = shortDesc + paragraphs.map(txt =>
+        `<p style="margin-bottom:12px;">${txt}</p>`
+      ).join('');
+
+      // ── Sélecteur de poids (uniquement pour les produits €/g) ──
+      const weightWrap = document.getElementById('modal-weight-wrap');
+      const weightOpts = document.getElementById('modal-weight-options');
+      const isPricePerGram = p.price_unit === '€/g';
+      if (isPricePerGram) {
+        weightWrap.style.display = 'block';
+        const weights = [1, 2, 3, 5, 7, 10];
+        modalQtyVal = 1;
+        weightOpts.innerHTML = weights.map(w => `
+          <button onclick="selectWeight(${w})" id="wbtn-${w}"
+            style="padding:6px 18px;border-radius:999px;border:1px solid rgba(255,255,255,${w===1?'0.35':'0.12'});
+                   background:${w===1?'rgba(255,255,255,0.14)':'rgba(255,255,255,0.04)'};
+                   color:${w===1?'#fff':'rgba(255,255,255,0.45)'};
+                   font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;
+                   transition:all 0.2s;">
+            ${w}g — ${(p.price * w).toFixed(2)} €
+          </button>`).join('');
+      } else {
+        weightWrap.style.display = 'none';
+      }
+
+      // ── Infos produit ──
+      const catInfos = {
+        'Fleurs':    [['Type','Fleur CBD'],['Origine','Europe'],['Taux THC','< 0.3%'],['Conservation','Endroit frais et sec']],
+        'Huiles':    [['Format','Flacon 10ml'],['Spectre','Complet / Broad'],['Base','Huile MCT coco'],['Taux THC','< 0.3%']],
+        'Vape':      [['Format','E-liquide'],['Ratio','PG/VG 50/50'],['Taux THC','0%'],['Usage','Vaporisateur compatible']],
+        'Bien-être': [['Type','Bien-être'],['Usage','Topique / oral'],['Taux THC','< 0.3%'],['Conservation','À l\'abri de la lumière']],
+        'Promo':     [['Catégorie','Promotion'],['Taux THC','< 0.3%'],['Qualité','Certifiée labo'],['Stock','Limité']],
+      };
+      const infos = catInfos[p.category] || catInfos['Bien-être'];
+      const priceLabel = isPricePerGram ? `${p.price} € / g` : `${p.price} €`;
+      const allInfos = [...infos, ['Prix', priceLabel]];
+      document.getElementById('modal-infos').innerHTML = allInfos.map(([k, v]) => `
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:10px 14px;">
+          <div style="font-size:0.58rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.35);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:3px;">${k}</div>
+          <div style="font-size:0.8rem;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">${v}</div>
+        </div>
+      `).join('');
+
+      // Afficher
+      const overlay = document.getElementById('product-modal-overlay');
+      const box = document.getElementById('product-modal-box');
+      overlay.style.opacity = '1';
+      overlay.style.pointerEvents = 'all';
+      box.style.transform = 'scale(1) translateY(0)';
+      box.style.opacity = '1';
+      box.style.pointerEvents = 'all';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProductModal() {
+      const overlay = document.getElementById('product-modal-overlay');
+      const box = document.getElementById('product-modal-box');
+      overlay.style.opacity = '0';
+      overlay.style.pointerEvents = 'none';
+      box.style.transform = 'scale(0.94) translateY(20px)';
+      box.style.opacity = '0';
+      box.style.pointerEvents = 'none';
+      document.body.style.overflow = '';
+    }
+
+    let modalSelectedWeight = 1;
+
+    function selectWeight(w) {
+      modalSelectedWeight = w;
+      // Met à jour le style des boutons
+      document.querySelectorAll('[id^="wbtn-"]').forEach(btn => {
+        const isSelected = btn.id === `wbtn-${w}`;
+        btn.style.background = isSelected ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)';
+        btn.style.borderColor = isSelected ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)';
+        btn.style.color = isSelected ? '#fff' : 'rgba(255,255,255,0.45)';
+      });
+      // Met à jour le prix affiché
+      if (modalProduct && modalProduct.price_unit === '€/g') {
+        document.getElementById('modal-price').textContent = (modalProduct.price * w).toFixed(2);
+        document.getElementById('modal-unit').textContent = `€ (${w}g)`;
+      }
+    }
+
+    function modalQty(dir) {
+      modalQtyVal = Math.max(1, modalQtyVal + dir);
+      document.getElementById('modal-qty').textContent = modalQtyVal;
+    }
+
+    function modalAddToCart() {
+      if (!modalProduct) return;
+      const isPricePerGram = modalProduct.price_unit === '€/g';
+      const productToAdd = isPricePerGram
+        ? { ...modalProduct, name: `${modalProduct.name} (${modalSelectedWeight}g)`, price: (modalProduct.price * modalSelectedWeight).toFixed(2), price_unit: '€' }
+        : modalProduct;
+      for (let i = 0; i < modalQtyVal; i++) addToCart(null, productToAdd);
+      const btn = document.getElementById('modal-add-btn');
+      btn.textContent = '✓ Ajouté !';
+      setTimeout(() => { btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/> </svg> Ajouter au panier'; }, 1500);
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProductModal(); });
+  </script>
+
+  </div><!-- /z-index wrapper -->
 </body>
 </html>
