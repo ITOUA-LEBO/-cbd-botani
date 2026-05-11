@@ -1377,7 +1377,7 @@
             <h3 class="graffiti-title text-base font-bold text-white mt-3 mb-1" style="font-family:'Syne',sans-serif">${escHtmlPublic(p.name)}</h3>
             <p class="text-gray-600 text-xs leading-relaxed line-clamp-2" style="font-size:0.78rem">${escHtmlPublic(p.description || '')}</p>
             <div class="mt-4 flex items-center justify-between gap-3">
-              <span class="font-display font-bold" style="color:#fff;font-size:1.4rem;font-style:italic">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>
+              ${p.hide_price ? '' : `<span class="font-display font-bold" style="color:#fff;font-size:1.4rem;font-style:italic">${escHtmlPublic(String(p.price))}${escHtmlPublic(p.price_unit || '€')}</span>`}
               <span style="font-size:0.65rem;color:rgba(255,255,255,0.35);font-family:'Syne',sans-serif;">Voir →</span>
             </div>
           </div>
@@ -1470,6 +1470,7 @@
         price: 5.00,
         price_unit: '€/g',
         image_url: 'images/bg-produits.jpg',
+        hide_price: true,
         stock: 99
       };
 
@@ -1492,6 +1493,7 @@
         price: 10.00,
         price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (4).jpeg',
+        hide_price: true,
         stock: 99
       };
 
@@ -1500,8 +1502,7 @@
         name: 'Fleurs BotaniX',
         category: 'Promo',
         description: 'Sélection premium de fleurs CBD BotaniX. Cultivées avec soin, arômes intenses et effets relaxants.',
-        price: 0,
-        price_unit: '€/g',
+        price: 0, price_unit: '€/g', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (8).jpeg',
         stock: 99
       };
@@ -1510,8 +1511,7 @@
         name: 'Méthode Anti-THC',
         category: 'Promo',
         description: 'Découvrez notre méthode pour réduire le taux de THC. Profitez des bienfaits du CBD en toute sérénité.',
-        price: 0,
-        price_unit: '€',
+        price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (2).jpeg',
         stock: 99
       };
@@ -1520,8 +1520,7 @@
         name: 'Cannabis Cookies Chocolate',
         category: 'Promo',
         description: 'Cookies au CBD arôme chocolat. Gourmands et relaxants. Recette artisanale.',
-        price: 5.00,
-        price_unit: '€',
+        price: 5.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (3).jpeg',
         stock: 99
       };
@@ -1530,8 +1529,7 @@
         name: 'Puff HE Formule Explosive',
         category: 'Promo',
         description: "Puff haute efficacité formule explosive. Vapeur dense, saveurs intenses. Profitez d'une expérience unique.",
-        price: 40.00,
-        price_unit: '€',
+        price: 40.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (4).jpeg',
         stock: 99
       };
@@ -1540,8 +1538,7 @@
         name: 'Résine HE Piatella',
         category: 'Promo',
         description: 'Résine Piatella haute efficacité. Texture unique, arômes prononcés. Qualité artisanale sélectionnée.',
-        price: 0,
-        price_unit: '€/g',
+        price: 0, price_unit: '€/g', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (5).jpeg',
         stock: 99
       };
@@ -1550,8 +1547,7 @@
         name: 'Super Rush 10ml',
         category: 'Promo',
         description: 'Super Rush 10ml. Formule concentrée pour une expérience intense. Flacon pratique et discret.',
-        price: 0,
-        price_unit: '€',
+        price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (6).jpeg',
         stock: 99
       };
@@ -1560,8 +1556,7 @@
         name: 'Huiles CBD — Bienfaits',
         category: 'Promo',
         description: 'Découvrez tous les bienfaits de nos huiles CBD. Spectre complet ou broad-spectrum, pour chaque besoin.',
-        price: 0,
-        price_unit: '€',
+        price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (7).jpeg',
         stock: 99
       };
@@ -1570,8 +1565,7 @@
         name: 'Infusions CBD',
         category: 'Promo',
         description: 'Infusions CBD relaxantes. Mélange de plantes soigneusement sélectionnées. Goût doux et apaisant.',
-        price: 14.00,
-        price_unit: '€',
+        price: 14.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (9).jpeg',
         stock: 99
       };
@@ -1580,8 +1574,7 @@
         name: 'Carbon Filters Euphoria',
         category: 'Promo',
         description: 'Filtres charbon actif Euphoria. Pour une fumée plus douce et purifiée. Compatible tous supports.',
-        price: 0,
-        price_unit: '€',
+        price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (10).jpeg',
         stock: 99
       };
@@ -1590,8 +1583,7 @@
         name: 'Huile CBD Wouaf — Chien',
         category: 'Promo',
         description: "Huile CBD spécialement formulée pour votre chien. Réduit le stress et l'anxiété de votre animal.",
-        price: 15.00,
-        price_unit: '€',
+        price: 15.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (11).jpeg',
         stock: 99
       };
@@ -1600,8 +1592,7 @@
         name: 'Beuz Rolling Tray',
         category: 'Promo',
         description: 'Plateau à rouler Beuz. Design compact et pratique. Accessoire indispensable pour les amateurs.',
-        price: 5.00,
-        price_unit: '€',
+        price: 5.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (12).jpeg',
         stock: 99
       };
@@ -1610,8 +1601,7 @@
         name: 'Le Substitut — The Blue',
         category: 'Promo',
         description: 'Le Substitut "The Blue" — alternative naturelle au tabac. Saveur fraîche et légère.',
-        price: 13.00,
-        price_unit: '€',
+        price: 13.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (13).jpeg',
         stock: 99
       };
@@ -1620,8 +1610,7 @@
         name: 'The Bulldog Cendrier',
         category: 'Promo',
         description: 'Cendrier The Bulldog iconique. Qualité premium, design emblématique de la culture cannabis.',
-        price: 5.00,
-        price_unit: '€',
+        price: 5.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (15).jpeg',
         stock: 99
       };
@@ -1630,8 +1619,7 @@
         name: 'Beuz Papers',
         category: 'Promo',
         description: 'Feuilles à rouler Beuz. Ultra-fines, brûlure lente et régulière. Le classique du fumeur.',
-        price: 1.00,
-        price_unit: '€',
+        price: 1.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18.jpeg',
         stock: 99
       };
@@ -1640,8 +1628,7 @@
         name: 'Harmony Premium CBD Spray',
         category: 'Promo',
         description: 'Spray huile CBD Harmony Premium. Dosage précis et rapide. Qualité certifiée, absorption optimale.',
-        price: 0,
-        price_unit: '€',
+        price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (1).jpeg',
         stock: 99
       };
@@ -1650,8 +1637,7 @@
         name: 'Puff HE BotaniX',
         category: 'Promo',
         description: 'Puff haute efficacité BotaniX. Nouvelle formule, vapeur généreuse et saveurs authentiques.',
-        price: 0,
-        price_unit: '€',
+        price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (4).jpeg',
         stock: 99
       };
@@ -1660,8 +1646,7 @@
         name: 'Cookies CBD',
         category: 'Promo',
         description: 'Cookies au CBD artisanaux. Recette gourmande, effet relaxant garanti. Saveurs variées.',
-        price: 8.00,
-        price_unit: '€',
+        price: 8.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (5).jpeg',
         stock: 99
       };
@@ -1670,8 +1655,7 @@
         name: 'Bol Silicone',
         category: 'Promo',
         description: 'Bol en silicone alimentaire. Résistant à la chaleur, facile à nettoyer. Accessoire pratique et durable.',
-        price: 3.50,
-        price_unit: '€',
+        price: 3.50, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (10).jpeg',
         stock: 99
       };
@@ -1680,8 +1664,7 @@
         name: 'Le Substitut — The Pink',
         category: 'Promo',
         description: 'Le Substitut "The Pink" — alternative naturelle au tabac. Saveur fruitée et douce.',
-        price: 13.00,
-        price_unit: '€',
+        price: 13.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (11).jpeg',
         stock: 99
       };
@@ -1690,8 +1673,7 @@
         name: 'Rolling Trays & Boîtes',
         category: 'Promo',
         description: 'Plateaux à rouler et boîtes de rangement assorties. Pratiques, stylés, indispensables.',
-        price: 5.00,
-        price_unit: '€',
+        price: 5.00, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (13).jpeg',
         stock: 99
       };
@@ -2033,7 +2015,7 @@
         <h2 id="modal-name" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;color:#fff;letter-spacing:-0.03em;margin-bottom:6px;"></h2>
 
         <!-- Prix -->
-        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:20px;">
+        <div id="modal-price-wrap" style="display:flex;align-items:baseline;gap:6px;margin-bottom:20px;">
           <span id="modal-price" style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;font-style:italic;color:#fff;"></span>
           <span id="modal-unit" style="font-size:0.75rem;color:rgba(255,255,255,0.45);font-family:'Syne',sans-serif;"></span>
         </div>
@@ -2094,6 +2076,8 @@
       // Textes
       document.getElementById('modal-cat').textContent = p.category;
       document.getElementById('modal-name').textContent = p.name;
+      const priceWrap = document.getElementById('modal-price-wrap');
+      priceWrap.style.display = p.hide_price ? 'none' : 'flex';
       document.getElementById('modal-price').textContent = p.price;
       document.getElementById('modal-unit').textContent = p.price_unit || '€';
       document.getElementById('modal-qty').textContent = '1';
