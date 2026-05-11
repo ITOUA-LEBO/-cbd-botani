@@ -1473,7 +1473,18 @@
         stock: 99
       };
 
-      allPublicProducts = [promoLocal, ...data];
+      const promoLivraison = {
+        id: 'promo-livraison-7j7',
+        name: 'Livraison 7j/7',
+        category: 'Promo',
+        description: 'Service disponible tous les jours de 17h à 23h30. Commande minimum 30€. Livraison autour d\'Ivry-sur-Seine jusqu\'à 30km. Paiement espèce ou carte bancaire.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-04-27 at 16.48.10.jpeg',
+        stock: 99
+      };
+
+      allPublicProducts = [promoLocal, promoLivraison, ...data];
       buildCatFilters(allPublicProducts);
       renderPublicProducts(allPublicProducts);
     }
@@ -1784,7 +1795,7 @@
              pointer-events:none;">
 
       <!-- Header image -->
-      <div id="modal-img-wrap" style="width:100%;height:420px;overflow:hidden;border-radius:24px 24px 0 0;position:relative;">
+      <div id="modal-img-wrap" style="width:100%;height:60vh;overflow:hidden;border-radius:24px 24px 0 0;position:relative;">
         <div id="modal-img-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);"></div>
         <!-- Bouton fermer -->
         <button onclick="closeProductModal()" style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">✕</button>
