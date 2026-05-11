@@ -1460,9 +1460,22 @@
         .order('name');
 
       if (error || !data) return;
-      allPublicProducts = data;
-      buildCatFilters(data);
-      renderPublicProducts(data);
+
+      // Produit promo local : Fleurs & Résines HE
+      const promoLocal = {
+        id: 'promo-fleurs-resines-he',
+        name: 'Fleurs & Résines HE',
+        category: 'Promo',
+        description: 'Idéal pour la détente, favorise le lâcher-prise. Produit apprécié pour se relaxer naturellement.',
+        price: 5.00,
+        price_unit: '€/g',
+        image_url: 'images/bg-produits.jpg',
+        stock: 99
+      };
+
+      allPublicProducts = [promoLocal, ...data];
+      buildCatFilters(allPublicProducts);
+      renderPublicProducts(allPublicProducts);
     }
 
     document.addEventListener('DOMContentLoaded', () => {
