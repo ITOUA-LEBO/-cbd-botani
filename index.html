@@ -1798,18 +1798,18 @@
   <div id="product-modal" style="position:fixed;inset:0;z-index:301;display:flex;align-items:center;justify-content:center;padding:16px;pointer-events:none;">
     <div id="product-modal-box"
       style="width:100%;max-width:680px;max-height:90vh;overflow-y:auto;border-radius:24px;
-             background:rgba(12,12,12,0.7);backdrop-filter:blur(32px) saturate(1.8);
-             border:1px solid rgba(255,255,255,0.14);
-             box-shadow:0 40px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.12);
+             background:#ffffff;
+             border:1px solid rgba(0,0,0,0.08);
+             box-shadow:0 40px 80px rgba(0,0,0,0.35);
              transform:scale(0.94) translateY(20px);opacity:0;
              transition:transform 0.35s cubic-bezier(0.16,1,0.3,1),opacity 0.3s ease;
              pointer-events:none;">
 
-      <!-- Header image -->
-      <div id="modal-img-wrap" style="width:100%;height:60vh;overflow:hidden;border-radius:24px 24px 0 0;position:relative;">
-        <div id="modal-img-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);"></div>
+      <!-- Header image — contain pour voir toute l'image -->
+      <div id="modal-img-wrap" style="width:100%;height:60vh;overflow:hidden;border-radius:24px 24px 0 0;position:relative;background:#f5f5f5;">
+        <div id="modal-img-inner" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"></div>
         <!-- Bouton fermer -->
-        <button onclick="closeProductModal()" style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">✕</button>
+        <button onclick="closeProductModal()" style="position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,0.15);backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,0.12);color:#111;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">✕</button>
         <!-- Badge promo -->
         <div id="modal-promo-badge" class="hidden" style="position:absolute;top:14px;left:14px;background:#8B4A2F;color:#fff;font-family:'Syne',sans-serif;font-size:0.6rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border-radius:999px;">Promo</div>
       </div>
@@ -1819,25 +1819,25 @@
 
         <!-- Badge catégorie + nom -->
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-          <span id="modal-cat" class="badge" style="font-size:0.55rem;"></span>
+          <span id="modal-cat" class="badge" style="font-size:0.55rem;background:rgba(0,0,0,0.07);color:#333;border-color:rgba(0,0,0,0.12);"></span>
         </div>
-        <h2 id="modal-name" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;color:#fff;letter-spacing:-0.03em;margin-bottom:6px;"></h2>
+        <h2 id="modal-name" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;color:#111;letter-spacing:-0.03em;margin-bottom:6px;"></h2>
 
         <!-- Prix -->
         <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:20px;">
-          <span id="modal-price" style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;font-style:italic;color:#fff;"></span>
-          <span id="modal-unit" style="font-size:0.75rem;color:rgba(255,255,255,0.45);font-family:'Syne',sans-serif;"></span>
+          <span id="modal-price" style="font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;font-style:italic;color:#111;"></span>
+          <span id="modal-unit" style="font-size:0.75rem;color:rgba(0,0,0,0.45);font-family:'Syne',sans-serif;"></span>
         </div>
 
         <!-- Séparateur -->
-        <div style="height:1px;background:rgba(255,255,255,0.08);margin-bottom:20px;"></div>
+        <div style="height:1px;background:rgba(0,0,0,0.08);margin-bottom:20px;"></div>
 
         <!-- Description longue -->
-        <div id="modal-desc" style="font-size:0.82rem;line-height:1.8;color:rgba(255,255,255,0.6);margin-bottom:20px;"></div>
+        <div id="modal-desc" style="font-size:0.82rem;line-height:1.8;color:rgba(0,0,0,0.6);margin-bottom:20px;"></div>
 
         <!-- Sélecteur de poids (si applicable) -->
         <div id="modal-weight-wrap" style="margin-bottom:20px;display:none;">
-          <div style="font-size:0.6rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.4);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Sélectionner le poids</div>
+          <div style="font-size:0.6rem;text-transform:uppercase;letter-spacing:0.14em;color:rgba(0,0,0,0.4);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:8px;">Sélectionner le poids</div>
           <div id="modal-weight-options" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
         </div>
 
@@ -1846,10 +1846,10 @@
 
         <!-- Sélecteur de quantité + bouton panier -->
         <div style="display:flex;align-items:center;gap:12px;">
-          <div style="display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:12px;overflow:hidden;">
-            <button onclick="modalQty(-1)" style="width:38px;height:38px;background:transparent;border:none;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">−</button>
-            <span id="modal-qty" style="min-width:30px;text-align:center;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;">1</span>
-            <button onclick="modalQty(1)" style="width:38px;height:38px;background:transparent;border:none;color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">+</button>
+          <div style="display:flex;align-items:center;gap:0;background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.12);border-radius:12px;overflow:hidden;">
+            <button onclick="modalQty(-1)" style="width:38px;height:38px;background:transparent;border:none;color:#111;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.07)'" onmouseout="this.style.background='transparent'">−</button>
+            <span id="modal-qty" style="min-width:30px;text-align:center;color:#111;font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;">1</span>
+            <button onclick="modalQty(1)" style="width:38px;height:38px;background:transparent;border:none;color:#111;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.07)'" onmouseout="this.style.background='transparent'">+</button>
           </div>
           <button id="modal-add-btn" onclick="modalAddToCart()" class="btn-primary" style="flex:1;padding:11px 20px;font-size:0.78rem;display:flex;align-items:center;justify-content:center;gap:8px;">
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -1873,7 +1873,7 @@
       // Image
       const imgInner = document.getElementById('modal-img-inner');
       if (p.image_url) {
-        imgInner.innerHTML = `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" style="width:100%;height:100%;object-fit:cover;"/>`;
+        imgInner.innerHTML = `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" style="width:100%;height:100%;object-fit:contain;"/>`;
       } else {
         imgInner.innerHTML = CAT_SVG[p.category] || CAT_SVG['Bien-être'];
       }
@@ -1933,9 +1933,9 @@
         modalQtyVal = 1;
         weightOpts.innerHTML = weights.map(w => `
           <button onclick="selectWeight(${w})" id="wbtn-${w}"
-            style="padding:6px 18px;border-radius:999px;border:1px solid rgba(255,255,255,${w===1?'0.35':'0.12'});
-                   background:${w===1?'rgba(255,255,255,0.14)':'rgba(255,255,255,0.04)'};
-                   color:${w===1?'#fff':'rgba(255,255,255,0.45)'};
+            style="padding:6px 18px;border-radius:999px;border:1px solid rgba(0,0,0,${w===1?'0.3':'0.1'});
+                   background:${w===1?'rgba(0,0,0,0.1)':'rgba(0,0,0,0.03)'};
+                   color:${w===1?'#111':'rgba(0,0,0,0.45)'};
                    font-family:'Syne',sans-serif;font-size:0.72rem;font-weight:700;cursor:pointer;
                    transition:all 0.2s;">
             ${w}g — ${(p.price * w).toFixed(2)} €
@@ -1956,9 +1956,9 @@
       const priceLabel = isPricePerGram ? `${p.price} € / g` : `${p.price} €`;
       const allInfos = [...infos, ['Prix', priceLabel]];
       document.getElementById('modal-infos').innerHTML = allInfos.map(([k, v]) => `
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:12px;padding:10px 14px;">
-          <div style="font-size:0.58rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.35);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:3px;">${k}</div>
-          <div style="font-size:0.8rem;color:#fff;font-family:'Syne',sans-serif;font-weight:600;">${v}</div>
+        <div style="background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:12px;padding:10px 14px;">
+          <div style="font-size:0.58rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(0,0,0,0.4);font-family:'Syne',sans-serif;font-weight:700;margin-bottom:3px;">${k}</div>
+          <div style="font-size:0.8rem;color:#111;font-family:'Syne',sans-serif;font-weight:600;">${v}</div>
         </div>
       `).join('');
 
@@ -1991,14 +1991,15 @@
       // Met à jour le style des boutons
       document.querySelectorAll('[id^="wbtn-"]').forEach(btn => {
         const isSelected = btn.id === `wbtn-${w}`;
-        btn.style.background = isSelected ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.04)';
-        btn.style.borderColor = isSelected ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)';
-        btn.style.color = isSelected ? '#fff' : 'rgba(255,255,255,0.45)';
+        btn.style.background = isSelected ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.03)';
+        btn.style.borderColor = isSelected ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)';
+        btn.style.color = isSelected ? '#111' : 'rgba(0,0,0,0.45)';
       });
       // Met à jour le prix affiché
       if (modalProduct && modalProduct.price_unit === '€/g') {
         document.getElementById('modal-price').textContent = (modalProduct.price * w).toFixed(2);
         document.getElementById('modal-unit').textContent = `€ (${w}g)`;
+        document.getElementById('modal-unit').style.color = 'rgba(0,0,0,0.45)';
       }
     }
 
