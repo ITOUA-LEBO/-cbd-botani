@@ -565,11 +565,13 @@
 
   <div style="position:relative;z-index:1;">
 
-  <!-- Vidéo de fond fixe -->
+  <!-- Vidéo de fond fixe — canvas ping-pong -->
   <div id="hero-bg-wrap" style="position:fixed;inset:0;z-index:0;pointer-events:none;">
-    <video id="hero-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture disableremoteplayback
+    <canvas id="hero-canvas" style="width:100%;height:100%;object-fit:cover;display:block;"></canvas>
+    <!-- Vidéo cachée utilisée comme source de frames -->
+    <video id="hero-video" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback
       src="images/From KlickPin CF Refresh these dreamy streetwear look tips that bring style function and personality together that balance trend comfort and everyday function - Pin-1618549864058372 (1).mp4"
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+      style="display:none;"></video>
     <div id="hero-overlay" style="position:absolute;inset:0;background:rgba(5,5,5,0.5);transition:opacity 0.3s ease;"></div>
   </div>
 
@@ -1227,7 +1229,45 @@
       });
     });
 
-    // Vidéo de fond : autoplay natif, aucune logique JS nécessaire
+    // ── Vidéo : joue quand immobile, pause au scroll ─────────────────────────
+    (function startBgVideo() {
+      const video  = document.getElementById('hero-video');
+      const canvas = document.getElementById('hero-canvas');
+      if (!video || !canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+      resize();
+      window.addEventListener('resize', resize);
+
+      let rafId = null;
+      function draw() {
+        if (!video.videoWidth) { rafId = requestAnimationFrame(draw); return; }
+        const vr = video.videoWidth / video.videoHeight;
+        const cr = canvas.width / canvas.height;
+        let sw, sh, sx, sy;
+        if (vr > cr) { sh = video.videoHeight; sw = sh * cr; sy = 0; sx = (video.videoWidth - sw) / 2; }
+        else         { sw = video.videoWidth;  sh = sw / cr; sx = 0; sy = (video.videoHeight - sh) / 2; }
+        ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+        rafId = requestAnimationFrame(draw);
+      }
+
+      function startDraw() { if (!rafId) rafId = requestAnimationFrame(draw); }
+      function stopDraw()  { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+
+      // Scroll : joue pendant le scroll, pause après 150ms d'inactivité
+      let scrollTimer = null;
+      window.addEventListener('scroll', () => {
+        video.play().catch(() => {}); startDraw();
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => { video.pause(); stopDraw(); }, 150);
+      }, { passive: true });
+
+      video.loop = true;
+      // Démarre en pause, attend le premier scroll
+      if (video.readyState >= 2) { startDraw(); }
+      else video.addEventListener('canplay', () => { startDraw(); }, { once: true });
+    })();
 
 
     // particles container kept for DOM compatibility but not populated
