@@ -1495,7 +1495,216 @@
         stock: 99
       };
 
-      allPublicProducts = [promoLocal, promoLivraison, promoGummies, ...data];
+      const promoFleursBotanix = {
+        id: 'promo-fleurs-botanix',
+        name: 'Fleurs BotaniX',
+        category: 'Promo',
+        description: 'Sélection premium de fleurs CBD BotaniX. Cultivées avec soin, arômes intenses et effets relaxants.',
+        price: 0,
+        price_unit: '€/g',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (8).jpeg',
+        stock: 99
+      };
+      const promoReduceTHC = {
+        id: 'promo-methode-thc',
+        name: 'Méthode Anti-THC',
+        category: 'Promo',
+        description: 'Découvrez notre méthode pour réduire le taux de THC. Profitez des bienfaits du CBD en toute sérénité.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (2).jpeg',
+        stock: 99
+      };
+      const promoCookiesChoc = {
+        id: 'promo-cookies-chocolate',
+        name: 'Cannabis Cookies Chocolate',
+        category: 'Promo',
+        description: 'Cookies au CBD arôme chocolat. Gourmands et relaxants. Recette artisanale.',
+        price: 5.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (3).jpeg',
+        stock: 99
+      };
+      const promoPuffExplosif = {
+        id: 'promo-puff-formule-explosive',
+        name: 'Puff HE Formule Explosive',
+        category: 'Promo',
+        description: "Puff haute efficacité formule explosive. Vapeur dense, saveurs intenses. Profitez d'une expérience unique.",
+        price: 40.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (4).jpeg',
+        stock: 99
+      };
+      const promoPiatella = {
+        id: 'promo-resine-piatella',
+        name: 'Résine HE Piatella',
+        category: 'Promo',
+        description: 'Résine Piatella haute efficacité. Texture unique, arômes prononcés. Qualité artisanale sélectionnée.',
+        price: 0,
+        price_unit: '€/g',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (5).jpeg',
+        stock: 99
+      };
+      const promoSuperRush = {
+        id: 'promo-super-rush',
+        name: 'Super Rush 10ml',
+        category: 'Promo',
+        description: 'Super Rush 10ml. Formule concentrée pour une expérience intense. Flacon pratique et discret.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (6).jpeg',
+        stock: 99
+      };
+      const promoHuilesBienfaits = {
+        id: 'promo-huiles-cbd-bienfaits',
+        name: 'Huiles CBD — Bienfaits',
+        category: 'Promo',
+        description: 'Découvrez tous les bienfaits de nos huiles CBD. Spectre complet ou broad-spectrum, pour chaque besoin.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (7).jpeg',
+        stock: 99
+      };
+      const promoInfusions = {
+        id: 'promo-infusions-cbd',
+        name: 'Infusions CBD',
+        category: 'Promo',
+        description: 'Infusions CBD relaxantes. Mélange de plantes soigneusement sélectionnées. Goût doux et apaisant.',
+        price: 14.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (9).jpeg',
+        stock: 99
+      };
+      const promoCarbonFilter = {
+        id: 'promo-carbon-filter-euphoria',
+        name: 'Carbon Filters Euphoria',
+        category: 'Promo',
+        description: 'Filtres charbon actif Euphoria. Pour une fumée plus douce et purifiée. Compatible tous supports.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (10).jpeg',
+        stock: 99
+      };
+      const promoHuileChien = {
+        id: 'promo-huile-cbd-chien',
+        name: 'Huile CBD Wouaf — Chien',
+        category: 'Promo',
+        description: "Huile CBD spécialement formulée pour votre chien. Réduit le stress et l'anxiété de votre animal.",
+        price: 15.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (11).jpeg',
+        stock: 99
+      };
+      const promoBeuzTray = {
+        id: 'promo-beuz-rolling-tray',
+        name: 'Beuz Rolling Tray',
+        category: 'Promo',
+        description: 'Plateau à rouler Beuz. Design compact et pratique. Accessoire indispensable pour les amateurs.',
+        price: 5.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (12).jpeg',
+        stock: 99
+      };
+      const promoSubstitutBlue = {
+        id: 'promo-substitut-blue',
+        name: 'Le Substitut — The Blue',
+        category: 'Promo',
+        description: 'Le Substitut "The Blue" — alternative naturelle au tabac. Saveur fraîche et légère.',
+        price: 13.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (13).jpeg',
+        stock: 99
+      };
+      const promoBulldogAshtray = {
+        id: 'promo-bulldog-ashtray',
+        name: 'The Bulldog Cendrier',
+        category: 'Promo',
+        description: 'Cendrier The Bulldog iconique. Qualité premium, design emblématique de la culture cannabis.',
+        price: 5.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (15).jpeg',
+        stock: 99
+      };
+      const promoBeuzPapers = {
+        id: 'promo-beuz-papers',
+        name: 'Beuz Papers',
+        category: 'Promo',
+        description: 'Feuilles à rouler Beuz. Ultra-fines, brûlure lente et régulière. Le classique du fumeur.',
+        price: 1.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18.jpeg',
+        stock: 99
+      };
+      const promoHarmonySpray = {
+        id: 'promo-harmony-cbd-spray',
+        name: 'Harmony Premium CBD Spray',
+        category: 'Promo',
+        description: 'Spray huile CBD Harmony Premium. Dosage précis et rapide. Qualité certifiée, absorption optimale.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (1).jpeg',
+        stock: 99
+      };
+      const promoPuffBotanix2 = {
+        id: 'promo-puff-botanix-v2',
+        name: 'Puff HE BotaniX',
+        category: 'Promo',
+        description: 'Puff haute efficacité BotaniX. Nouvelle formule, vapeur généreuse et saveurs authentiques.',
+        price: 0,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (4).jpeg',
+        stock: 99
+      };
+      const promoCookiesCBD = {
+        id: 'promo-cookies-cbd',
+        name: 'Cookies CBD',
+        category: 'Promo',
+        description: 'Cookies au CBD artisanaux. Recette gourmande, effet relaxant garanti. Saveurs variées.',
+        price: 8.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (5).jpeg',
+        stock: 99
+      };
+      const promoBolSilicone = {
+        id: 'promo-bol-silicone',
+        name: 'Bol Silicone',
+        category: 'Promo',
+        description: 'Bol en silicone alimentaire. Résistant à la chaleur, facile à nettoyer. Accessoire pratique et durable.',
+        price: 3.50,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (10).jpeg',
+        stock: 99
+      };
+      const promoSubstitutPink = {
+        id: 'promo-substitut-pink',
+        name: 'Le Substitut — The Pink',
+        category: 'Promo',
+        description: 'Le Substitut "The Pink" — alternative naturelle au tabac. Saveur fruitée et douce.',
+        price: 13.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (11).jpeg',
+        stock: 99
+      };
+      const promoRollingTrays = {
+        id: 'promo-rolling-trays',
+        name: 'Rolling Trays & Boîtes',
+        category: 'Promo',
+        description: 'Plateaux à rouler et boîtes de rangement assorties. Pratiques, stylés, indispensables.',
+        price: 5.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (13).jpeg',
+        stock: 99
+      };
+
+      allPublicProducts = [
+        promoLocal, promoLivraison, promoGummies,
+        promoFleursBotanix, promoReduceTHC, promoCookiesChoc, promoPuffExplosif,
+        promoPiatella, promoSuperRush, promoHuilesBienfaits, promoInfusions,
+        promoCarbonFilter, promoHuileChien, promoBeuzTray, promoSubstitutBlue,
+        promoBulldogAshtray, promoBeuzPapers, promoHarmonySpray, promoPuffBotanix2,
+        promoCookiesCBD, promoBolSilicone, promoSubstitutPink, promoRollingTrays,
+        ...data
+      ];
       buildCatFilters(allPublicProducts);
       renderPublicProducts(allPublicProducts);
     }
