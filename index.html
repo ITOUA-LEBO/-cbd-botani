@@ -569,7 +569,7 @@
   <div id="hero-bg-wrap" style="position:fixed;inset:0;z-index:0;pointer-events:none;">
     <canvas id="hero-canvas" style="width:100%;height:100%;object-fit:cover;display:block;"></canvas>
     <!-- Vidéo cachée utilisée comme source de frames -->
-    <video id="hero-video" muted playsinline preload="auto" disablepictureinpicture disableremoteplayback
+    <video id="hero-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture disableremoteplayback
       src="images/From KlickPin CF Refresh these dreamy streetwear look tips that bring style function and personality together that balance trend comfort and everyday function - Pin-1618549864058372 (1).mp4"
       style="position:absolute;opacity:0;width:1px;height:1px;left:-9999px;top:0;"></video>
     <div id="hero-overlay" style="position:absolute;inset:0;background:rgba(5,5,5,0.5);transition:opacity 0.3s ease;"></div>
@@ -1264,9 +1264,14 @@
       }, { passive: true });
 
       video.loop = true;
-      // Démarre en pause, attend le premier scroll
-      if (video.readyState >= 2) { startDraw(); }
-      else video.addEventListener('canplay', () => { startDraw(); }, { once: true });
+
+      // Démarre dès que la vidéo est prête
+      function tryStart() { video.play().catch(() => {}); startDraw(); }
+      if (video.readyState >= 2) { tryStart(); }
+      else video.addEventListener('canplay', tryStart, { once: true });
+
+      // Fallback iOS : le premier touch débloque l'autoplay si refusé
+      document.addEventListener('touchstart', () => { video.play().catch(() => {}); startDraw(); }, { once: true, passive: true });
     })();
 
 
