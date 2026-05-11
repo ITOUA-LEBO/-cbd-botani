@@ -1471,6 +1471,7 @@
         price: 5.00,
         price_unit: '€/g',
         image_url: 'images/bg-produits.jpg',
+        hide_price: true,
         stock: 99
       };
 
@@ -1481,6 +1482,7 @@
         description: 'Service disponible tous les jours de 17h à 23h30. Commande minimum 30€. Livraison autour d\'Ivry-sur-Seine jusqu\'à 30km. Paiement espèce ou carte bancaire.',
         price: 0,
         price_unit: '€',
+        hide_price: true,
         image_url: 'images/WhatsApp Image 2026-04-27 at 16.48.10.jpeg',
         stock: 99
       };
@@ -2062,6 +2064,9 @@
 
       // Image
       const imgInner = document.getElementById('modal-img-inner');
+      const imgWrap = document.getElementById('modal-img-wrap');
+      const tallIds = ['promo-methode-thc', 'promo-huiles-cbd-bienfaits', 'promo-fleurs-botanix', 'promo-puff-formule-explosive', 'promo-puff-botanix-v2'];
+      imgWrap.style.height = tallIds.includes(p.id) ? '95vh' : '85vh';
       if (p.image_url) {
         imgInner.innerHTML = `<img src="${escHtmlPublic(p.image_url)}" alt="${escHtmlPublic(p.name)}" style="width:100%;height:100%;object-fit:cover;object-position:top;"/>`;
       } else {
