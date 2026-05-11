@@ -1484,7 +1484,18 @@
         stock: 99
       };
 
-      allPublicProducts = [promoLocal, promoLivraison, ...data];
+      const promoGummies = {
+        id: 'promo-gummies-fleurs',
+        name: 'Offre Gummies CBD',
+        category: 'Promo',
+        description: '1g de fleurs ou résine indoor acheté + 1 boîte de 3 gummies CBD = 10€. Saveurs gourmandes, qualité premium. Offre limitée.',
+        price: 10.00,
+        price_unit: '€',
+        image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (4).jpeg',
+        stock: 99
+      };
+
+      allPublicProducts = [promoLocal, promoLivraison, promoGummies, ...data];
       buildCatFilters(allPublicProducts);
       renderPublicProducts(allPublicProducts);
     }
