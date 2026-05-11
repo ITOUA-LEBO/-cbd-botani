@@ -1347,6 +1347,7 @@
       'Huiles': `<svg class="w-14 h-20 opacity-60" viewBox="0 0 64 80" fill="none"><rect x="26" y="0" width="12" height="8" rx="3" fill="#3a5500"/><rect x="22" y="7" width="20" height="4" rx="2" fill="#1a2000"/><rect x="18" y="11" width="28" height="45" rx="10" fill="#1a2000" opacity="0.9"/><rect x="22" y="30" width="20" height="20" rx="7" fill="#6a8c00" opacity="0.6"/><circle cx="32" cy="40" r="5" fill="#ffffff" opacity="0.5"/></svg>`,
       'Vape':   `<svg class="w-12 h-20 opacity-60" viewBox="0 0 56 80" fill="none"><rect x="16" y="0" width="24" height="10" rx="4" fill="#3a5500"/><rect x="20" y="9" width="16" height="6" rx="2" fill="#1a2000"/><rect x="8" y="14" width="40" height="55" rx="12" fill="#1a2000" opacity="0.9"/><rect x="12" y="42" width="32" height="23" rx="8" fill="#6a8c00" opacity="0.55"/><path d="M20 35 Q28 28 36 35" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>`,
       'Bien-être': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#1a2000"/><circle cx="32" cy="32" r="18" fill="#3a5500" opacity="0.7"/><circle cx="32" cy="32" r="8" fill="#e0e0e0" opacity="0.8"/><circle cx="32" cy="32" r="3" fill="#ffffff"/></svg>`,
+      'Accessoires': `<svg class="w-16 h-16 opacity-60" viewBox="0 0 64 64" fill="none"><rect x="8" y="20" width="48" height="30" rx="6" fill="#1a2000" opacity="0.9"/><rect x="20" y="12" width="24" height="12" rx="4" fill="#3a5500" opacity="0.8"/><circle cx="22" cy="36" r="5" fill="#6a8c00" opacity="0.7"/><circle cx="42" cy="36" r="5" fill="#6a8c00" opacity="0.7"/><rect x="28" y="31" width="8" height="10" rx="2" fill="#e0e0e0" opacity="0.5"/></svg>`,
     };
 
     function escHtmlPublic(str) {
@@ -1470,7 +1471,6 @@
         price: 5.00,
         price_unit: '€/g',
         image_url: 'images/bg-produits.jpg',
-        hide_price: true,
         stock: 99
       };
 
@@ -1493,60 +1493,59 @@
         price: 10.00,
         price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (4).jpeg',
-        hide_price: true,
         stock: 99
       };
 
       const promoFleursBotanix = {
         id: 'promo-fleurs-botanix',
-        name: 'Fleurs BotaniX',
-        category: 'Promo',
-        description: 'Sélection premium de fleurs CBD BotaniX. Cultivées avec soin, arômes intenses et effets relaxants.',
+        name: 'Fleurs BotaniX — Nouveauté',
+        category: 'Fleurs',
+        description: 'Nouveauté BotaniX Brother\'s — une explosion de saveur et de relaxation intense. Très goûtu, profil aromatique puissant, relaxation profonde, qualité premium. La signature Botani X Brother\'s, disponible à Ivry-sur-Seine.',
         price: 0, price_unit: '€/g', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (8).jpeg',
         stock: 99
       };
       const promoReduceTHC = {
         id: 'promo-methode-thc',
-        name: 'Méthode Anti-THC',
+        name: 'Méthode pour Réduire le THC',
         category: 'Promo',
-        description: 'Découvrez notre méthode pour réduire le taux de THC. Profitez des bienfaits du CBD en toute sérénité.',
+        description: 'Programme en 4 étapes : reprendre le contrôle (max 2 joints/soir), diminuer progressivement avec le CBD 50/50 sur 5 jours, passer aux joints CBD purs, couper avec le fumeur grâce à l\'huile CBD le soir. Disponible chez BotaniX Brother\'s.',
         price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (2).jpeg',
         stock: 99
       };
       const promoCookiesChoc = {
         id: 'promo-cookies-chocolate',
-        name: 'Cannabis Cookies Chocolate',
-        category: 'Promo',
-        description: 'Cookies au CBD arôme chocolat. Gourmands et relaxants. Recette artisanale.',
-        price: 5.00, price_unit: '€', hide_price: true,
+        name: 'High Cannabis Cookies Chocolate CBD',
+        category: 'Bien-être',
+        description: 'Cookies CBD au chocolat de la marque Euphoria — Original & Delicious. Pâte moelleuse infusée au CBD, saveur chocolat intense. Une pause gourmande et relaxante à la fois.',
+        price: 5.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (3).jpeg',
         stock: 99
       };
       const promoPuffExplosif = {
         id: 'promo-puff-formule-explosive',
-        name: 'Puff HE Formule Explosive',
-        category: 'Promo',
-        description: "Puff haute efficacité formule explosive. Vapeur dense, saveurs intenses. Profitez d'une expérience unique.",
-        price: 40.00, price_unit: '€', hide_price: true,
+        name: 'Puff HE Astro High — Formule Explosive',
+        category: 'Vape',
+        description: 'Puff jetable Astro High — 0% THC, jusqu\'à 700 puffs pour 1000mg. Saveurs gourmandes : Strawberry, Gelato, Lemon Haze. Recharge 7ml disponible à 22,50€.',
+        price: 40.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.17 (4).jpeg',
         stock: 99
       };
       const promoPiatella = {
         id: 'promo-resine-piatella',
         name: 'Résine HE Piatella',
-        category: 'Promo',
-        description: 'Résine Piatella haute efficacité. Texture unique, arômes prononcés. Qualité artisanale sélectionnée.',
+        category: 'Fleurs',
+        description: 'Nouveauté exclusive BotaniX Brother\'s — Résine HE Piatella de qualité supérieure. Travaillée artisanalement, texture dense et collante caractéristique, effet puissant et saveurs prononcées.',
         price: 0, price_unit: '€/g', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (5).jpeg',
         stock: 99
       };
       const promoSuperRush = {
         id: 'promo-super-rush',
-        name: 'Super Rush 10ml',
-        category: 'Promo',
-        description: 'Super Rush 10ml. Formule concentrée pour une expérience intense. Flacon pratique et discret.',
+        name: 'Super Rush Original 10ml',
+        category: 'Bien-être',
+        description: 'Super Rush Original — le poppers légendaire en flacon 10ml, scellé pour votre protection. Formule concentrée à l\'arôme intense, un classique incontournable disponible chez BotaniX Brother\'s.',
         price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (6).jpeg',
         stock: 99
@@ -1555,125 +1554,125 @@
         id: 'promo-huiles-cbd-bienfaits',
         name: 'Huiles CBD — Bienfaits',
         category: 'Promo',
-        description: 'Découvrez tous les bienfaits de nos huiles CBD. Spectre complet ou broad-spectrum, pour chaque besoin.',
+        description: 'Les huiles CBD BotaniX : soulagement du stress & de l\'anxiété, réduction des douleurs & inflammations, amélioration du sommeil et relaxation profonde. Qualité · Naturel · Bien-être.',
         price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (7).jpeg',
         stock: 99
       };
       const promoInfusions = {
         id: 'promo-infusions-cbd',
-        name: 'Infusions CBD',
-        category: 'Promo',
-        description: 'Infusions CBD relaxantes. Mélange de plantes soigneusement sélectionnées. Goût doux et apaisant.',
-        price: 14.00, price_unit: '€', hide_price: true,
+        name: 'Infusions CBD Bien-être',
+        category: 'Bien-être',
+        description: 'Infusions CBD 20 sachets, spectre complet, fabriquées en France. 3 variantes : Relaxation (détente), Sommeil (repos profond), Méditation (sérénité). Aussi disponible : Fruits Rouges bio 10% fleurs de chanvre. THC < 0,05%.',
+        price: 14.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (9).jpeg',
         stock: 99
       };
       const promoCarbonFilter = {
         id: 'promo-carbon-filter-euphoria',
-        name: 'Carbon Filters Euphoria',
-        category: 'Promo',
-        description: 'Filtres charbon actif Euphoria. Pour une fumée plus douce et purifiée. Compatible tous supports.',
+        name: 'Euphoria Carbon Filters',
+        category: 'Accessoires',
+        description: 'Filtres Euphoria Carbon Filters triple couche — céramique + charbon actif + cellulose. Diamètre 7mm, lot de 10. Filtrent les irritants, refroidissent la fumée pour une aspiration douce et purifiée.',
         price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (10).jpeg',
         stock: 99
       };
       const promoHuileChien = {
         id: 'promo-huile-cbd-chien',
-        name: 'Huile CBD Wouaf — Chien',
-        category: 'Promo',
-        description: "Huile CBD spécialement formulée pour votre chien. Réduit le stress et l'anxiété de votre animal.",
-        price: 15.00, price_unit: '€', hide_price: true,
+        name: 'Greeneo WOUAF — Huile CBD Chien',
+        category: 'Bien-être',
+        description: 'Huile CBD pour chien Greeneo WOUAF — 4% CBD + CBG, 10ml. Base huile de chanvre & huile de saumon. Apaise l\'anxiété, réduit les douleurs articulaires, améliore le confort quotidien. Sans THC.',
+        price: 15.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (11).jpeg',
         stock: 99
       };
       const promoBeuzTray = {
         id: 'promo-beuz-rolling-tray',
-        name: 'Beuz Rolling Tray',
-        category: 'Promo',
-        description: 'Plateau à rouler Beuz. Design compact et pratique. Accessoire indispensable pour les amateurs.',
-        price: 5.00, price_unit: '€', hide_price: true,
+        name: 'Beuz Rolling Tray Silicone',
+        category: 'Accessoires',
+        description: 'Plateau à rouler Beuz en silicone souple et antidérapant. 3 coloris disponibles : vert, bleu, marron. Bords relevés, surface lisse facile à nettoyer, format compact.',
+        price: 5.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (12).jpeg',
         stock: 99
       };
       const promoSubstitutBlue = {
         id: 'promo-substitut-blue',
         name: 'Le Substitut — The Blue',
-        category: 'Promo',
-        description: 'Le Substitut "The Blue" — alternative naturelle au tabac. Saveur fraîche et légère.',
-        price: 13.00, price_unit: '€', hide_price: true,
+        category: 'Bien-être',
+        description: 'Le Substitut "The Blue" — substitut aux plantes 100% végétal, 30g. Saveur fraîche et aérienne, sans nicotine. Conçu pour accompagner le sevrage tabagique ou remplacer le tabac dans vos joints.',
+        price: 13.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (13).jpeg',
         stock: 99
       };
       const promoBulldogAshtray = {
         id: 'promo-bulldog-ashtray',
-        name: 'The Bulldog Cendrier',
-        category: 'Promo',
-        description: 'Cendrier The Bulldog iconique. Qualité premium, design emblématique de la culture cannabis.',
-        price: 5.00, price_unit: '€', hide_price: true,
+        name: 'The Bulldog Amsterdam — Cendrier',
+        category: 'Accessoires',
+        description: 'Cendrier The Bulldog Amsterdam — l\'icône des coffee shops depuis 1975. Cendrier plastique bleu résistant avec le célèbre logo bulldog. Encoches intégrées, facile à nettoyer.',
+        price: 5.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18 (15).jpeg',
         stock: 99
       };
       const promoBeuzPapers = {
         id: 'promo-beuz-papers',
         name: 'Beuz Papers',
-        category: 'Promo',
-        description: 'Feuilles à rouler Beuz. Ultra-fines, brûlure lente et régulière. Le classique du fumeur.',
-        price: 1.00, price_unit: '€', hide_price: true,
+        category: 'Accessoires',
+        description: 'Feuilles à rouler Beuz à 1€ le carnet — Blanc Ultra Fin et King Size Slim à gomme naturelle. Papier fin et résistant, brûlure lente et régulière. Le basique toujours en poche.',
+        price: 1.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.18.jpeg',
         stock: 99
       };
       const promoHarmonySpray = {
         id: 'promo-harmony-cbd-spray',
-        name: 'Harmony Premium CBD Spray',
-        category: 'Promo',
-        description: 'Spray huile CBD Harmony Premium. Dosage précis et rapide. Qualité certifiée, absorption optimale.',
+        name: 'Harmony Premium CBD Oil Spray Citrus',
+        category: 'Huiles',
+        description: 'Harmony Premium CBD Oil — Broad Spectrum Oral Care Spray saveur Citrus. 150mg CBD total, 10mg/ml, flacon 15ml. Absorption sublinguale rapide, certifié broad-spectrum sans THC. Discret et précis pour un usage quotidien.',
         price: 0, price_unit: '€', hide_price: true,
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (1).jpeg',
         stock: 99
       };
       const promoPuffBotanix2 = {
         id: 'promo-puff-botanix-v2',
-        name: 'Puff HE BotaniX',
-        category: 'Promo',
-        description: 'Puff haute efficacité BotaniX. Nouvelle formule, vapeur généreuse et saveurs authentiques.',
-        price: 0, price_unit: '€', hide_price: true,
+        name: 'Puff HE BotaniX — Formule Explosive',
+        category: 'Vape',
+        description: 'Puff HE Formule Explosive by BotaniX Brother\'s — 0% THC, 90% HHC, jusqu\'à 700 puffs / 1000mg. Saveurs : Strawberry, Gelato, Lemon Haze, Jack Herer. Recharge 1ml à 22,50€. La puff signature de la maison.',
+        price: 40.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (4).jpeg',
         stock: 99
       };
       const promoCookiesCBD = {
         id: 'promo-cookies-cbd',
-        name: 'Cookies CBD',
-        category: 'Promo',
-        description: 'Cookies au CBD artisanaux. Recette gourmande, effet relaxant garanti. Saveurs variées.',
-        price: 8.00, price_unit: '€', hide_price: true,
+        name: 'High Cannabis Cookies CBD',
+        category: 'Bien-être',
+        description: 'Cookies CBD Euphoria — disponibles en 2 saveurs : nature et chocolat. Texture fondante, CBD infusé dans la pâte pour un effet relaxant progressif. La boîte gourmande idéale pour les amateurs.',
+        price: 8.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (5).jpeg',
         stock: 99
       };
       const promoBolSilicone = {
         id: 'promo-bol-silicone',
-        name: 'Bol Silicone',
-        category: 'Promo',
-        description: 'Bol en silicone alimentaire. Résistant à la chaleur, facile à nettoyer. Accessoire pratique et durable.',
-        price: 3.50, price_unit: '€', hide_price: true,
+        name: 'Bol Silicone — Best Bud / Stoned',
+        category: 'Accessoires',
+        description: 'Bols en silicone alimentaire résistant à la chaleur — Best Bud (vert) et Stoned (noir mat). Antidérapants, faciles à nettoyer, ultra résistants. Pratiques pour mélanger ou stocker vos préparations.',
+        price: 3.50, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (10).jpeg',
         stock: 99
       };
       const promoSubstitutPink = {
         id: 'promo-substitut-pink',
         name: 'Le Substitut — The Pink',
-        category: 'Promo',
-        description: 'Le Substitut "The Pink" — alternative naturelle au tabac. Saveur fruitée et douce.',
-        price: 13.00, price_unit: '€', hide_price: true,
+        category: 'Bien-être',
+        description: 'Le Substitut "The Pink" — substitut aux plantes 100% végétal, 30g. Saveur fruitée et douce, sans nicotine. Accompagne efficacement le sevrage tabagique. Disponible aussi en The Blue (frais) et The Orange.',
+        price: 13.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (11).jpeg',
         stock: 99
       };
       const promoRollingTrays = {
         id: 'promo-rolling-trays',
-        name: 'Rolling Trays & Boîtes',
-        category: 'Promo',
-        description: 'Plateaux à rouler et boîtes de rangement assorties. Pratiques, stylés, indispensables.',
-        price: 5.00, price_unit: '€', hide_price: true,
+        name: 'Boîtes Déco — Rolling Storage',
+        category: 'Accessoires',
+        description: 'Boîtes de rangement en métal illustrées — designs exclusifs : ours cosmique, sugar skull mexicain, One Piece. Idéales pour ranger accessoires, feuilles et filtres. 5€ pièce, plusieurs designs en boutique.',
+        price: 5.00, price_unit: '€',
         image_url: 'images/WhatsApp Image 2026-05-11 at 10.45.19 (13).jpeg',
         stock: 99
       };
