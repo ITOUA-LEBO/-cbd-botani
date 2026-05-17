@@ -571,7 +571,7 @@
     <!-- Vidéo cachée utilisée comme source de frames -->
     <video id="hero-video" autoplay muted playsinline loop preload="auto" disablepictureinpicture disableremoteplayback
       src="images/From KlickPin CF Refresh these dreamy streetwear look tips that bring style function and personality together that balance trend comfort and everyday function - Pin-1618549864058372 (1).mp4"
-      style="position:absolute;opacity:0;width:1px;height:1px;left:-9999px;top:0;"></video>
+      style="position:absolute;opacity:0;width:1px;height:1px;left:0;top:0;"></video>
     <div id="hero-overlay" style="position:absolute;inset:0;background:rgba(5,5,5,0.5);transition:opacity 0.3s ease;"></div>
   </div>
 
@@ -1255,23 +1255,21 @@
       function startDraw() { if (!rafId) rafId = requestAnimationFrame(draw); }
       function stopDraw()  { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
 
-      // Scroll : joue pendant le scroll, pause après 150ms d'inactivité
-      let scrollTimer = null;
-      window.addEventListener('scroll', () => {
-        video.play().catch(() => {}); startDraw();
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => { video.pause(); stopDraw(); }, 150);
-      }, { passive: true });
-
       video.loop = true;
 
       // Démarre dès que la vidéo est prête
-      function tryStart() { video.play().catch(() => {}); startDraw(); }
+      function tryStart() {
+        video.play().catch(() => {});
+        startDraw();
+      }
       if (video.readyState >= 2) { tryStart(); }
       else video.addEventListener('canplay', tryStart, { once: true });
 
-      // Fallback iOS : le premier touch débloque l'autoplay si refusé
-      document.addEventListener('touchstart', () => { video.play().catch(() => {}); startDraw(); }, { once: true, passive: true });
+      // iOS : l'autoplay est bloqué jusqu'au premier geste — on relance à chaque touch
+      // "once: false" intentionnel : iOS peut re-suspendre après scroll ou mise en veille
+      document.addEventListener('touchstart', () => {
+        if (video.paused) { video.play().catch(() => {}); startDraw(); }
+      }, { passive: true });
     })();
 
 
